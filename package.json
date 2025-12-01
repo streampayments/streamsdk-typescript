@@ -27,13 +27,13 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/streampay/stream-sdk"
+    "url": "https://github.com/streampayments/stream-sdk"
   },
   "bugs": {
-    "url": "https://github.com/streampay/stream-sdk/issues",
+    "url": "https://github.com/streampayments/stream-sdk/issues",
     "email": "support@streampay.sa"
   },
-  "homepage": "https://github.com/streampay/stream-sdk#readme",
+  "homepage": "https://github.com/streampayments/stream-sdk#readme",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",

@@ -15,7 +15,7 @@ Add to your `package.json`:
 ```json
 {
   "dependencies": {
-    "@streampay/stream-sdk": "github:streampay/stream-sdk#v1.0.0"
+    "@streampay/stream-sdk": "github:streampayments/stream-sdk#v1.0.0"
   }
 }
 ```
@@ -23,7 +23,7 @@ Add to your `package.json`:
 Or install directly:
 
 ```bash
-npm install github:streampay/stream-sdk#v1.0.0
+npm install github:streampayments/stream-sdk#v1.0.0
 ```
 
 ### Usage
@@ -40,26 +40,12 @@ const consumer = await client.createConsumer({
 
 ---
 
-## Method 2: Install from Tarball
+## Method 2: npm (Public - Coming Soon)
 
-For offline or air-gapped environments.
-
-### Get the Package
-
-Download the latest release `.tgz` file from:
-- GitHub Releases: https://github.com/streampay/stream-sdk/releases
-- Contact support for private download link
-
-### Install
+Once published to npm:
 
 ```bash
-npm install ./streampay-stream-sdk-1.0.0.tgz
-```
-
-Or from URL:
-
-```bash
-npm install https://releases.streampay.sa/sdk/streampay-stream-sdk-1.0.0.tgz
+npm install @streampay/stream-sdk
 ```
 
 ---
@@ -82,16 +68,6 @@ npm login --scope=@streampay --registry=https://npm.pkg.github.com
 ```
 
 ### Install
-
-```bash
-npm install @streampay/stream-sdk
-```
-
----
-
-## Method 4: npm (Public - Coming Soon)
-
-Once available on npm:
 
 ```bash
 npm install @streampay/stream-sdk
@@ -123,10 +99,10 @@ node test-sdk.mjs
 
 ```bash
 # Update to latest version
-npm install github:streampay/stream-sdk#latest
+npm install github:streampayments/stream-sdk#latest
 
 # Or specific version
-npm install github:streampay/stream-sdk#v1.1.0
+npm install github:streampayments/stream-sdk#v1.1.0
 ```
 
 ### Check Current Version

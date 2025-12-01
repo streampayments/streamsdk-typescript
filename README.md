@@ -23,7 +23,7 @@ Official Node.js/TypeScript SDK for StreamPay API - A complete payment processin
 ### Option 1: Install from GitHub (Current)
 
 ```bash
-npm install github:streampay/stream-sdk#v1.0.0
+npm install github:streampayments/stream-sdk#v1.0.0
 ```
 
 Or add to `package.json`:
@@ -31,7 +31,7 @@ Or add to `package.json`:
 ```json
 {
   "dependencies": {
-    "@streampay/stream-sdk": "github:streampay/stream-sdk#v1.0.0"
+    "@streampay/stream-sdk": "github:streampayments/stream-sdk#v1.0.0"
   }
 }
 ```
@@ -42,7 +42,7 @@ Or add to `package.json`:
 npm install @streampay/stream-sdk
 ```
 
-See [INSTALLATION.md](./INSTALLATION.md) for more installation options including tarball, private registries, and CI/CD setup.
+See [INSTALLATION.md](./INSTALLATION.md) for more installation options including private registries and CI/CD setup.
 
 ## Quick Start
 
@@ -469,8 +469,8 @@ MIT
 
 For support and questions:
 - **Email**: support@streampay.sa
-- **GitHub Issues**: https://github.com/streampay/stream-sdk/issues
-- **Documentation**: https://github.com/streampay/stream-sdk
+- **GitHub Issues**: https://github.com/streampayments/stream-sdk/issues
+- **Documentation**: https://github.com/streampayments/stream-sdk
 
 ## Contributors
 
