@@ -7,14 +7,14 @@ Need help with the Stream SDK? We're here to assist!
 ### For Users/Customers
 **General Support & Questions**
 - 📧 Email: support@streampay.sa
-- 🐛 Report Issues: https://github.com/streampay/stream-sdk/issues
-- 📚 Documentation: https://github.com/streampay/stream-sdk
+- 🐛 Report Issues: https://github.com/streampayments/stream-sdk/issues
+- 📚 Documentation: https://github.com/streampayments/stream-sdk
 
 ### For Developers
 **Technical Questions & Contributions**
 - 👨‍💻 Developer Contact: ibtisam@streampay.sa
-- 💬 Discussions: https://github.com/streampay/stream-sdk/discussions
-- 🔀 Pull Requests: https://github.com/streampay/stream-sdk/pulls
+- 💬 Discussions: https://github.com/streampayments/stream-sdk/discussions
+- 🔀 Pull Requests: https://github.com/streampayments/stream-sdk/pulls
 
 ## Common Questions
 
@@ -32,13 +32,13 @@ See [INSTALLATION.md](../INSTALLATION.md) for:
 
 ### Bug Reports
 When reporting bugs, please include:
-1. SDK version: `npm list @streampay/stream-sdk`
+1. SDK version: `npm list @streampayments/stream-sdk`
 2. Node.js version: `node --version`
 3. Error message and stack trace
 4. Minimal code to reproduce
 5. Expected vs actual behavior
 
-[Create an issue →](https://github.com/streampay/stream-sdk/issues/new)
+[Create an issue →](https://github.com/streampayments/stream-sdk/issues/new)
 
 ### Feature Requests
 Have an idea for improvement?
@@ -49,7 +49,7 @@ Have an idea for improvement?
    - Benefits to users
 3. Include examples if possible
 
-[Request a feature →](https://github.com/streampay/stream-sdk/issues/new)
+[Request a feature →](https://github.com/streampayments/stream-sdk/issues/new)
 
 ## Response Times
 

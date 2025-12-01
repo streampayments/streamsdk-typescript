@@ -15,7 +15,7 @@ Add to your `package.json`:
 ```json
 {
   "dependencies": {
-    "@streampay/stream-sdk": "github:streampayments/stream-sdk#v1.0.0"
+    "@streampayments/stream-sdk": "github:streampayments/stream-sdk#v1.0.0"
   }
 }
 ```
@@ -29,7 +29,7 @@ npm install github:streampayments/stream-sdk#v1.0.0
 ### Usage
 
 ```typescript
-import StreamSDK from '@streampay/stream-sdk';
+import StreamSDK from '@streampayments/stream-sdk';
 
 const client = StreamSDK.init(process.env.STREAM_API_KEY);
 const consumer = await client.createConsumer({
@@ -45,7 +45,7 @@ const consumer = await client.createConsumer({
 Once published to npm:
 
 ```bash
-npm install @streampay/stream-sdk
+npm install @streampayments/stream-sdk
 ```
 
 ---
@@ -70,7 +70,7 @@ npm login --scope=@streampay --registry=https://npm.pkg.github.com
 ### Install
 
 ```bash
-npm install @streampay/stream-sdk
+npm install @streampayments/stream-sdk
 ```
 
 ---
@@ -82,7 +82,7 @@ After installation, verify the SDK works:
 ```bash
 # Create test file: test-sdk.mjs
 cat > test-sdk.mjs << 'EOF'
-import StreamSDK from '@streampay/stream-sdk';
+import StreamSDK from '@streampayments/stream-sdk';
 console.log('Stream SDK loaded:', typeof StreamSDK.init);
 EOF
 
@@ -108,7 +108,7 @@ npm install github:streampayments/stream-sdk#v1.1.0
 ### Check Current Version
 
 ```bash
-npm list @streampay/stream-sdk
+npm list @streampayments/stream-sdk
 ```
 
 ---
@@ -132,7 +132,7 @@ echo ".npmrc" >> .gitignore
 
 ```bash
 export GITHUB_TOKEN=ghp_YOUR_TOKEN_HERE
-npm install github:streampay/stream-sdk
+npm install github:streampayments/stream-sdk
 ```
 
 ---
@@ -213,12 +213,12 @@ install:
 - Try regenerating the token
 
 ### Error: "Version not found"
-- Check available versions: `git ls-remote https://github.com/streampay/stream-sdk`
-- Use `#main` for latest: `npm install github:streampay/stream-sdk#main`
+- Check available versions: `git ls-remote https://github.com/streampayments/stream-sdk`
+- Use `#main` for latest: `npm install github:streampayments/stream-sdk#main`
 
 ### Build fails during install
 - Ensure Node.js 18+ is installed
-- Check build logs: `npm install --verbose github:streampay/stream-sdk`
+- Check build logs: `npm install --verbose github:streampayments/stream-sdk`
 - Try clearing npm cache: `npm cache clean --force`
 
 ---
@@ -227,6 +227,6 @@ install:
 
 Need help installing?
 - **Email**: support@streampay.sa
-- **GitHub Issues**: https://github.com/streampay/stream-sdk/issues
+- **GitHub Issues**: https://github.com/streampayments/stream-sdk/issues
 - **Developer Contact**: ibtisam@streampay.sa
-- **Documentation**: https://github.com/streampay/stream-sdk
+- **Documentation**: https://github.com/streampayments/stream-sdk
