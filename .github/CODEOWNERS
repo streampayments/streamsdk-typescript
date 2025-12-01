@@ -3,17 +3,17 @@
 # https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
 
 # Default owners for everything in the repo
-* @ibtisam-streampay @streampay/sdk-team
+* @ibtisam-streampay @streampayments/stream-developers
 
 # Source code requires review from SDK team
-/src/** @ibtisam-streampay @streampay/sdk-team
+/src/** @ibtisam-streampay @streampayments/stream-developers
 
 # Package.json changes require admin approval
 /package.json @ibtisam-streampay
 
 # Documentation can be reviewed by anyone on the team
-/*.md @streampay/sdk-team
-/docs/** @streampay/sdk-team
+/*.md @streampayments/stream-developers
+/docs/** @streampayments/stream-developers
 
 # Build configuration requires careful review
 /tsconfig.json @ibtisam-streampay

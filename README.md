@@ -429,6 +429,34 @@ npm run typecheck
 npm run dev
 ```
 
+## Examples
+
+### Basic Usage
+
+See [examples/basic.mjs](./examples/basic.mjs) for a quick walkthrough of common operations.
+
+```bash
+export STREAM_API_KEY="your-api-key"
+node examples/basic.mjs
+```
+
+### Comprehensive CRUD Examples
+
+See [examples/comprehensive.mjs](./examples/comprehensive.mjs) for detailed Create, Read, Update, Delete examples for all resources:
+
+- **Consumers**: Full CRUD with metadata
+- **Products**: Create, list, fetch, update, delete
+- **Coupons**: Percentage and fixed discounts with validation
+- **Payment Links**: Simple and coupon-enabled links
+- **Subscriptions**: Full lifecycle with freeze/unfreeze
+- **Invoices**: List and fetch operations
+- **Payments**: List, fetch, and refund operations
+
+```bash
+export STREAM_API_KEY="your-api-key"
+node examples/comprehensive.mjs
+```
+
 ## API Documentation
 
 For detailed API documentation, visit the [OpenAPI specification](https://stream-app-service.streampay.sa/openapi.json).
