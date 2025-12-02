@@ -1,16 +1,12 @@
 # Installation Guide
 
-## Method 1: Install from GitHub (Recommended for Beta)
+## Install from GitHub
 
-The easiest way to use the Stream SDK without publishing to npm.
+```bash
+npm install github:streampayments/stream-sdk#v1.0.0
+```
 
-### Prerequisites
-- Node.js 18 or higher
-- GitHub account with access to the repository
-
-### Installation
-
-Add to your `package.json`:
+Or add to `package.json`:
 
 ```json
 {
@@ -20,213 +16,124 @@ Add to your `package.json`:
 }
 ```
 
-Or install directly:
-
-```bash
-npm install github:streampayments/stream-sdk#v1.0.0
-```
-
-### Usage
+## Usage
 
 ```typescript
 import StreamSDK from '@streampayments/stream-sdk';
 
 const client = StreamSDK.init(process.env.STREAM_API_KEY);
+
 const consumer = await client.createConsumer({
   name: "John Doe",
   email: "john@example.com"
 });
 ```
 
----
-
-## Method 2: npm (Public - Coming Soon)
-
-Once published to npm:
-
-```bash
-npm install @streampayments/stream-sdk
-```
-
----
-
-## Method 3: GitHub Packages (Coming Soon)
-
-For organizations using GitHub Packages.
-
-### Setup
-
-```bash
-# Configure npm to use GitHub Packages
-echo "@streampay:registry=https://npm.pkg.github.com" >> .npmrc
-
-# Login with GitHub Personal Access Token
-npm login --scope=@streampay --registry=https://npm.pkg.github.com
-# Username: your-github-username
-# Password: ghp_YourPersonalAccessToken
-# Email: your-email@example.com
-```
-
-### Install
-
-```bash
-npm install @streampayments/stream-sdk
-```
-
----
-
 ## Verification
 
 After installation, verify the SDK works:
 
 ```bash
-# Create test file: test-sdk.mjs
 cat > test-sdk.mjs << 'EOF'
 import StreamSDK from '@streampayments/stream-sdk';
 console.log('Stream SDK loaded:', typeof StreamSDK.init);
 EOF
 
-# Run test
 node test-sdk.mjs
-# Should output: Stream SDK loaded: function
 ```
 
----
+Expected output: `Stream SDK loaded: function`
 
 ## Upgrading
 
-### From GitHub
+Update to the latest version:
 
 ```bash
-# Update to latest version
 npm install github:streampayments/stream-sdk#latest
+```
 
-# Or specific version
+Or specific version:
+
+```bash
 npm install github:streampayments/stream-sdk#v1.1.0
 ```
 
-### Check Current Version
+Check current version:
 
 ```bash
 npm list @streampayments/stream-sdk
 ```
 
----
+## Requirements
 
-## Private Repository Access
+- Node.js 18 or higher
+- npm or yarn
 
-If the SDK repository is private, you need:
-
-1. **GitHub Personal Access Token** with `repo` scope
-2. **Add to `.npmrc`:**
+## Environment Variables
 
 ```bash
-# Create .npmrc in your project root
-echo "//npm.pkg.github.com/:_authToken=ghp_YOUR_TOKEN_HERE" >> .npmrc
+# Required
+export STREAM_API_KEY="your-api-key"
 
-# Add .npmrc to .gitignore
-echo ".npmrc" >> .gitignore
+# Optional: Override base URL
+export STREAM_BASE_URL="https://staging.streampay.sa"
 ```
-
-3. **Or use environment variable:**
-
-```bash
-export GITHUB_TOKEN=ghp_YOUR_TOKEN_HERE
-npm install github:streampayments/stream-sdk
-```
-
----
-
-## Docker/Container Environments
-
-### Dockerfile Example
-
-```dockerfile
-FROM node:18-alpine
-
-WORKDIR /app
-
-# If using private GitHub repo
-ARG GITHUB_TOKEN
-RUN echo "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}" > .npmrc
-
-# Copy package files
-COPY package*.json ./
-
-# Install dependencies (including SDK from GitHub)
-RUN npm ci
-
-# Clean up token
-RUN rm -f .npmrc
-
-COPY . .
-
-CMD ["npm", "start"]
-```
-
-**Build:**
-
-```bash
-docker build --build-arg GITHUB_TOKEN=ghp_xxx -t myapp .
-```
-
----
 
 ## CI/CD Setup
 
 ### GitHub Actions
 
 ```yaml
-- name: Install dependencies
-  env:
-    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  run: |
-    echo "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}" >> .npmrc
-    npm ci
-    rm .npmrc
+name: Test
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - run: npm install
+      - run: npm test
+        env:
+          STREAM_API_KEY: ${{ secrets.STREAM_API_KEY }}
 ```
 
 ### GitLab CI
 
 ```yaml
-install:
+test:
+  image: node:18
   script:
-    - echo "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}" >> .npmrc
-    - npm ci
-    - rm .npmrc
+    - npm install
+    - npm test
   variables:
-    GITHUB_TOKEN: $CI_JOB_TOKEN
+    STREAM_API_KEY: $STREAM_API_KEY
 ```
-
----
 
 ## Troubleshooting
 
-### Error: "Repository not found"
-- Ensure you have access to the GitHub repository
-- Check your GitHub token has correct permissions
-- Verify the repository URL is correct
+### Import Error
 
-### Error: "Unable to authenticate"
-- Check your GitHub token is valid
-- Ensure token has `repo` scope for private repos
-- Try regenerating the token
+Ensure you're using Node.js 18 or higher:
 
-### Error: "Version not found"
-- Check available versions: `git ls-remote https://github.com/streampayments/stream-sdk`
-- Use `#main` for latest: `npm install github:streampayments/stream-sdk#main`
+```bash
+node --version
+```
 
-### Build fails during install
-- Ensure Node.js 18+ is installed
-- Check build logs: `npm install --verbose github:streampayments/stream-sdk`
-- Try clearing npm cache: `npm cache clean --force`
+### Network Error
 
----
+Check your internet connection and firewall settings.
+
+### 401 Unauthorized
+
+Verify your API key is correct and active.
 
 ## Support
 
-Need help installing?
 - **Email**: support@streampay.sa
-- **GitHub Issues**: https://github.com/streampayments/stream-sdk/issues
-- **Developer Contact**: ibtisam@streampay.sa
-- **Documentation**: https://github.com/streampayments/stream-sdk
+- **Developer**: ibtisam@streampay.sa
+- **Issues**: https://github.com/streampayments/stream-sdk/issues
