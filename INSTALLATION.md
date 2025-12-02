@@ -31,8 +31,6 @@ const consumer = await client.createConsumer({
 
 ## Verification
 
-After installation, verify the SDK works:
-
 ```bash
 cat > test-sdk.mjs << 'EOF'
 import StreamSDK from '@streampayments/stream-sdk';
@@ -45,8 +43,6 @@ node test-sdk.mjs
 Expected output: `Stream SDK loaded: function`
 
 ## Upgrading
-
-Update to the latest version:
 
 ```bash
 npm install github:streampayments/stream-sdk#latest
@@ -69,25 +65,13 @@ npm list @streampayments/stream-sdk
 - Node.js 18 or higher
 - npm or yarn
 
-## Environment Variables
-
-```bash
-# Required
-export STREAM_API_KEY="your-api-key"
-
-# Optional: Override base URL
-export STREAM_BASE_URL="https://staging.streampay.sa"
-```
-
 ## CI/CD Setup
 
 ### GitHub Actions
 
 ```yaml
 name: Test
-
 on: [push]
-
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -117,19 +101,15 @@ test:
 ## Troubleshooting
 
 ### Import Error
-
 Ensure you're using Node.js 18 or higher:
-
 ```bash
 node --version
 ```
 
 ### Network Error
-
 Check your internet connection and firewall settings.
 
 ### 401 Unauthorized
-
 Verify your API key is correct and active.
 
 ## Support

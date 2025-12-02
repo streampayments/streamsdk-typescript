@@ -67,22 +67,6 @@ const paymentLink = await client.createLink({
 console.log("Payment URL:", client.getPaymentUrl(paymentLink));
 ```
 
-## Environment Configuration
-
-```typescript
-const client = StreamSDK.init("your-api-key", {
-  baseUrl: "https://stream-app-service.streampay.sa"
-});
-```
-
-For staging environment:
-
-```typescript
-const client = StreamSDK.init("your-api-key", {
-  baseUrl: "https://staging.streampay.sa"
-});
-```
-
 ## API Reference
 
 ### Consumers
@@ -318,4 +302,3 @@ MIT
 ---
 
 **Maintained by**: Ibtisam (ibtisam@streampay.sa)
-**Base URL**: `https://stream-app-service.streampay.sa`
