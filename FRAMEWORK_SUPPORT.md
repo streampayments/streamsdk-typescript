@@ -12,18 +12,33 @@ import express from 'express';
 import StreamSDK from '@streampayments/stream-sdk';
 
 const app = express();
+app.use(express.json());
 const streamClient = StreamSDK.init(process.env.STREAM_API_KEY);
 
 app.post('/api/create-payment', async (req, res) => {
   try {
-    const paymentLink = await streamClient.createLink({
-      name: "Payment",
-      productId: req.body.productId,
-      consumerId: req.body.consumerId,
+    const { amount, customerEmail, customerName, productName } = req.body;
+
+    const result = await streamClient.createSimplePaymentLink({
+      name: productName || "Payment",
+      amount,
+      consumer: {
+        email: customerEmail,
+        name: customerName
+      },
+      product: {
+        name: productName,
+        price: amount
+      },
       successRedirectUrl: "https://yourapp.com/success",
       failureRedirectUrl: "https://yourapp.com/failure"
     });
-    res.json({ url: streamClient.getPaymentUrl(paymentLink) });
+
+    res.json({
+      paymentUrl: result.paymentUrl,
+      consumerId: result.consumerId,
+      productId: result.productId
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -39,8 +54,26 @@ import StreamSDK from '@streampayments/stream-sdk';
 export class PaymentService {
   private streamClient = StreamSDK.init(process.env.STREAM_API_KEY);
 
-  async createPayment(data: PaymentDto) {
-    return await this.streamClient.createLink(data);
+  async createPayment(data: {
+    amount: number;
+    customerEmail: string;
+    customerName: string;
+    productName: string;
+  }) {
+    return await this.streamClient.createSimplePaymentLink({
+      name: data.productName,
+      amount: data.amount,
+      consumer: {
+        email: data.customerEmail,
+        name: data.customerName
+      },
+      product: {
+        name: data.productName,
+        price: data.amount
+      },
+      successRedirectUrl: `${process.env.APP_URL}/success`,
+      failureRedirectUrl: `${process.env.APP_URL}/failure`
+    });
   }
 }
 ```
@@ -54,8 +87,16 @@ const fastify = Fastify();
 const streamClient = StreamSDK.init(process.env.STREAM_API_KEY);
 
 fastify.post('/payment', async (request, reply) => {
-  const link = await streamClient.createLink(request.body);
-  return { url: streamClient.getPaymentUrl(link) };
+  const { amount, customerEmail, customerName, productName } = request.body;
+
+  const result = await streamClient.createSimplePaymentLink({
+    name: productName,
+    amount,
+    consumer: { email: customerEmail, name: customerName },
+    product: { name: productName, price: amount }
+  });
+
+  return { paymentUrl: result.paymentUrl };
 });
 ```
 
@@ -68,8 +109,16 @@ const app = new Koa();
 const streamClient = StreamSDK.init(process.env.STREAM_API_KEY);
 
 app.use(async ctx => {
-  const link = await streamClient.createLink(ctx.request.body);
-  ctx.body = { url: streamClient.getPaymentUrl(link) };
+  const { amount, customerEmail, productName } = ctx.request.body;
+
+  const result = await streamClient.createSimplePaymentLink({
+    name: productName,
+    amount,
+    consumer: { email: customerEmail },
+    product: { name: productName, price: amount }
+  });
+
+  ctx.body = { paymentUrl: result.paymentUrl };
 });
 ```
 
@@ -82,8 +131,16 @@ const app = new Hono();
 const streamClient = StreamSDK.init(process.env.STREAM_API_KEY);
 
 app.post('/payment', async (c) => {
-  const link = await streamClient.createLink(await c.req.json());
-  return c.json({ url: streamClient.getPaymentUrl(link) });
+  const { amount, customerEmail, productName } = await c.req.json();
+
+  const result = await streamClient.createSimplePaymentLink({
+    name: productName,
+    amount,
+    consumer: { email: customerEmail },
+    product: { name: productName, price: amount }
+  });
+
+  return c.json({ paymentUrl: result.paymentUrl });
 });
 ```
 
@@ -98,18 +155,27 @@ import StreamSDK from '@streampayments/stream-sdk';
 const streamClient = StreamSDK.init(process.env.STREAM_API_KEY!);
 
 export async function POST(request: NextRequest) {
-  const body = await request.json();
+  const { amount, customerEmail, customerName, productName } = await request.json();
 
-  const paymentLink = await streamClient.createLink({
-    name: "Payment",
-    productId: body.productId,
-    consumerId: body.consumerId,
+  const result = await streamClient.createSimplePaymentLink({
+    name: productName,
+    amount,
+    consumer: {
+      email: customerEmail,
+      name: customerName
+    },
+    product: {
+      name: productName,
+      price: amount
+    },
     successRedirectUrl: `${process.env.NEXT_PUBLIC_URL}/success`,
     failureRedirectUrl: `${process.env.NEXT_PUBLIC_URL}/failure`
   });
 
   return NextResponse.json({
-    url: streamClient.getPaymentUrl(paymentLink)
+    paymentUrl: result.paymentUrl,
+    consumerId: result.consumerId,
+    productId: result.productId
   });
 }
 ```
@@ -130,8 +196,16 @@ export default async function handler(
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const paymentLink = await streamClient.createLink(req.body);
-  res.json({ url: streamClient.getPaymentUrl(paymentLink) });
+  const { amount, customerEmail, productName } = req.body;
+
+  const result = await streamClient.createSimplePaymentLink({
+    name: productName,
+    amount,
+    consumer: { email: customerEmail },
+    product: { name: productName, price: amount }
+  });
+
+  res.json({ paymentUrl: result.paymentUrl });
 }
 ```
 
@@ -144,11 +218,16 @@ import StreamSDK from '@streampayments/stream-sdk';
 const streamClient = StreamSDK.init(process.env.STREAM_API_KEY!);
 
 export const action: ActionFunction = async ({ request }) => {
-  const formData = await request.json();
+  const { amount, customerEmail, productName } = await request.json();
 
-  const paymentLink = await streamClient.createLink(formData);
+  const result = await streamClient.createSimplePaymentLink({
+    name: productName,
+    amount,
+    consumer: { email: customerEmail },
+    product: { name: productName, price: amount }
+  });
 
-  return json({ url: streamClient.getPaymentUrl(paymentLink) });
+  return json({ paymentUrl: result.paymentUrl });
 };
 ```
 
@@ -162,10 +241,16 @@ import { STREAM_API_KEY } from '$env/static/private';
 const streamClient = StreamSDK.init(STREAM_API_KEY);
 
 export async function POST({ request }) {
-  const data = await request.json();
-  const paymentLink = await streamClient.createLink(data);
+  const { amount, customerEmail, productName } = await request.json();
 
-  return json({ url: streamClient.getPaymentUrl(paymentLink) });
+  const result = await streamClient.createSimplePaymentLink({
+    name: productName,
+    amount,
+    consumer: { email: customerEmail },
+    product: { name: productName, price: amount }
+  });
+
+  return json({ paymentUrl: result.paymentUrl });
 }
 ```
 
@@ -177,10 +262,16 @@ import StreamSDK from '@streampayments/stream-sdk';
 const streamClient = StreamSDK.init(process.env.STREAM_API_KEY!);
 
 export default defineEventHandler(async (event) => {
-  const body = await readBody(event);
-  const paymentLink = await streamClient.createLink(body);
+  const { amount, customerEmail, productName } = await readBody(event);
 
-  return { url: streamClient.getPaymentUrl(paymentLink) };
+  const result = await streamClient.createSimplePaymentLink({
+    name: productName,
+    amount,
+    consumer: { email: customerEmail },
+    product: { name: productName, price: amount }
+  });
+
+  return { paymentUrl: result.paymentUrl };
 });
 ```
 
@@ -193,14 +284,19 @@ import StreamSDK from '@streampayments/stream-sdk';
 const streamClient = StreamSDK.init(process.env.STREAM_API_KEY);
 
 export const handler = async (event) => {
-  const body = JSON.parse(event.body);
+  const { amount, customerEmail, productName } = JSON.parse(event.body);
 
-  const paymentLink = await streamClient.createLink(body);
+  const result = await streamClient.createSimplePaymentLink({
+    name: productName,
+    amount,
+    consumer: { email: customerEmail },
+    product: { name: productName, price: amount }
+  });
 
   return {
     statusCode: 200,
     body: JSON.stringify({
-      url: streamClient.getPaymentUrl(paymentLink)
+      paymentUrl: result.paymentUrl
     })
   };
 };
@@ -217,11 +313,17 @@ export const config = {
 const streamClient = StreamSDK.init(process.env.STREAM_API_KEY!);
 
 export default async function handler(request: Request) {
-  const body = await request.json();
-  const paymentLink = await streamClient.createLink(body);
+  const { amount, customerEmail, productName } = await request.json();
+
+  const result = await streamClient.createSimplePaymentLink({
+    name: productName,
+    amount,
+    consumer: { email: customerEmail },
+    product: { name: productName, price: amount }
+  });
 
   return new Response(JSON.stringify({
-    url: streamClient.getPaymentUrl(paymentLink)
+    paymentUrl: result.paymentUrl
   }));
 }
 ```
@@ -234,11 +336,17 @@ export default {
   async fetch(request: Request, env: Env) {
     const streamClient = StreamSDK.init(env.STREAM_API_KEY);
 
-    const body = await request.json();
-    const paymentLink = await streamClient.createLink(body);
+    const { amount, customerEmail, productName } = await request.json();
+
+    const result = await streamClient.createSimplePaymentLink({
+      name: productName,
+      amount,
+      consumer: { email: customerEmail },
+      product: { name: productName, price: amount }
+    });
 
     return new Response(JSON.stringify({
-      url: streamClient.getPaymentUrl(paymentLink)
+      paymentUrl: result.paymentUrl
     }));
   }
 };
@@ -371,10 +479,8 @@ export const streamClient = StreamSDK.init(config.apiKey, {
 
 Check the [examples](./examples) directory for more framework-specific examples:
 
-- `examples/basic.mjs` - Basic usage
-- `examples/comprehensive.mjs` - Full CRUD operations
-- `examples/express.js` - Express.js integration (coming soon)
-- `examples/nextjs/` - Next.js integration (coming soon)
+- `examples/express.js` - Complete Express.js server with smart resource matching
+- `examples/README.md` - Setup and testing instructions
 
 ## 🆘 Need Help?
 
