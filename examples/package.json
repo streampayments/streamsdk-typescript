@@ -4,7 +4,8 @@
   "type": "module",
   "description": "Examples for @streampayments/stream-sdk",
   "scripts": {
-    "express": "node express.js"
+    "express": "node express.js",
+    "test:express": "node test-express.mjs"
   },
   "dependencies": {
     "@streampayments/stream-sdk": "file:..",

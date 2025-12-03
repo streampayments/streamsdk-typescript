@@ -24,6 +24,19 @@ A complete Express.js server showing how to create payment links with the Stream
 npm run express
 ```
 
+### Test the server:
+In a separate terminal, run the automated test script:
+```bash
+npm run test:express
+```
+
+This will:
+- Create test products
+- Test all payment endpoints
+- Test single and multiple product payments
+- Test guest checkout
+- List all resources
+
 ### Available endpoints:
 
 #### Create Payment (with new consumer and product)
