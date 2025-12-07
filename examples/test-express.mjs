@@ -52,7 +52,7 @@ try {
     const result1 = await callExpressAPI('/api/create-payment', {
       name: 'Express Test Order #1',
       amount: 99.99,
-      customerEmail: 'express-test@example.com',
+      customerPhone: '+966501234567',
       customerName: 'Express Test User',
       productName: 'Express Test Product',
       description: 'Testing Express.js integration'
@@ -72,7 +72,7 @@ try {
     const result2 = await callExpressAPI('/api/create-payment-with-product', {
       name: 'Express Test Order #2',
       productIds: [product.id],
-      customerEmail: 'express-test2@example.com',
+      customerPhone: '+966501234568',
       customerName: 'Express Test User 2'
     });
 
@@ -101,7 +101,7 @@ try {
     const result3 = await callExpressAPI('/api/create-payment-with-product', {
       name: 'Express Bundle Order #3',
       productIds: [product.id, product2.id],
-      customerEmail: 'express-test3@example.com'
+      customerPhone: '+966501234569'
     });
 
     console.log('✅ Payment link created successfully!');

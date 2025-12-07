@@ -17,13 +17,13 @@ const streamClient = StreamSDK.init(process.env.STREAM_API_KEY);
 
 app.post('/api/create-payment', async (req, res) => {
   try {
-    const { amount, customerEmail, customerName, productName } = req.body;
+    const { amount, customerPhone, customerName, productName } = req.body;
 
     const result = await streamClient.createSimplePaymentLink({
       name: productName || "Payment",
       amount,
       consumer: {
-        email: customerEmail,
+        phone: customerPhone,
         name: customerName
       },
       product: {
@@ -56,7 +56,7 @@ export class PaymentService {
 
   async createPayment(data: {
     amount: number;
-    customerEmail: string;
+    customerPhone: string;
     customerName: string;
     productName: string;
   }) {
@@ -64,7 +64,7 @@ export class PaymentService {
       name: data.productName,
       amount: data.amount,
       consumer: {
-        email: data.customerEmail,
+        phone: data.customerPhone,
         name: data.customerName
       },
       product: {
@@ -87,12 +87,12 @@ const fastify = Fastify();
 const streamClient = StreamSDK.init(process.env.STREAM_API_KEY);
 
 fastify.post('/payment', async (request, reply) => {
-  const { amount, customerEmail, customerName, productName } = request.body;
+  const { amount, customerPhone, customerName, productName } = request.body;
 
   const result = await streamClient.createSimplePaymentLink({
     name: productName,
     amount,
-    consumer: { email: customerEmail, name: customerName },
+    consumer: { phone: customerPhone, name: customerName },
     product: { name: productName, price: amount }
   });
 
@@ -109,12 +109,12 @@ const app = new Koa();
 const streamClient = StreamSDK.init(process.env.STREAM_API_KEY);
 
 app.use(async ctx => {
-  const { amount, customerEmail, productName } = ctx.request.body;
+  const { amount, customerPhone, productName } = ctx.request.body;
 
   const result = await streamClient.createSimplePaymentLink({
     name: productName,
     amount,
-    consumer: { email: customerEmail },
+    consumer: { phone: customerPhone },
     product: { name: productName, price: amount }
   });
 
@@ -131,12 +131,12 @@ const app = new Hono();
 const streamClient = StreamSDK.init(process.env.STREAM_API_KEY);
 
 app.post('/payment', async (c) => {
-  const { amount, customerEmail, productName } = await c.req.json();
+  const { amount, customerPhone, productName } = await c.req.json();
 
   const result = await streamClient.createSimplePaymentLink({
     name: productName,
     amount,
-    consumer: { email: customerEmail },
+    consumer: { phone: customerPhone },
     product: { name: productName, price: amount }
   });
 
@@ -155,13 +155,13 @@ import StreamSDK from '@streampayments/stream-sdk';
 const streamClient = StreamSDK.init(process.env.STREAM_API_KEY!);
 
 export async function POST(request: NextRequest) {
-  const { amount, customerEmail, customerName, productName } = await request.json();
+  const { amount, customerPhone, customerName, productName } = await request.json();
 
   const result = await streamClient.createSimplePaymentLink({
     name: productName,
     amount,
     consumer: {
-      email: customerEmail,
+      phone: customerPhone,
       name: customerName
     },
     product: {
@@ -196,12 +196,12 @@ export default async function handler(
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { amount, customerEmail, productName } = req.body;
+  const { amount, customerPhone, productName } = req.body;
 
   const result = await streamClient.createSimplePaymentLink({
     name: productName,
     amount,
-    consumer: { email: customerEmail },
+    consumer: { phone: customerPhone },
     product: { name: productName, price: amount }
   });
 
@@ -218,12 +218,12 @@ import StreamSDK from '@streampayments/stream-sdk';
 const streamClient = StreamSDK.init(process.env.STREAM_API_KEY!);
 
 export const action: ActionFunction = async ({ request }) => {
-  const { amount, customerEmail, productName } = await request.json();
+  const { amount, customerPhone, productName } = await request.json();
 
   const result = await streamClient.createSimplePaymentLink({
     name: productName,
     amount,
-    consumer: { email: customerEmail },
+    consumer: { phone: customerPhone },
     product: { name: productName, price: amount }
   });
 
@@ -241,12 +241,12 @@ import { STREAM_API_KEY } from '$env/static/private';
 const streamClient = StreamSDK.init(STREAM_API_KEY);
 
 export async function POST({ request }) {
-  const { amount, customerEmail, productName } = await request.json();
+  const { amount, customerPhone, productName } = await request.json();
 
   const result = await streamClient.createSimplePaymentLink({
     name: productName,
     amount,
-    consumer: { email: customerEmail },
+    consumer: { phone: customerPhone },
     product: { name: productName, price: amount }
   });
 
@@ -262,12 +262,12 @@ import StreamSDK from '@streampayments/stream-sdk';
 const streamClient = StreamSDK.init(process.env.STREAM_API_KEY!);
 
 export default defineEventHandler(async (event) => {
-  const { amount, customerEmail, productName } = await readBody(event);
+  const { amount, customerPhone, productName } = await readBody(event);
 
   const result = await streamClient.createSimplePaymentLink({
     name: productName,
     amount,
-    consumer: { email: customerEmail },
+    consumer: { phone: customerPhone },
     product: { name: productName, price: amount }
   });
 
@@ -284,12 +284,12 @@ import StreamSDK from '@streampayments/stream-sdk';
 const streamClient = StreamSDK.init(process.env.STREAM_API_KEY);
 
 export const handler = async (event) => {
-  const { amount, customerEmail, productName } = JSON.parse(event.body);
+  const { amount, customerPhone, productName } = JSON.parse(event.body);
 
   const result = await streamClient.createSimplePaymentLink({
     name: productName,
     amount,
-    consumer: { email: customerEmail },
+    consumer: { phone: customerPhone },
     product: { name: productName, price: amount }
   });
 
@@ -313,12 +313,12 @@ export const config = {
 const streamClient = StreamSDK.init(process.env.STREAM_API_KEY!);
 
 export default async function handler(request: Request) {
-  const { amount, customerEmail, productName } = await request.json();
+  const { amount, customerPhone, productName } = await request.json();
 
   const result = await streamClient.createSimplePaymentLink({
     name: productName,
     amount,
-    consumer: { email: customerEmail },
+    consumer: { phone: customerPhone },
     product: { name: productName, price: amount }
   });
 
@@ -336,12 +336,12 @@ export default {
   async fetch(request: Request, env: Env) {
     const streamClient = StreamSDK.init(env.STREAM_API_KEY);
 
-    const { amount, customerEmail, productName } = await request.json();
+    const { amount, customerPhone, productName } = await request.json();
 
     const result = await streamClient.createSimplePaymentLink({
       name: productName,
       amount,
-      consumer: { email: customerEmail },
+      consumer: { phone: customerPhone },
       product: { name: productName, price: amount }
     });
 

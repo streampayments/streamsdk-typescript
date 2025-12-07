@@ -46,7 +46,7 @@ curl -X POST http://localhost:3000/api/create-payment \
   -d '{
     "name": "Order #1234",
     "amount": 99.99,
-    "customerEmail": "customer@example.com",
+    "customerPhone": "+966501234567",
     "customerName": "John Doe",
     "productName": "Premium Subscription",
     "description": "Monthly premium subscription"
@@ -62,7 +62,7 @@ curl -X POST http://localhost:3000/api/create-payment-with-product \
   -d '{
     "name": "Order #5678",
     "productIds": ["prod_123"],
-    "customerEmail": "customer@example.com",
+    "customerPhone": "+966501234567",
     "customerName": "John Doe"
   }'
 
@@ -72,7 +72,7 @@ curl -X POST http://localhost:3000/api/create-payment-with-product \
   -d '{
     "name": "Bundle Order #9012",
     "productIds": ["prod_123", "prod_456", "prod_789"],
-    "customerEmail": "customer@example.com"
+    "customerPhone": "+966501234567"
   }'
 ```
 

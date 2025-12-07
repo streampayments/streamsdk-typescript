@@ -13,7 +13,7 @@ const streamClient = StreamSDK.init(process.env.STREAM_API_KEY);
  * Body: {
  *   name: "Order #1234",
  *   amount: 99.99,
- *   customerEmail: "customer@example.com",
+ *   customerPhone: "+966501234567",
  *   customerName: "John Doe",
  *   productName: "Premium Subscription",
  *   description: "Monthly premium subscription"
@@ -21,7 +21,7 @@ const streamClient = StreamSDK.init(process.env.STREAM_API_KEY);
  */
 app.post('/api/create-payment', async (req, res) => {
   try {
-    const { name, amount, customerEmail, customerName, productName, description } = req.body;
+    const { name, amount, customerPhone, customerName, productName, description } = req.body;
 
     const result = await streamClient.createSimplePaymentLink({
       name: name || `Order ${Date.now()}`,
@@ -29,7 +29,7 @@ app.post('/api/create-payment', async (req, res) => {
       amount,
       currency: 'SAR',
       consumer: {
-        email: customerEmail,
+        phone: customerPhone,
         name: customerName
       },
       product: {
@@ -63,13 +63,13 @@ app.post('/api/create-payment', async (req, res) => {
  * Body: {
  *   name: "Order for Premium Package",
  *   productIds: ["prod_123", "prod_456"],  // Single or multiple products
- *   customerEmail: "customer@example.com",
+ *   customerPhone: "+966501234567",
  *   customerName: "John Doe"
  * }
  */
 app.post('/api/create-payment-with-product', async (req, res) => {
   try {
-    const { name, productIds, customerEmail, customerName } = req.body;
+    const { name, productIds, customerPhone, customerName } = req.body;
 
     // Ensure productIds is an array
     const ids = Array.isArray(productIds) ? productIds : [productIds];
@@ -98,14 +98,14 @@ app.post('/api/create-payment-with-product', async (req, res) => {
     };
 
     // Add consumer if provided
-    if (customerEmail) {
+    if (customerPhone) {
       // Find or create consumer
       const consumers = await streamClient.listConsumers({ page: 1, size: 100 });
-      let consumer = consumers.data?.find(c => c.email === customerEmail);
+      let consumer = consumers.data?.find(c => c.phone_number === customerPhone);
 
       if (!consumer && customerName) {
         consumer = await streamClient.createConsumer({
-          email: customerEmail,
+          phone_number: customerPhone,
           name: customerName
         });
       }
