@@ -379,12 +379,15 @@ Test the API:
 curl -X POST http://localhost:3000/api/create-payment \
   -H "Content-Type: application/json" \
   -d '{
+    "name": "Order #1234",
     "amount": 99.99,
     "customerEmail": "test@example.com",
     "customerName": "John Doe",
     "productName": "Premium Plan"
   }'
 ```
+
+For more examples including multiple products and guest checkout, see [examples/README.md](./examples/README.md)
 
 ## Development
 
