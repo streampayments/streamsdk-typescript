@@ -40,11 +40,17 @@ app.post('/api/create-payment', async (req, res) => {
 
     const result = await streamClient.createSimplePaymentLink(paymentData);
 
-    res.json({
+    const response = {
       paymentUrl: result.paymentUrl,
-      consumerId: result.consumerId,
       productId: result.productId
-    });
+    };
+
+    // Only include consumerId if consumer was created
+    if (result.consumerId) {
+      response.consumerId = result.consumerId;
+    }
+
+    res.json(response);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -208,11 +214,17 @@ export async function POST(request: NextRequest) {
 
   const result = await streamClient.createSimplePaymentLink(paymentData);
 
-  return NextResponse.json({
+  const response: any = {
     paymentUrl: result.paymentUrl,
-    consumerId: result.consumerId,
     productId: result.productId
-  });
+  };
+
+  // Only include consumerId if consumer was created
+  if (result.consumerId) {
+    response.consumerId = result.consumerId;
+  }
+
+  return NextResponse.json(response);
 }
 ```
 

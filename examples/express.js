@@ -47,12 +47,18 @@ app.post('/api/create-payment', async (req, res) => {
 
     const result = await streamClient.createSimplePaymentLink(paymentData);
 
-    res.json({
+    const response = {
       success: true,
       paymentUrl: result.paymentUrl,
-      consumerId: result.consumerId,
       productId: result.productId
-    });
+    };
+
+    // Only include consumerId if consumer was created
+    if (result.consumerId) {
+      response.consumerId = result.consumerId;
+    }
+
+    res.json(response);
   } catch (error) {
     console.error('Payment creation error:', error);
     res.status(500).json({

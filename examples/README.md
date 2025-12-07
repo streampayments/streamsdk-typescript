@@ -102,12 +102,21 @@ curl http://localhost:3000/api/payment-links?page=1&size=10
 
 ### Response Examples:
 
-**Simple Payment:**
+**Simple Payment (with consumer):**
 ```json
 {
   "success": true,
   "paymentUrl": "https://checkout.streampay.sa/pay/link_abc123",
   "consumerId": "cons_xyz789",
+  "productId": "prod_def456"
+}
+```
+
+**Simple Payment (guest checkout - no consumer):**
+```json
+{
+  "success": true,
+  "paymentUrl": "https://checkout.streampay.sa/pay/link_abc123",
   "productId": "prod_def456"
 }
 ```
