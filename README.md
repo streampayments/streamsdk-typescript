@@ -41,7 +41,7 @@ Or add to `package.json`:
 Create a payment link in one call - SDK handles consumer and product creation automatically.
 
 **Default Values:**
-- **Consumer** is **optional** - omit for guest checkout (email collected at checkout page)
+- **Consumer** is **optional** - omit for guest checkout (phone number collected at checkout page)
 - **Currency** defaults to **SAR** if not specified
 - **Product type** defaults to **ONE_OFF** (one-time purchase)
 
@@ -70,7 +70,7 @@ const result = await client.createSimplePaymentLink({
   failureRedirectUrl: "https://yourapp.com/failure"
 });
 
-// Guest checkout (no consumer - customer provides email at checkout)
+// Guest checkout (no consumer - customer provides phone number at checkout)
 const guestResult = await client.createSimplePaymentLink({
   name: "Guest Order",
   amount: 49.99,
@@ -78,7 +78,7 @@ const guestResult = await client.createSimplePaymentLink({
     name: "One-time Purchase",
     price: 49.99
   },
-  // consumer omitted - guest checkout
+  // consumer omitted - guest checkout (phone number required at checkout)
   successRedirectUrl: "https://yourapp.com/success"
 });
 
@@ -294,7 +294,7 @@ const link = await client.createLink({
 const guestLink = await client.createLink({
   name: "Guest Payment",
   productId: "product-id",
-  consumerId: null,  // Guest checkout - email collected at checkout
+  consumerId: null,  // Guest checkout - phone number collected at checkout
   successRedirectUrl: "https://yourapp.com/success",
   failureRedirectUrl: "https://yourapp.com/failure"
 });
