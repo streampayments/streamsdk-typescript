@@ -84,7 +84,7 @@ export class PaymentService {
     };
 
     // Add consumer only if both phone and name are provided (optional for guest checkout)
-    if (data.customerPhone || data.customerName) {
+    if (data.customerPhone && data.customerName) {
       paymentData.consumer = {
         phone: data.customerPhone,
         name: data.customerName
