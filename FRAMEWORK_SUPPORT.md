@@ -30,8 +30,8 @@ app.post('/api/create-payment', async (req, res) => {
       failureRedirectUrl: "https://yourapp.com/failure"
     };
 
-    // Add consumer only if provided (optional for guest checkout)
-    if (customerPhone || customerName) {
+    // Add consumer only if both phone and name are provided (optional for guest checkout)
+    if (customerPhone && customerName) {
       paymentData.consumer = {
         phone: customerPhone,
         name: customerName
@@ -77,7 +77,7 @@ export class PaymentService {
       failureRedirectUrl: `${process.env.APP_URL}/failure`
     };
 
-    // Add consumer only if provided (optional for guest checkout)
+    // Add consumer only if both phone and name are provided (optional for guest checkout)
     if (data.customerPhone || data.customerName) {
       paymentData.consumer = {
         phone: data.customerPhone,
@@ -107,8 +107,8 @@ fastify.post('/payment', async (request, reply) => {
     product: { name: productName, price: amount }
   };
 
-  // Add consumer only if provided (optional for guest checkout)
-  if (customerPhone || customerName) {
+  // Add consumer only if both phone and name are provided (optional for guest checkout)
+  if (customerPhone && customerName) {
     paymentData.consumer = { phone: customerPhone, name: customerName };
   }
 
@@ -135,8 +135,8 @@ app.use(async ctx => {
     product: { name: productName, price: amount }
   };
 
-  // Add consumer only if provided (optional for guest checkout)
-  if (customerPhone || customerName) {
+  // Add consumer only if both phone and name are provided (optional for guest checkout)
+  if (customerPhone && customerName) {
     paymentData.consumer = { phone: customerPhone, name: customerName };
   }
 
@@ -163,8 +163,8 @@ app.post('/payment', async (c) => {
     product: { name: productName, price: amount }
   };
 
-  // Add consumer only if provided (optional for guest checkout)
-  if (customerPhone || customerName) {
+  // Add consumer only if both phone and name are provided (optional for guest checkout)
+  if (customerPhone && customerName) {
     paymentData.consumer = { phone: customerPhone, name: customerName };
   }
 
@@ -198,8 +198,8 @@ export async function POST(request: NextRequest) {
     failureRedirectUrl: `${process.env.NEXT_PUBLIC_URL}/failure`
   };
 
-  // Add consumer only if provided (optional for guest checkout)
-  if (customerPhone || customerName) {
+  // Add consumer only if both phone and name are provided (optional for guest checkout)
+  if (customerPhone && customerName) {
     paymentData.consumer = {
       phone: customerPhone,
       name: customerName
@@ -240,8 +240,8 @@ export default async function handler(
     product: { name: productName, price: amount }
   };
 
-  // Add consumer only if provided (optional for guest checkout)
-  if (customerPhone || customerName) {
+  // Add consumer only if both phone and name are provided (optional for guest checkout)
+  if (customerPhone && customerName) {
     paymentData.consumer = { phone: customerPhone, name: customerName };
   }
 
@@ -268,8 +268,8 @@ export const action: ActionFunction = async ({ request }) => {
     product: { name: productName, price: amount }
   };
 
-  // Add consumer only if provided (optional for guest checkout)
-  if (customerPhone || customerName) {
+  // Add consumer only if both phone and name are provided (optional for guest checkout)
+  if (customerPhone && customerName) {
     paymentData.consumer = { phone: customerPhone, name: customerName };
   }
 
@@ -297,8 +297,8 @@ export async function POST({ request }) {
     product: { name: productName, price: amount }
   };
 
-  // Add consumer only if provided (optional for guest checkout)
-  if (customerPhone || customerName) {
+  // Add consumer only if both phone and name are provided (optional for guest checkout)
+  if (customerPhone && customerName) {
     paymentData.consumer = { phone: customerPhone, name: customerName };
   }
 
@@ -324,8 +324,8 @@ export default defineEventHandler(async (event) => {
     product: { name: productName, price: amount }
   };
 
-  // Add consumer only if provided (optional for guest checkout)
-  if (customerPhone || customerName) {
+  // Add consumer only if both phone and name are provided (optional for guest checkout)
+  if (customerPhone && customerName) {
     paymentData.consumer = { phone: customerPhone, name: customerName };
   }
 
@@ -352,8 +352,8 @@ export const handler = async (event) => {
     product: { name: productName, price: amount }
   };
 
-  // Add consumer only if provided (optional for guest checkout)
-  if (customerPhone || customerName) {
+  // Add consumer only if both phone and name are provided (optional for guest checkout)
+  if (customerPhone && customerName) {
     paymentData.consumer = { phone: customerPhone, name: customerName };
   }
 
@@ -387,8 +387,8 @@ export default async function handler(request: Request) {
     product: { name: productName, price: amount }
   };
 
-  // Add consumer only if provided (optional for guest checkout)
-  if (customerPhone || customerName) {
+  // Add consumer only if both phone and name are provided (optional for guest checkout)
+  if (customerPhone && customerName) {
     paymentData.consumer = { phone: customerPhone, name: customerName };
   }
 
@@ -416,8 +416,8 @@ export default {
       product: { name: productName, price: amount }
     };
 
-    // Add consumer only if provided (optional for guest checkout)
-    if (customerPhone || customerName) {
+    // Add consumer only if both phone and name are provided (optional for guest checkout)
+    if (customerPhone && customerName) {
       paymentData.consumer = { phone: customerPhone, name: customerName };
     }
 

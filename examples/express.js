@@ -37,8 +37,8 @@ app.post('/api/create-payment', async (req, res) => {
       failureRedirectUrl: `${req.protocol}://${req.get('host')}/payment/failed`
     };
 
-    // Add consumer only if provided (optional for guest checkout)
-    if (customerPhone || customerName) {
+    // Add consumer only if both phone and name are provided (optional for guest checkout)
+    if (customerPhone && customerName) {
       paymentData.consumer = {
         phone: customerPhone,
         name: customerName
