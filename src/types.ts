@@ -103,18 +103,20 @@ export type CreateLinkInput = {
  *
  * Smart Matching:
  * - Consumer: Searches for existing consumer by email or phone before creating new
- * - Product: Searches for existing product by name and price before creating new
+ * - Products: Searches for existing products by name and price before creating new
  * - To force creation of new resources, use unique identifiers
  * - To use specific existing resources, provide id field
+ *
+ * Note: The API supports only ONE consumer per payment link, but MULTIPLE products
  */
 export type SimplePaymentLinkInput = {
   // Payment link details
   name: string;
   description?: string;
-  amount: number;
+  amount?: number;      // Optional when using products array
   currency?: string;
 
-  // Consumer (optional) - either ID or create inline
+  // Consumer (optional) - Only ONE consumer per payment link
   consumer?: {
     id?: string;          // If provided, uses this consumer (skips search)
     email?: string;       // Used for matching existing consumers
@@ -123,7 +125,8 @@ export type SimplePaymentLinkInput = {
     metadata?: Record<string, unknown>;
   };
 
-  // Product - either ID or create inline
+  // Products - supports SINGLE product OR MULTIPLE products
+  // Single product (legacy format)
   product?: {
     id?: string;          // If provided, uses this product (skips search)
     name?: string;        // Used for matching existing products
@@ -133,8 +136,19 @@ export type SimplePaymentLinkInput = {
     metadata?: Record<string, unknown>;
   };
 
+  // Multiple products (new format) - takes priority over 'product' if both are provided
+  products?: Array<{
+    id?: string;          // If provided, uses this product (skips search)
+    name?: string;        // Used for matching existing products
+    description?: string;
+    price?: number;       // Used for matching existing products
+    currency?: string;
+    quantity?: number;    // Default: 1
+    metadata?: Record<string, unknown>;
+  }>;
+
   // Payment link settings
-  quantity?: number;
+  quantity?: number;      // Only used with single 'product', ignored with 'products'
   validUntil?: Date | string;
   maxNumberOfPayments?: number;
 
@@ -163,6 +177,7 @@ export type SimplePaymentLinkInput = {
 export type SimplePaymentLinkResponse = {
   paymentLink: PaymentLinkDetailed;
   paymentUrl: string;
-  productId: string;
+  productIds: string[];        // Array of product IDs (supports multiple products)
+  productId: string | undefined;  // First product ID for backward compatibility
   consumerId: string | undefined;
 };
