@@ -693,7 +693,8 @@ export class StreamClient {
         // Create new product
         const productData: Partial<ProductCreate> = {
           name: productName,
-          price: productPrice
+          price: productPrice,
+          type: 'ONE_OFF'  // Default to one-time purchase
         };
 
         if (input.product?.description !== undefined) {

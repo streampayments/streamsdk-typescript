@@ -40,7 +40,9 @@ try {
   const product = await client.createProduct({
     name: 'Test Product',
     price: 199.99,
-    description: 'Product for Express.js testing'
+    currency: 'SAR',
+    description: 'Product for Express.js testing',
+    type: 'ONE_OFF'
   });
   console.log(`✅ Product created: ${product.id} - ${product.name} (${product.price} SAR)\n`);
 
@@ -87,7 +89,9 @@ try {
   const product2 = await client.createProduct({
     name: 'Test Add-on',
     price: 49.99,
-    description: 'Add-on for testing'
+    currency: 'SAR',
+    description: 'Add-on for testing',
+    type: 'ONE_OFF'
   });
   console.log(`✅ Product created: ${product2.id} - ${product2.name} (${product2.price} SAR)\n`);
 
