@@ -41,9 +41,9 @@ Or add to `package.json`:
 Create a payment link in one call - SDK handles consumer and product creation automatically.
 
 **Default Values:**
-- Consumer ID is **optional** - omit for guest checkout
-- Currency defaults to **SAR** if not specified
-- Product type defaults to **ONE_OFF** (one-time purchase)
+- **Consumer** is **optional** - omit for guest checkout (email collected at checkout page)
+- **Currency** defaults to **SAR** if not specified
+- **Product type** defaults to **ONE_OFF** (one-time purchase)
 
 ```typescript
 import StreamSDK from "@streampayments/stream-sdk";
@@ -55,8 +55,7 @@ const result = await client.createSimplePaymentLink({
   name: "Premium Subscription",
   description: "Monthly premium plan",
   amount: 99.99,
-  // currency: "SAR" is default, can be omitted
-  consumer: {
+  consumer: {  // Optional: omit entire consumer object for guest checkout
     email: "customer@example.com",
     name: "John Doe",
     phone: "+966501234567"
@@ -71,7 +70,7 @@ const result = await client.createSimplePaymentLink({
   failureRedirectUrl: "https://yourapp.com/failure"
 });
 
-// Guest checkout (no consumer - email collected at checkout)
+// Guest checkout (no consumer - customer provides email at checkout)
 const guestResult = await client.createSimplePaymentLink({
   name: "Guest Order",
   amount: 49.99,
@@ -79,6 +78,7 @@ const guestResult = await client.createSimplePaymentLink({
     name: "One-time Purchase",
     price: 49.99
   },
+  // consumer omitted - guest checkout
   successRedirectUrl: "https://yourapp.com/success"
 });
 
