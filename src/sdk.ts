@@ -691,17 +691,18 @@ export class StreamClient {
         productId = existingProduct.id;
       } else {
         // Create new product
-        const productData: Partial<ProductCreate> = {
+        const productData: any = {
           name: productName,
           price: productPrice,
-          type: 'ONE_OFF'  // Default to one-time purchase
+          type: 'ONE_OFF',  // Default to one-time purchase
+          currency: input.product?.currency || input.currency || 'SAR'  // Default to SAR
         };
 
         if (input.product?.description !== undefined) {
           productData.description = input.product.description;
         }
 
-        const product = await this.createProduct(productData as ProductCreate);
+        const product = await this.createProduct(productData);
         productId = product.id;
       }
     }

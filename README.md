@@ -38,18 +38,24 @@ Or add to `package.json`:
 
 ### Simple Payment Link Creation (Recommended)
 
-Create a payment link in one call - SDK handles consumer and product creation automatically:
+Create a payment link in one call - SDK handles consumer and product creation automatically.
+
+**Default Values:**
+- Consumer ID is **optional** - omit for guest checkout
+- Currency defaults to **SAR** if not specified
+- Product type defaults to **ONE_OFF** (one-time purchase)
 
 ```typescript
 import StreamSDK from "@streampayments/stream-sdk";
 
 const client = StreamSDK.init(process.env.STREAM_API_KEY!);
 
+// With consumer (registered customer)
 const result = await client.createSimplePaymentLink({
   name: "Premium Subscription",
   description: "Monthly premium plan",
   amount: 99.99,
-  currency: "SAR",
+  // currency: "SAR" is default, can be omitted
   consumer: {
     email: "customer@example.com",
     name: "John Doe",
@@ -57,15 +63,27 @@ const result = await client.createSimplePaymentLink({
   },
   product: {
     name: "Premium Plan",
-    price: 99.99,
-    currency: "SAR"
+    price: 99.99
+    // currency defaults to SAR
+    // type defaults to ONE_OFF
   },
   successRedirectUrl: "https://yourapp.com/success",
   failureRedirectUrl: "https://yourapp.com/failure"
 });
 
+// Guest checkout (no consumer - email collected at checkout)
+const guestResult = await client.createSimplePaymentLink({
+  name: "Guest Order",
+  amount: 49.99,
+  product: {
+    name: "One-time Purchase",
+    price: 49.99
+  },
+  successRedirectUrl: "https://yourapp.com/success"
+});
+
 console.log("Payment URL:", result.paymentUrl);
-console.log("Consumer ID:", result.consumerId);
+console.log("Consumer ID:", result.consumerId); // undefined for guest
 console.log("Product ID:", result.productId);
 ```
 
@@ -74,7 +92,7 @@ console.log("Product ID:", result.productId);
 For more control, create resources separately:
 
 ```typescript
-// Create a consumer
+// Create a consumer (optional - can be null for guest checkout)
 const consumer = await client.createConsumer({
   name: "John Doe",
   email: "john@example.com",
@@ -85,13 +103,22 @@ const consumer = await client.createConsumer({
 const product = await client.createProduct({
   name: "Premium Plan",
   price: 99.99,
-  currency: "SAR"
+  currency: "SAR"  // Optional, defaults to SAR
 });
 
-// Generate a payment link
+// Generate a payment link with consumer
 const paymentLink = await client.createLink({
   name: "Payment",
-  consumerId: consumer.id,
+  consumerId: consumer.id,  // Optional: omit or pass null for guest checkout
+  productId: product.id,
+  successRedirectUrl: "https://yourapp.com/success",
+  failureRedirectUrl: "https://yourapp.com/failure"
+});
+
+// Or create guest payment link (no consumer)
+const guestLink = await client.createLink({
+  name: "Guest Payment",
+  consumerId: null,  // Guest checkout
   productId: product.id,
   successRedirectUrl: "https://yourapp.com/success",
   failureRedirectUrl: "https://yourapp.com/failure"
@@ -201,8 +228,16 @@ await client.deleteConsumer("consumer-id");
 const product = await client.createProduct({
   name: "Premium Subscription",
   price: 149.99,
-  currency: "SAR",
-  type: "SERVICE"
+  currency: "SAR",  // Optional: defaults to SAR if not specified
+  type: "ONE_OFF"   // ONE_OFF or RECURRING
+});
+
+// Create with minimal fields (using defaults)
+const simpleProduct = await client.createProduct({
+  name: "Basic Product",
+  price: 99.99
+  // currency defaults to SAR
+  // type defaults to ONE_OFF
 });
 
 // List
@@ -245,12 +280,21 @@ await client.deleteCoupon("coupon-id");
 ### Payment Links
 
 ```typescript
-// Create
+// Create with consumer
 const link = await client.createLink({
   name: "Product Payment",
   productId: "product-id",
-  consumerId: "consumer-id",
+  consumerId: "consumer-id",  // Optional: set to null for guest checkout
   coupons: ["SAVE20"],
+  successRedirectUrl: "https://yourapp.com/success",
+  failureRedirectUrl: "https://yourapp.com/failure"
+});
+
+// Create for guest checkout (no consumer)
+const guestLink = await client.createLink({
+  name: "Guest Payment",
+  productId: "product-id",
+  consumerId: null,  // Guest checkout - email collected at checkout
   successRedirectUrl: "https://yourapp.com/success",
   failureRedirectUrl: "https://yourapp.com/failure"
 });
