@@ -134,7 +134,7 @@ console.log("Payment URL:", client.getPaymentUrl(paymentLink));
 The easiest way to create payment links with automatic resource creation and smart matching:
 
 **Smart Matching:**
-- Automatically searches for existing consumers by email or phone
+- Automatically searches for existing consumers by phone number (primary) or email (secondary)
 - Automatically searches for existing products by name and price
 - Reuses existing resources to avoid duplicates
 - Creates new resources only when no match is found
@@ -146,7 +146,7 @@ const result = await client.createSimplePaymentLink({
   amount: 199.99,
   currency: "SAR",
   consumer: {
-    email: "customer@example.com",  // Searches for existing consumer with this email
+    phone: "+966501234567",  // Searches for existing consumer with this phone (primary)
     name: "Jane Doe"
   },
   product: {

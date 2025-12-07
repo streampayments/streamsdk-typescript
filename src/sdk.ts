@@ -616,12 +616,12 @@ export class StreamClient {
 
             if (consumers.data && consumers.data.length > 0) {
               existingConsumer = consumers.data.find((c: ConsumerResponse) => {
-                // Match by email (primary)
-                if (input.consumer?.email && c.email === input.consumer.email) {
+                // Match by phone number (primary)
+                if (input.consumer?.phone && c.phone_number === input.consumer.phone) {
                   return true;
                 }
-                // Match by phone number (secondary)
-                if (input.consumer?.phone && c.phone_number === input.consumer.phone) {
+                // Match by email (secondary)
+                if (input.consumer?.email && c.email === input.consumer.email) {
                   return true;
                 }
                 return false;
