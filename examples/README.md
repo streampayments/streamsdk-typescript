@@ -138,8 +138,8 @@ curl http://localhost:3000/api/payment-links?page=1&size=10
 1. **Simple Payment Creation**: Create payment link with consumer and product in one call
 2. **Multiple Products**: Use existing product IDs (single or multiple)
 3. **Automatic Amount Calculation**: Fetches product details and calculates total
-4. **Smart Consumer Matching**: Reuses existing consumers by email
-5. **Guest Checkout**: Create payment without consumer (collect email at checkout)
+4. **Smart Consumer Matching**: Reuses existing consumers by phone number
+5. **Guest Checkout**: Create payment without consumer (phone collected at checkout)
 6. **Custom Payment Link Names**: User-defined payment link names
 7. **Redirect URLs**: Success and failure redirect handling
 8. **Error Handling**: Proper error handling and response formatting

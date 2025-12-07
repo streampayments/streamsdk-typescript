@@ -425,7 +425,7 @@ curl -X POST http://localhost:3000/api/create-payment \
   -d '{
     "name": "Order #1234",
     "amount": 99.99,
-    "customerEmail": "test@example.com",
+    "customerPhone": "+966501234567",
     "customerName": "John Doe",
     "productName": "Premium Plan"
   }'

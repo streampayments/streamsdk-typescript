@@ -23,15 +23,11 @@ app.post('/api/create-payment', async (req, res) => {
   try {
     const { name, amount, customerPhone, customerName, productName, description } = req.body;
 
-    const result = await streamClient.createSimplePaymentLink({
+    const paymentData = {
       name: name || `Order ${Date.now()}`,
       description: description || 'Payment',
       amount,
       currency: 'SAR',
-      consumer: {
-        phone: customerPhone,
-        name: customerName
-      },
       product: {
         name: productName || 'Product',
         price: amount,
@@ -39,7 +35,17 @@ app.post('/api/create-payment', async (req, res) => {
       },
       successRedirectUrl: `${req.protocol}://${req.get('host')}/payment/success`,
       failureRedirectUrl: `${req.protocol}://${req.get('host')}/payment/failed`
-    });
+    };
+
+    // Add consumer only if provided (optional for guest checkout)
+    if (customerPhone || customerName) {
+      paymentData.consumer = {
+        phone: customerPhone,
+        name: customerName
+      };
+    }
+
+    const result = await streamClient.createSimplePaymentLink(paymentData);
 
     res.json({
       success: true,
@@ -163,8 +169,8 @@ app.post('/api/create-guest-payment', async (req, res) => {
         currency: 'SAR'
       },
       successRedirectUrl: `${req.protocol}://${req.get('host')}/payment/success`,
-      failureRedirectUrl: `${req.protocol}://${req.get('host')}/payment/failed`,
-      contactInformationType: 'EMAIL'
+      failureRedirectUrl: `${req.protocol}://${req.get('host')}/payment/failed`
+      // No consumer - guest checkout (phone collected at checkout)
     });
 
     res.json({
@@ -260,9 +266,9 @@ app.listen(PORT, () => {
   console.log(`\n1. Simple payment (creates new product):`);
   console.log(`curl -X POST http://localhost:${PORT}/api/create-payment \\`);
   console.log(`  -H "Content-Type: application/json" \\`);
-  console.log(`  -d '{"name": "Order #1234", "amount": 99.99, "customerEmail": "test@example.com", "customerName": "John Doe", "productName": "Premium Plan"}'`);
+  console.log(`  -d '{"name": "Order #1234", "amount": 99.99, "customerPhone": "+966501234567", "customerName": "John Doe", "productName": "Premium Plan"}'`);
   console.log(`\n2. Payment with existing product(s):`);
   console.log(`curl -X POST http://localhost:${PORT}/api/create-payment-with-product \\`);
   console.log(`  -H "Content-Type: application/json" \\`);
-  console.log(`  -d '{"name": "Order #5678", "productIds": ["prod_123"], "customerEmail": "test@example.com"}'`);
+  console.log(`  -d '{"name": "Order #5678", "productIds": ["prod_123"], "customerPhone": "+966501234567"}'`);
 });

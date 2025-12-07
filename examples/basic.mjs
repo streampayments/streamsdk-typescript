@@ -61,7 +61,7 @@ async function main() {
       description: "Monthly premium subscription",
       price: 99.99,
       currency: "SAR",
-      type: "SERVICE"
+      type: "ONE_OFF"
     });
     console.log(`✅ Created product: ${product.id}`);
 

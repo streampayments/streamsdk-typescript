@@ -109,7 +109,7 @@ async function productExamples() {
     description: "100GB cloud storage with advanced features",
     price: 149.99,
     currency: "SAR",
-    type: "SERVICE",
+    type: "RECURRING",
     recurring: true,
     billing_period: "MONTHLY",
     metadata: {
@@ -129,7 +129,7 @@ async function productExamples() {
     description: "Starter plan with essential features",
     price: 49.99,
     currency: "SAR",
-    type: "SERVICE",
+    type: "RECURRING",
     recurring: true,
     billing_period: "MONTHLY"
   });

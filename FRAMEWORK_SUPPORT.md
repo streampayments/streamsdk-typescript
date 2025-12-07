@@ -19,20 +19,26 @@ app.post('/api/create-payment', async (req, res) => {
   try {
     const { amount, customerPhone, customerName, productName } = req.body;
 
-    const result = await streamClient.createSimplePaymentLink({
+    const paymentData = {
       name: productName || "Payment",
       amount,
-      consumer: {
-        phone: customerPhone,
-        name: customerName
-      },
       product: {
         name: productName,
         price: amount
       },
       successRedirectUrl: "https://yourapp.com/success",
       failureRedirectUrl: "https://yourapp.com/failure"
-    });
+    };
+
+    // Add consumer only if provided (optional for guest checkout)
+    if (customerPhone || customerName) {
+      paymentData.consumer = {
+        phone: customerPhone,
+        name: customerName
+      };
+    }
+
+    const result = await streamClient.createSimplePaymentLink(paymentData);
 
     res.json({
       paymentUrl: result.paymentUrl,
@@ -56,24 +62,30 @@ export class PaymentService {
 
   async createPayment(data: {
     amount: number;
-    customerPhone: string;
-    customerName: string;
+    customerPhone?: string;
+    customerName?: string;
     productName: string;
   }) {
-    return await this.streamClient.createSimplePaymentLink({
+    const paymentData: any = {
       name: data.productName,
       amount: data.amount,
-      consumer: {
-        phone: data.customerPhone,
-        name: data.customerName
-      },
       product: {
         name: data.productName,
         price: data.amount
       },
       successRedirectUrl: `${process.env.APP_URL}/success`,
       failureRedirectUrl: `${process.env.APP_URL}/failure`
-    });
+    };
+
+    // Add consumer only if provided (optional for guest checkout)
+    if (data.customerPhone || data.customerName) {
+      paymentData.consumer = {
+        phone: data.customerPhone,
+        name: data.customerName
+      };
+    }
+
+    return await this.streamClient.createSimplePaymentLink(paymentData);
   }
 }
 ```
@@ -89,12 +101,18 @@ const streamClient = StreamSDK.init(process.env.STREAM_API_KEY);
 fastify.post('/payment', async (request, reply) => {
   const { amount, customerPhone, customerName, productName } = request.body;
 
-  const result = await streamClient.createSimplePaymentLink({
+  const paymentData = {
     name: productName,
     amount,
-    consumer: { phone: customerPhone, name: customerName },
     product: { name: productName, price: amount }
-  });
+  };
+
+  // Add consumer only if provided (optional for guest checkout)
+  if (customerPhone || customerName) {
+    paymentData.consumer = { phone: customerPhone, name: customerName };
+  }
+
+  const result = await streamClient.createSimplePaymentLink(paymentData);
 
   return { paymentUrl: result.paymentUrl };
 });
@@ -109,14 +127,20 @@ const app = new Koa();
 const streamClient = StreamSDK.init(process.env.STREAM_API_KEY);
 
 app.use(async ctx => {
-  const { amount, customerPhone, productName } = ctx.request.body;
+  const { amount, customerPhone, customerName, productName } = ctx.request.body;
 
-  const result = await streamClient.createSimplePaymentLink({
+  const paymentData = {
     name: productName,
     amount,
-    consumer: { phone: customerPhone },
     product: { name: productName, price: amount }
-  });
+  };
+
+  // Add consumer only if provided (optional for guest checkout)
+  if (customerPhone || customerName) {
+    paymentData.consumer = { phone: customerPhone, name: customerName };
+  }
+
+  const result = await streamClient.createSimplePaymentLink(paymentData);
 
   ctx.body = { paymentUrl: result.paymentUrl };
 });
@@ -131,14 +155,20 @@ const app = new Hono();
 const streamClient = StreamSDK.init(process.env.STREAM_API_KEY);
 
 app.post('/payment', async (c) => {
-  const { amount, customerPhone, productName } = await c.req.json();
+  const { amount, customerPhone, customerName, productName } = await c.req.json();
 
-  const result = await streamClient.createSimplePaymentLink({
+  const paymentData: any = {
     name: productName,
     amount,
-    consumer: { phone: customerPhone },
     product: { name: productName, price: amount }
-  });
+  };
+
+  // Add consumer only if provided (optional for guest checkout)
+  if (customerPhone || customerName) {
+    paymentData.consumer = { phone: customerPhone, name: customerName };
+  }
+
+  const result = await streamClient.createSimplePaymentLink(paymentData);
 
   return c.json({ paymentUrl: result.paymentUrl });
 });
@@ -157,20 +187,26 @@ const streamClient = StreamSDK.init(process.env.STREAM_API_KEY!);
 export async function POST(request: NextRequest) {
   const { amount, customerPhone, customerName, productName } = await request.json();
 
-  const result = await streamClient.createSimplePaymentLink({
+  const paymentData: any = {
     name: productName,
     amount,
-    consumer: {
-      phone: customerPhone,
-      name: customerName
-    },
     product: {
       name: productName,
       price: amount
     },
     successRedirectUrl: `${process.env.NEXT_PUBLIC_URL}/success`,
     failureRedirectUrl: `${process.env.NEXT_PUBLIC_URL}/failure`
-  });
+  };
+
+  // Add consumer only if provided (optional for guest checkout)
+  if (customerPhone || customerName) {
+    paymentData.consumer = {
+      phone: customerPhone,
+      name: customerName
+    };
+  }
+
+  const result = await streamClient.createSimplePaymentLink(paymentData);
 
   return NextResponse.json({
     paymentUrl: result.paymentUrl,
@@ -196,14 +232,20 @@ export default async function handler(
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { amount, customerPhone, productName } = req.body;
+  const { amount, customerPhone, customerName, productName } = req.body;
 
-  const result = await streamClient.createSimplePaymentLink({
+  const paymentData: any = {
     name: productName,
     amount,
-    consumer: { phone: customerPhone },
     product: { name: productName, price: amount }
-  });
+  };
+
+  // Add consumer only if provided (optional for guest checkout)
+  if (customerPhone || customerName) {
+    paymentData.consumer = { phone: customerPhone, name: customerName };
+  }
+
+  const result = await streamClient.createSimplePaymentLink(paymentData);
 
   res.json({ paymentUrl: result.paymentUrl });
 }
@@ -218,14 +260,20 @@ import StreamSDK from '@streampayments/stream-sdk';
 const streamClient = StreamSDK.init(process.env.STREAM_API_KEY!);
 
 export const action: ActionFunction = async ({ request }) => {
-  const { amount, customerPhone, productName } = await request.json();
+  const { amount, customerPhone, customerName, productName } = await request.json();
 
-  const result = await streamClient.createSimplePaymentLink({
+  const paymentData: any = {
     name: productName,
     amount,
-    consumer: { phone: customerPhone },
     product: { name: productName, price: amount }
-  });
+  };
+
+  // Add consumer only if provided (optional for guest checkout)
+  if (customerPhone || customerName) {
+    paymentData.consumer = { phone: customerPhone, name: customerName };
+  }
+
+  const result = await streamClient.createSimplePaymentLink(paymentData);
 
   return json({ paymentUrl: result.paymentUrl });
 };
@@ -241,14 +289,20 @@ import { STREAM_API_KEY } from '$env/static/private';
 const streamClient = StreamSDK.init(STREAM_API_KEY);
 
 export async function POST({ request }) {
-  const { amount, customerPhone, productName } = await request.json();
+  const { amount, customerPhone, customerName, productName } = await request.json();
 
-  const result = await streamClient.createSimplePaymentLink({
+  const paymentData: any = {
     name: productName,
     amount,
-    consumer: { phone: customerPhone },
     product: { name: productName, price: amount }
-  });
+  };
+
+  // Add consumer only if provided (optional for guest checkout)
+  if (customerPhone || customerName) {
+    paymentData.consumer = { phone: customerPhone, name: customerName };
+  }
+
+  const result = await streamClient.createSimplePaymentLink(paymentData);
 
   return json({ paymentUrl: result.paymentUrl });
 }
@@ -262,14 +316,20 @@ import StreamSDK from '@streampayments/stream-sdk';
 const streamClient = StreamSDK.init(process.env.STREAM_API_KEY!);
 
 export default defineEventHandler(async (event) => {
-  const { amount, customerPhone, productName } = await readBody(event);
+  const { amount, customerPhone, customerName, productName } = await readBody(event);
 
-  const result = await streamClient.createSimplePaymentLink({
+  const paymentData: any = {
     name: productName,
     amount,
-    consumer: { phone: customerPhone },
     product: { name: productName, price: amount }
-  });
+  };
+
+  // Add consumer only if provided (optional for guest checkout)
+  if (customerPhone || customerName) {
+    paymentData.consumer = { phone: customerPhone, name: customerName };
+  }
+
+  const result = await streamClient.createSimplePaymentLink(paymentData);
 
   return { paymentUrl: result.paymentUrl };
 });
@@ -284,14 +344,20 @@ import StreamSDK from '@streampayments/stream-sdk';
 const streamClient = StreamSDK.init(process.env.STREAM_API_KEY);
 
 export const handler = async (event) => {
-  const { amount, customerPhone, productName } = JSON.parse(event.body);
+  const { amount, customerPhone, customerName, productName } = JSON.parse(event.body);
 
-  const result = await streamClient.createSimplePaymentLink({
+  const paymentData = {
     name: productName,
     amount,
-    consumer: { phone: customerPhone },
     product: { name: productName, price: amount }
-  });
+  };
+
+  // Add consumer only if provided (optional for guest checkout)
+  if (customerPhone || customerName) {
+    paymentData.consumer = { phone: customerPhone, name: customerName };
+  }
+
+  const result = await streamClient.createSimplePaymentLink(paymentData);
 
   return {
     statusCode: 200,
@@ -313,14 +379,20 @@ export const config = {
 const streamClient = StreamSDK.init(process.env.STREAM_API_KEY!);
 
 export default async function handler(request: Request) {
-  const { amount, customerPhone, productName } = await request.json();
+  const { amount, customerPhone, customerName, productName } = await request.json();
 
-  const result = await streamClient.createSimplePaymentLink({
+  const paymentData: any = {
     name: productName,
     amount,
-    consumer: { phone: customerPhone },
     product: { name: productName, price: amount }
-  });
+  };
+
+  // Add consumer only if provided (optional for guest checkout)
+  if (customerPhone || customerName) {
+    paymentData.consumer = { phone: customerPhone, name: customerName };
+  }
+
+  const result = await streamClient.createSimplePaymentLink(paymentData);
 
   return new Response(JSON.stringify({
     paymentUrl: result.paymentUrl
@@ -336,14 +408,20 @@ export default {
   async fetch(request: Request, env: Env) {
     const streamClient = StreamSDK.init(env.STREAM_API_KEY);
 
-    const { amount, customerPhone, productName } = await request.json();
+    const { amount, customerPhone, customerName, productName } = await request.json();
 
-    const result = await streamClient.createSimplePaymentLink({
+    const paymentData: any = {
       name: productName,
       amount,
-      consumer: { phone: customerPhone },
       product: { name: productName, price: amount }
-    });
+    };
+
+    // Add consumer only if provided (optional for guest checkout)
+    if (customerPhone || customerName) {
+      paymentData.consumer = { phone: customerPhone, name: customerName };
+    }
+
+    const result = await streamClient.createSimplePaymentLink(paymentData);
 
     return new Response(JSON.stringify({
       paymentUrl: result.paymentUrl
