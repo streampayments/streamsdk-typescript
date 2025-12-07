@@ -1981,14 +1981,16 @@ type CreateLinkInput = {
  *
  * Smart Matching:
  * - Consumer: Searches for existing consumer by email or phone before creating new
- * - Product: Searches for existing product by name and price before creating new
+ * - Products: Searches for existing products by name and price before creating new
  * - To force creation of new resources, use unique identifiers
  * - To use specific existing resources, provide id field
+ *
+ * Note: The API supports only ONE consumer per payment link, but MULTIPLE products
  */
 type SimplePaymentLinkInput = {
     name: string;
     description?: string;
-    amount: number;
+    amount?: number;
     currency?: string;
     consumer?: {
         id?: string;
@@ -2005,6 +2007,15 @@ type SimplePaymentLinkInput = {
         currency?: string;
         metadata?: Record<string, unknown>;
     };
+    products?: Array<{
+        id?: string;
+        name?: string;
+        description?: string;
+        price?: number;
+        currency?: string;
+        quantity?: number;
+        metadata?: Record<string, unknown>;
+    }>;
     quantity?: number;
     validUntil?: Date | string;
     maxNumberOfPayments?: number;
@@ -2027,7 +2038,8 @@ type SimplePaymentLinkInput = {
 type SimplePaymentLinkResponse = {
     paymentLink: PaymentLinkDetailed;
     paymentUrl: string;
-    productId: string;
+    productIds: string[];
+    productId: string | undefined;
     consumerId: string | undefined;
 };
 
@@ -2231,19 +2243,19 @@ declare class StreamClient {
      *
      * This method handles:
      * 1. Smart consumer matching: Searches for existing consumer by email/phone before creating
-     * 2. Smart product matching: Searches for existing product by name and price before creating
+     * 2. Smart product matching: Searches for existing products by name and price before creating
      * 3. Creating payment link with the matched or newly created resources
      * 4. Returning payment URL directly
      *
      * Resource Matching:
-     * - Consumers: Matched by email (primary) or phone number (secondary)
-     * - Products: Matched by name AND price (both must match)
+     * - Consumer: Matched by phone (primary) or email (secondary) - Only ONE consumer per link
+     * - Products: Matched by name AND price (both must match) - Supports MULTIPLE products
      * - Use `consumer.id` or `product.id` to skip matching and use specific resource
      * - Use `options.forceCreate: true` to always create new resources
      *
      * @example
      * ```typescript
-     * // Reuses existing consumer/product if found
+     * // Single product (reuses existing consumer/product if found)
      * const result = await client.createSimplePaymentLink({
      *   name: "Order #1234",
      *   amount: 99.99,
@@ -2255,6 +2267,20 @@ declare class StreamClient {
      *     name: "Premium Subscription",
      *     price: 99.99
      *   },
+     *   successRedirectUrl: "https://example.com/success"
+     * });
+     *
+     * // Multiple products
+     * const result = await client.createSimplePaymentLink({
+     *   name: "Shopping Cart #5678",
+     *   consumer: {
+     *     phone: "+966501234567",
+     *     name: "Jane Smith"
+     *   },
+     *   products: [
+     *     { name: "Product A", price: 50.00, quantity: 2 },
+     *     { name: "Product B", price: 75.00, quantity: 1 }
+     *   ],
      *   successRedirectUrl: "https://example.com/success"
      * });
      *
@@ -2270,9 +2296,11 @@ declare class StreamClient {
      * // Use specific existing resources by ID
      * const result = await client.createSimplePaymentLink({
      *   name: "Order #1234",
-     *   amount: 99.99,
      *   consumer: { id: "cons_123" },
-     *   product: { id: "prod_456" }
+     *   products: [
+     *     { id: "prod_456", quantity: 1 },
+     *     { id: "prod_789", quantity: 2 }
+     *   ]
      * });
      * ```
      */

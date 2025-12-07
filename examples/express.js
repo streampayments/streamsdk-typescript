@@ -193,6 +193,74 @@ app.post('/api/create-guest-payment', async (req, res) => {
 });
 
 /**
+ * Create payment link with multiple products (shopping cart)
+ * POST /api/create-cart-payment
+ *
+ * Body: {
+ *   name: "Shopping Cart #5678",
+ *   customerPhone: "+966501234567",
+ *   customerName: "Jane Smith",
+ *   products: [
+ *     { name: "Product A", price: 50.00, quantity: 2 },
+ *     { name: "Product B", price: 75.00, quantity: 1 }
+ *   ]
+ * }
+ */
+app.post('/api/create-cart-payment', async (req, res) => {
+  try {
+    const { name, customerPhone, customerName, products, description } = req.body;
+
+    if (!products || !Array.isArray(products) || products.length === 0) {
+      return res.status(400).json({
+        success: false,
+        error: 'Products array is required and must not be empty'
+      });
+    }
+
+    const paymentData = {
+      name: name || `Cart ${Date.now()}`,
+      description: description || 'Multi-product payment',
+      products: products.map(p => ({
+        name: p.name,
+        price: p.price,
+        quantity: p.quantity || 1,
+        currency: p.currency || 'SAR'
+      }))
+    };
+
+    // Add consumer only if both phone and name are provided (optional for guest checkout)
+    if (customerPhone && customerName) {
+      paymentData.consumer = {
+        phone: customerPhone,
+        name: customerName
+      };
+    }
+
+    const result = await streamClient.createSimplePaymentLink(paymentData);
+
+    const response = {
+      success: true,
+      paymentUrl: result.paymentUrl,
+      productIds: result.productIds,
+      totalProducts: result.productIds.length
+    };
+
+    // Only include consumerId if consumer was created
+    if (result.consumerId) {
+      response.consumerId = result.consumerId;
+    }
+
+    res.json(response);
+  } catch (error) {
+    console.error('Cart payment creation error:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+/**
  * Success page
  */
 app.get('/payment/success', (req, res) => {

@@ -8,8 +8,9 @@ Official Node.js/TypeScript SDK for StreamPay API - Payment processing with cons
 ## Features
 
 - 🔐 API Key and Bearer Token authentication
-- 👥 Consumer management
+- 👥 Consumer management (optional - supports guest checkout)
 - 📦 Product catalog
+- 🛒 **Multiple products** per payment link (shopping cart support)
 - 🎟️ Coupons and discounts
 - 💳 Payment links
 - 🔄 Subscriptions
@@ -45,6 +46,13 @@ Create a payment link in one call - SDK handles consumer and product creation au
 - **Currency** defaults to **SAR** if not specified
 - **Product type** defaults to **ONE_OFF** (one-time purchase)
 
+**Supports:**
+- ✅ Single product OR multiple products (shopping cart)
+- ✅ Optional consumer (one consumer per payment link, or guest checkout)
+- ✅ Smart resource matching (reuses existing consumers/products)
+
+#### Single Product Payment
+
 ```typescript
 import StreamSDK from "@streampayments/stream-sdk";
 
@@ -70,6 +78,54 @@ const result = await client.createSimplePaymentLink({
   failureRedirectUrl: "https://yourapp.com/failure"
 });
 
+console.log("Payment URL:", result.paymentUrl);
+console.log("Consumer ID:", result.consumerId);
+console.log("Product ID:", result.productId);
+console.log("Product IDs:", result.productIds); // Array of all product IDs
+```
+
+#### Multiple Products Payment (Shopping Cart)
+
+```typescript
+// Shopping cart with multiple products
+const cartResult = await client.createSimplePaymentLink({
+  name: "Shopping Cart #12345",
+  description: "Multi-item order",
+  consumer: {
+    name: "Jane Smith",
+    phone: "+966501234567",
+    email: "jane@example.com"
+  },
+  products: [  // Multiple products array
+    {
+      name: "Wireless Mouse",
+      price: 89.99,
+      quantity: 2
+    },
+    {
+      name: "USB-C Cable",
+      price: 29.99,
+      quantity: 3
+    },
+    {
+      name: "Laptop Stand",
+      price: 149.99,
+      quantity: 1
+    }
+  ],
+  currency: "SAR",
+  successRedirectUrl: "https://yourapp.com/cart/success"
+});
+
+console.log("Payment URL:", cartResult.paymentUrl);
+console.log("Consumer ID:", cartResult.consumerId);
+console.log("Product IDs:", cartResult.productIds); // ['prod_1', 'prod_2', 'prod_3']
+console.log("Total Products:", cartResult.productIds.length); // 3
+```
+
+#### Guest Checkout (No Consumer)
+
+```typescript
 // Guest checkout (no consumer - customer provides phone number at checkout)
 const guestResult = await client.createSimplePaymentLink({
   name: "Guest Order",
@@ -82,9 +138,9 @@ const guestResult = await client.createSimplePaymentLink({
   successRedirectUrl: "https://yourapp.com/success"
 });
 
-console.log("Payment URL:", result.paymentUrl);
-console.log("Consumer ID:", result.consumerId); // undefined for guest
-console.log("Product ID:", result.productId);
+console.log("Payment URL:", guestResult.paymentUrl);
+console.log("Consumer ID:", guestResult.consumerId); // undefined for guest
+console.log("Product ID:", guestResult.productId);
 ```
 
 ### Advanced Usage (Step-by-Step)
@@ -419,6 +475,8 @@ npm run express
 ```
 
 Test the API:
+
+**Single Product:**
 ```bash
 curl -X POST http://localhost:3000/api/create-payment \
   -H "Content-Type: application/json" \
@@ -431,7 +489,27 @@ curl -X POST http://localhost:3000/api/create-payment \
   }'
 ```
 
-For more examples including multiple products and guest checkout, see [examples/README.md](./examples/README.md)
+**Multiple Products (Shopping Cart):**
+```bash
+curl -X POST http://localhost:3000/api/create-cart-payment \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Shopping Cart #5678",
+    "customerPhone": "+966501234567",
+    "customerName": "Jane Smith",
+    "products": [
+      { "name": "Product A", "price": 50.00, "quantity": 2 },
+      { "name": "Product B", "price": 75.00, "quantity": 1 }
+    ]
+  }'
+```
+
+### More Examples
+
+- **[examples/multiple-products.mjs](./examples/multiple-products.mjs)** - Complete guide to multiple products
+- **[examples/basic.mjs](./examples/basic.mjs)** - Basic SDK usage
+- **[examples/comprehensive.mjs](./examples/comprehensive.mjs)** - Advanced features
+- **[examples/README.md](./examples/README.md)** - Full examples documentation
 
 ## Development
 

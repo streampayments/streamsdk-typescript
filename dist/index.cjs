@@ -538,19 +538,19 @@ var StreamClient = class {
    *
    * This method handles:
    * 1. Smart consumer matching: Searches for existing consumer by email/phone before creating
-   * 2. Smart product matching: Searches for existing product by name and price before creating
+   * 2. Smart product matching: Searches for existing products by name and price before creating
    * 3. Creating payment link with the matched or newly created resources
    * 4. Returning payment URL directly
    *
    * Resource Matching:
-   * - Consumers: Matched by email (primary) or phone number (secondary)
-   * - Products: Matched by name AND price (both must match)
+   * - Consumer: Matched by phone (primary) or email (secondary) - Only ONE consumer per link
+   * - Products: Matched by name AND price (both must match) - Supports MULTIPLE products
    * - Use `consumer.id` or `product.id` to skip matching and use specific resource
    * - Use `options.forceCreate: true` to always create new resources
    *
    * @example
    * ```typescript
-   * // Reuses existing consumer/product if found
+   * // Single product (reuses existing consumer/product if found)
    * const result = await client.createSimplePaymentLink({
    *   name: "Order #1234",
    *   amount: 99.99,
@@ -562,6 +562,20 @@ var StreamClient = class {
    *     name: "Premium Subscription",
    *     price: 99.99
    *   },
+   *   successRedirectUrl: "https://example.com/success"
+   * });
+   *
+   * // Multiple products
+   * const result = await client.createSimplePaymentLink({
+   *   name: "Shopping Cart #5678",
+   *   consumer: {
+   *     phone: "+966501234567",
+   *     name: "Jane Smith"
+   *   },
+   *   products: [
+   *     { name: "Product A", price: 50.00, quantity: 2 },
+   *     { name: "Product B", price: 75.00, quantity: 1 }
+   *   ],
    *   successRedirectUrl: "https://example.com/success"
    * });
    *
@@ -577,15 +591,17 @@ var StreamClient = class {
    * // Use specific existing resources by ID
    * const result = await client.createSimplePaymentLink({
    *   name: "Order #1234",
-   *   amount: 99.99,
    *   consumer: { id: "cons_123" },
-   *   product: { id: "prod_456" }
+   *   products: [
+   *     { id: "prod_456", quantity: 1 },
+   *     { id: "prod_789", quantity: 2 }
+   *   ]
    * });
    * ```
    */
   async createSimplePaymentLink(input) {
     let consumerId;
-    let productId;
+    const productIds = [];
     const forceCreate = input.options?.forceCreate ?? false;
     if (input.consumer) {
       if (input.consumer.id) {
@@ -597,10 +613,10 @@ var StreamClient = class {
             const consumers = await this.listConsumers({ page: 1, size: 100 });
             if (consumers.data && consumers.data.length > 0) {
               existingConsumer = consumers.data.find((c) => {
-                if (input.consumer?.email && c.email === input.consumer.email) {
+                if (input.consumer?.phone && c.phone_number === input.consumer.phone) {
                   return true;
                 }
-                if (input.consumer?.phone && c.phone_number === input.consumer.phone) {
+                if (input.consumer?.email && c.email === input.consumer.email) {
                   return true;
                 }
                 return false;
@@ -629,47 +645,61 @@ var StreamClient = class {
         }
       }
     }
-    if (input.product?.id) {
-      productId = input.product.id;
-    } else {
-      const productName = input.product?.name || input.name;
-      const productPrice = input.product?.price || input.amount;
-      let existingProduct = null;
-      if (!forceCreate) {
-        try {
-          const products = await this.listProducts({ page: 1, size: 100 });
-          if (products.data && products.data.length > 0) {
-            existingProduct = products.data.find((p) => {
-              const priceMatch = parseFloat(String(p.price)) === parseFloat(String(productPrice));
-              const nameMatch = p.name === productName;
-              return nameMatch && priceMatch;
-            }) || null;
-          }
-        } catch (error) {
-        }
-      }
-      if (existingProduct) {
-        productId = existingProduct.id;
-      } else {
-        const productData = {
-          name: productName,
-          price: productPrice
-        };
-        if (input.product?.description !== void 0) {
-          productData.description = input.product.description;
-        }
-        const product = await this.createProduct(productData);
-        productId = product.id;
-      }
+    const productsToProcess = input.products || (input.product ? [input.product] : []);
+    if (productsToProcess.length === 0) {
+      throw new Error("At least one product must be provided (via 'product' or 'products')");
     }
+    for (const productInput of productsToProcess) {
+      let productId;
+      if (productInput.id) {
+        productId = productInput.id;
+      } else {
+        const productName = productInput.name || input.name;
+        const productPrice = productInput.price || input.amount;
+        if (!productPrice) {
+          throw new Error("Product price must be provided either in product object or as 'amount'");
+        }
+        let existingProduct = null;
+        if (!forceCreate) {
+          try {
+            const products = await this.listProducts({ page: 1, size: 100 });
+            if (products.data && products.data.length > 0) {
+              existingProduct = products.data.find((p) => {
+                const priceMatch = parseFloat(String(p.price)) === parseFloat(String(productPrice));
+                const nameMatch = p.name === productName;
+                return nameMatch && priceMatch;
+              }) || null;
+            }
+          } catch (error) {
+          }
+        }
+        if (existingProduct) {
+          productId = existingProduct.id;
+        } else {
+          const productData = {
+            name: productName,
+            price: productPrice,
+            type: "ONE_OFF",
+            // Default to one-time purchase
+            currency: productInput.currency || input.currency || "SAR"
+            // Default to SAR
+          };
+          if (productInput.description !== void 0) {
+            productData.description = productInput.description;
+          }
+          const product = await this.createProduct(productData);
+          productId = product.id;
+        }
+      }
+      productIds.push(productId);
+    }
+    const items = productsToProcess.map((productInput, index) => ({
+      product_id: productIds[index],
+      quantity: productInput.quantity || input.quantity || 1
+    }));
     const linkData = {
       name: input.name,
-      items: [
-        {
-          product_id: productId,
-          quantity: input.quantity ?? 1
-        }
-      ],
+      items,
       coupons: input.coupons ?? [],
       max_number_of_payments: input.maxNumberOfPayments ?? null,
       valid_until: toIsoOrNull(input.validUntil),
@@ -694,7 +724,9 @@ var StreamClient = class {
     const response = {
       paymentLink,
       paymentUrl,
-      productId,
+      productIds,
+      productId: productIds[0],
+      // First product for backward compatibility
       consumerId
     };
     return response;
