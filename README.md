@@ -18,6 +18,7 @@ Official Node.js/TypeScript SDK for StreamPay API - Payment processing with cons
 - 💰 Payments and refunds
 - 📝 Full TypeScript support
 - ⚡ ES Modules and CommonJS
+- 🚀 **Express.js Adapter** - Polar-style declarative handlers for checkout and webhooks
 
 ## Installation
 
@@ -36,6 +37,43 @@ Or add to `package.json`:
 ```
 
 ## Quick Start
+
+### 🚀 Express.js Adapter (Recommended for Express Apps)
+
+If you're using Express.js, use our Polar-style adapter for the simplest integration:
+
+```typescript
+import express from 'express';
+import { Checkout, Webhooks } from '@streampayments/stream-sdk/express';
+
+const app = express();
+app.use(express.json());
+
+// Checkout - creates payment link and redirects
+app.get('/checkout', Checkout({
+  apiKey: process.env.STREAM_API_KEY!,
+  successUrl: 'https://myapp.com/success',
+  returnUrl: 'https://myapp.com/cancel'
+}));
+
+// Webhooks - handle payment events
+app.post('/webhooks/stream', Webhooks({
+  apiKey: process.env.STREAM_API_KEY!,
+  onPaymentCompleted: async (data) => {
+    console.log('Payment completed:', data);
+    // Update your database, send confirmation email, etc.
+  }
+}));
+
+app.listen(3000);
+```
+
+**Usage:**
+```
+/checkout?products=prod_123&customerPhone=+966501234567&customerName=John
+```
+
+📚 **[Complete Express Adapter Documentation →](./EXPRESS_ADAPTER.md)**
 
 ### Simple Payment Link Creation (Recommended)
 

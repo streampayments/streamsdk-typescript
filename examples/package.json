@@ -5,7 +5,11 @@
   "description": "Examples for @streampayments/stream-sdk",
   "scripts": {
     "express": "node express.js",
-    "test:express": "node test-express.mjs"
+    "express-adapter": "node express-adapter.js",
+    "test:express": "node test-express.mjs",
+    "example:1": "node use-cases/01-create-product-checkout.js",
+    "example:2": "node use-cases/02-fetch-product-create-consumer-checkout.js",
+    "example:3": "node use-cases/03-webhook-testing.js"
   },
   "dependencies": {
     "@streampayments/stream-sdk": "file:..",
