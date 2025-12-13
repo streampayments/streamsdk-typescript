@@ -20,12 +20,13 @@ import type { CheckoutConfig, CheckoutRequest } from './types';
  * ```
  *
  * Query parameters:
- * - products: Product ID(s), comma-separated for multiple
- * - customerId: Existing customer/consumer ID
- * - customerEmail: Customer email (for new customers)
- * - customerName: Customer name (for new customers)
- * - customerPhone: Customer phone (for new customers)
- * - metadata: URL-encoded JSON metadata
+ * - products: Product ID(s), comma-separated for multiple (required)
+ * - name: Custom name for payment link (optional, overrides defaultName)
+ * - customerId: Existing customer/consumer ID (optional)
+ * - customerEmail: Customer email (for new customers, optional)
+ * - customerName: Customer name (for new customers, optional)
+ * - customerPhone: Customer phone (for new customers, optional)
+ * - metadata: URL-encoded JSON metadata (optional)
  */
 export function Checkout(config: CheckoutConfig) {
   const initOptions: any = {};
@@ -38,6 +39,7 @@ export function Checkout(config: CheckoutConfig) {
     try {
       const {
         products,
+        name,
         customerId,
         customerEmail,
         customerName,
@@ -54,9 +56,12 @@ export function Checkout(config: CheckoutConfig) {
         });
       }
 
+      // Determine payment link name (priority: query param > config default > generated)
+      const paymentLinkName = name || config.defaultName || `Checkout ${Date.now()}`;
+
       // Prepare payment link data
       const paymentLinkData: any = {
-        name: `Checkout ${Date.now()}`,
+        name: paymentLinkName,
         items: productIds.map(id => ({
           product_id: id,
           quantity: 1

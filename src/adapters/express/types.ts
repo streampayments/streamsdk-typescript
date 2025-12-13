@@ -25,12 +25,11 @@ export interface CheckoutConfig {
   baseUrl?: string;
 
   /**
-   * Custom theme configuration (optional)
+   * Default name for payment links (optional)
+   * If not provided, uses "Checkout {timestamp}"
+   * Can be overridden via query parameter: ?name=Custom+Name
    */
-  theme?: {
-    primaryColor?: string;
-    logoUrl?: string;
-  };
+  defaultName?: string;
 }
 
 /**
@@ -42,6 +41,12 @@ export interface CheckoutQuery {
    * Can be a single ID or comma-separated list
    */
   products?: string;
+
+  /**
+   * Custom name for the payment link (optional)
+   * Overrides defaultName from config
+   */
+  name?: string;
 
   /**
    * Customer ID (consumer ID in Stream)

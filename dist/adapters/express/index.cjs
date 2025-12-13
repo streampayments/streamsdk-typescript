@@ -750,6 +750,7 @@ function Checkout(config) {
     try {
       const {
         products,
+        name,
         customerId,
         customerEmail,
         customerName,
@@ -762,8 +763,9 @@ function Checkout(config) {
           error: "At least one product ID is required"
         });
       }
+      const paymentLinkName = name || config.defaultName || `Checkout ${Date.now()}`;
       const paymentLinkData = {
-        name: `Checkout ${Date.now()}`,
+        name: paymentLinkName,
         items: productIds.map((id) => ({
           product_id: id,
           quantity: 1

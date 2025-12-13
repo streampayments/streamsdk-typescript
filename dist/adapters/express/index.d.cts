@@ -21,12 +21,11 @@ interface CheckoutConfig {
      */
     baseUrl?: string;
     /**
-     * Custom theme configuration (optional)
+     * Default name for payment links (optional)
+     * If not provided, uses "Checkout {timestamp}"
+     * Can be overridden via query parameter: ?name=Custom+Name
      */
-    theme?: {
-        primaryColor?: string;
-        logoUrl?: string;
-    };
+    defaultName?: string;
 }
 /**
  * Query parameters for checkout
@@ -37,6 +36,11 @@ interface CheckoutQuery {
      * Can be a single ID or comma-separated list
      */
     products?: string;
+    /**
+     * Custom name for the payment link (optional)
+     * Overrides defaultName from config
+     */
+    name?: string;
     /**
      * Customer ID (consumer ID in Stream)
      */
@@ -138,12 +142,13 @@ interface WebhookPayload {
  * ```
  *
  * Query parameters:
- * - products: Product ID(s), comma-separated for multiple
- * - customerId: Existing customer/consumer ID
- * - customerEmail: Customer email (for new customers)
- * - customerName: Customer name (for new customers)
- * - customerPhone: Customer phone (for new customers)
- * - metadata: URL-encoded JSON metadata
+ * - products: Product ID(s), comma-separated for multiple (required)
+ * - name: Custom name for payment link (optional, overrides defaultName)
+ * - customerId: Existing customer/consumer ID (optional)
+ * - customerEmail: Customer email (for new customers, optional)
+ * - customerName: Customer name (for new customers, optional)
+ * - customerPhone: Customer phone (for new customers, optional)
+ * - metadata: URL-encoded JSON metadata (optional)
  */
 declare function Checkout(config: CheckoutConfig): (req: CheckoutRequest, res: Response, next: NextFunction) => Promise<Response<any, Record<string, any>> | undefined>;
 

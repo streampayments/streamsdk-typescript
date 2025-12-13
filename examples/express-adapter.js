@@ -23,6 +23,7 @@
  */
 
 import express from 'express';
+import StreamSDK from '@streampayments/stream-sdk';
 import { Checkout, Webhooks } from '@streampayments/stream-sdk/express';
 
 const app = express();
@@ -61,16 +62,36 @@ app.get('/checkout', Checkout({
  * Processes webhook events from Stream.
  * Supports both specific event handlers and a catch-all handler.
  */
+
+// Initialize SDK client for webhook handlers to fetch additional data
+const streamClient = StreamSDK.init(process.env.STREAM_API_KEY, {
+  baseUrl: process.env.STREAM_BASE_URL
+});
+
 app.post('/webhooks/stream', Webhooks({
   apiKey: process.env.STREAM_API_KEY,
   webhookSecret: process.env.STREAM_WEBHOOK_SECRET,
 
   // Specific event handlers
-  onPaymentCompleted: async (data) => {
-    console.log('💰 Payment completed!');
-    console.log('  Payment ID:', data.id);
-    console.log('  Amount:', data.amount, data.currency);
-    console.log('  Consumer:', data.consumer_id);
+  onPaymentSucceeded: async (data) => {
+    console.log('💰 Payment succeeded!');
+    console.log('  Payment ID:', data.entity_id || data.id);
+    console.log('  Status:', data.status);
+
+    // Fetch consumer details if consumer_id is available
+    if (data.data?.payment?.consumer_id || data.data?.invoice?.consumer_id) {
+      const consumerId = data.data?.payment?.consumer_id || data.data?.invoice?.consumer_id;
+      try {
+        const consumer = await streamClient.getConsumer(consumerId);
+        console.log('  Consumer Details:');
+        console.log('    - ID:', consumer.id);
+        console.log('    - Name:', consumer.name);
+        console.log('    - Phone:', consumer.phone_number);
+        console.log('    - Email:', consumer.email || 'N/A');
+      } catch (error) {
+        console.log('  Consumer ID:', consumerId);
+      }
+    }
 
     // TODO: Update your database, send confirmation email, etc.
   },
@@ -85,17 +106,27 @@ app.post('/webhooks/stream', Webhooks({
 
   onSubscriptionCreated: async (data) => {
     console.log('🔄 Subscription created!');
-    console.log('  Subscription ID:', data.id);
-    console.log('  Product:', data.product_id);
-    console.log('  Consumer:', data.consumer_id);
+    console.log('  Subscription ID:', data.entity_id || data.id);
+    console.log('  Status:', data.status);
+
+    // Fetch consumer details if available
+    if (data.data?.subscription?.consumer_id) {
+      const consumerId = data.data.subscription.consumer_id;
+      try {
+        const consumer = await streamClient.getConsumer(consumerId);
+        console.log('  Consumer:', consumer.name, `(${consumer.phone_number})`);
+      } catch (error) {
+        console.log('  Consumer ID:', consumerId);
+      }
+    }
 
     // TODO: Activate subscription features, send welcome email, etc.
   },
 
-  onSubscriptionCancelled: async (data) => {
+  onSubscriptionCanceled: async (data) => {
     console.log('🛑 Subscription cancelled!');
-    console.log('  Subscription ID:', data.id);
-    console.log('  Cancelled at:', data.cancelled_at);
+    console.log('  Subscription ID:', data.entity_id || data.id);
+    console.log('  Status:', data.status);
 
     // TODO: Deactivate subscription features, send cancellation email, etc.
   },
