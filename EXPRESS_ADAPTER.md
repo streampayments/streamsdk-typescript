@@ -57,10 +57,7 @@ interface CheckoutConfig {
   successUrl: string;       // Redirect URL after successful payment (required)
   returnUrl?: string;       // Redirect URL on cancellation (optional)
   baseUrl?: string;         // Custom Stream API base URL (optional)
-  theme?: {                 // Optional theme customization
-    primaryColor?: string;
-    logoUrl?: string;
-  };
+  defaultName?: string;     // Default name for payment links (optional)
 }
 ```
 
@@ -71,6 +68,7 @@ The checkout handler accepts the following query parameters:
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
 | `products` | string | Yes | Product ID(s), comma-separated for multiple |
+| `name` | string | No | Custom name for payment link (overrides defaultName) |
 | `customerId` | string | No | Existing customer/consumer ID |
 | `customerEmail` | string | No | Customer email for new customers |
 | `customerName` | string | No | Customer name for new customers |
@@ -106,10 +104,7 @@ app.get('/checkout', Checkout({
   apiKey: process.env.STREAM_API_KEY!,
   successUrl: 'https://myapp.com/payment/success',
   returnUrl: 'https://myapp.com/payment/cancelled',
-  theme: {
-    primaryColor: '#667eea',
-    logoUrl: 'https://myapp.com/logo.png'
-  }
+  defaultName: 'My Store Checkout'
 }));
 
 app.get('/payment/success', (req, res) => {
