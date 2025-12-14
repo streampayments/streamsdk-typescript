@@ -39,9 +39,9 @@ async function fetchProducts() {
 
       // Create a sample product if none exist
       const product = await streamClient.createProduct({
-        name: 'Sample Product',
-        description: 'A sample product for testing',
-        price: 99.99,
+        name: 'School Semester Fee',
+        description: 'First semester registration fee',
+        price: 3500.00,
         currency: 'SAR',
         type: 'ONE_OFF'
       });
@@ -72,9 +72,9 @@ async function createConsumer() {
 
   try {
     const consumer = await streamClient.createConsumer({
-      name: 'Jane Smith',
+      name: 'Fatima Ahmad',
       phone_number: '+966501234568',
-      email: 'jane.smith@example.com'
+      email: 'fatima.ahmad@example.com'
     });
 
     createdConsumer = consumer;

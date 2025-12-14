@@ -79,7 +79,7 @@ The checkout handler accepts the following query parameters:
 
 **Single Product with New Customer:**
 ```
-/checkout?products=prod_123&customerPhone=%2B966501234567&customerName=John%20Doe
+/checkout?products=prod_123&customerPhone=%2B966501234567&customerName=Mohammad%20Ahmad
 ```
 
 **Multiple Products:**

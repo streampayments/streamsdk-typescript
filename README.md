@@ -70,7 +70,7 @@ app.listen(3000);
 
 **Usage:**
 ```
-/checkout?products=prod_123&customerPhone=+966501234567&customerName=John
+/checkout?products=prod_123&customerPhone=+966501234567&customerName=Mohammad%20Ahmad
 ```
 
 📚 **[Complete Express Adapter Documentation →](./EXPRESS_ADAPTER.md)**
@@ -96,19 +96,19 @@ import StreamSDK from "@streampayments/stream-sdk";
 
 const client = StreamSDK.init(process.env.STREAM_API_KEY!);
 
-// With consumer (registered customer)
+// With consumer (registered customer) - Example: Gym membership
 const result = await client.createSimplePaymentLink({
-  name: "Premium Subscription",
-  description: "Monthly premium plan",
-  amount: 99.99,
+  name: "Monthly Gym Membership",
+  description: "Monthly gym membership subscription",
+  amount: 250.00,
   consumer: {  // Optional: omit entire consumer object for guest checkout
-    email: "customer@example.com",
-    name: "John Doe",
+    email: "mohammad.ahmad@example.com",
+    name: "Mohammad Ahmad",
     phone: "+966501234567"
   },
   product: {
-    name: "Premium Plan",
-    price: 99.99
+    name: "Monthly Gym Membership",
+    price: 250.00
     // currency defaults to SAR
     // type defaults to ONE_OFF
   },
@@ -125,30 +125,30 @@ console.log("Product IDs:", result.productIds); // Array of all product IDs
 #### Multiple Products Payment (Shopping Cart)
 
 ```typescript
-// Shopping cart with multiple products
+// Shopping cart with multiple products - Example: School fees
 const cartResult = await client.createSimplePaymentLink({
-  name: "Shopping Cart #12345",
-  description: "Multi-item order",
+  name: "School Fees - First Semester",
+  description: "Multiple registration fees",
   consumer: {
-    name: "Jane Smith",
+    name: "Fatima Ahmad",
     phone: "+966501234567",
-    email: "jane@example.com"
+    email: "fatima.ahmad@example.com"
   },
   products: [  // Multiple products array
     {
-      name: "Wireless Mouse",
-      price: 89.99,
-      quantity: 2
-    },
-    {
-      name: "USB-C Cable",
-      price: 29.99,
-      quantity: 3
-    },
-    {
-      name: "Laptop Stand",
-      price: 149.99,
+      name: "Tuition Fee - First Semester",
+      price: 3500.00,
       quantity: 1
+    },
+    {
+      name: "School Transportation Fee",
+      price: 800.00,
+      quantity: 1
+    },
+    {
+      name: "School Uniform",
+      price: 350.00,
+      quantity: 2
     }
   ],
   currency: "SAR",

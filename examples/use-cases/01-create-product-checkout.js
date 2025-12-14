@@ -32,9 +32,9 @@ async function createProduct() {
 
   try {
     const product = await streamClient.createProduct({
-      name: 'Premium Membership',
-      description: 'One-year premium membership with exclusive benefits',
-      price: 299.99,
+      name: 'Annual Gym Membership',
+      description: 'One year gym membership with personal trainer',
+      price: 1200.00,
       currency: 'SAR',
       type: 'ONE_OFF'
     });
@@ -137,7 +137,7 @@ app.get('/', (req, res) => {
     return res.send('<h1>Loading...</h1><p>Product is being created. Refresh in a moment.</p>');
   }
 
-  const checkoutUrl = `http://localhost:3001/checkout?products=${createdProduct.id}&customerName=John%20Doe&customerPhone=%2B966501234567`;
+  const checkoutUrl = `http://localhost:3001/checkout?products=${createdProduct.id}&customerName=Mohammad%20Ahmad&customerPhone=%2B966501234567`;
 
   res.send(`
     <!DOCTYPE html>

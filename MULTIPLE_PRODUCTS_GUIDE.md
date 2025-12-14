@@ -25,7 +25,7 @@ The Stream SDK has been updated to support **multiple products** in a single pay
    ```typescript
    const result = await client.createSimplePaymentLink({
      name: "Shopping Cart #12345",
-     consumer: { name: "Ahmed", phone: "+966501234567" },  // ONE consumer
+     consumer: { name: "Mohammad Ahmad", phone: "+966501234567" },  // ONE consumer
      products: [  // MULTIPLE products
        { name: "Product A", price: 50.00, quantity: 2 },
        { name: "Product B", price: 75.00, quantity: 1 }
@@ -95,12 +95,12 @@ If you need multiple people to pay:
 const links = await Promise.all([
   client.createSimplePaymentLink({
     name: "Group Trip - Person 1",
-    consumer: { name: "Ahmed", phone: "+966501111111" },
+    consumer: { name: "Mohammad Ahmad", phone: "+966501111111" },
     product: { name: "Trip Share", price: 250.00 }
   }),
   client.createSimplePaymentLink({
     name: "Group Trip - Person 2",
-    consumer: { name: "Fatima", phone: "+966502222222" },
+    consumer: { name: "Fatima Ahmad", phone: "+966502222222" },
     product: { name: "Trip Share", price: 250.00 }
   })
 ]);
