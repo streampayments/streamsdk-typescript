@@ -2,7 +2,7 @@
 
 ## Overview
 
-We've successfully implemented a Polar-style Express adapter for the Stream SDK, providing a clean, declarative API for integrating Stream payments into Express.js applications.
+We've successfully implemented an Express adapter for the Stream SDK, providing a clean, declarative API for integrating Stream payments into Express.js applications.
 
 ## What Was Created
 
@@ -225,10 +225,6 @@ ngrok http 3000
 | Webhook routing | Manual switch/if | Declarative callbacks |
 | Maintenance | High | Low |
 | Readability | Low | High |
-
-## Inspired By
-
-This implementation is inspired by [Polar's Express SDK](https://polar.sh/docs/integrate/sdk/adapters/express), which provides a similar clean, declarative API for payment integrations.
 
 ## Next Steps
 

@@ -1,7 +1,7 @@
 /**
  * Stream SDK Express Adapter
  *
- * Provides Express.js handlers for Stream payment flows, similar to Polar's approach.
+ * Provides Express.js handlers for Stream payment flows.
  *
  * @example
  * ```typescript

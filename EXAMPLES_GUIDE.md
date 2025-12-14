@@ -13,7 +13,7 @@ stream-sdk/
 │   │   ├── 03-webhook-testing.js                ← Comprehensive webhook testing
 │   │   └── README.md
 │   ├── express.js                               ← Original manual implementation
-│   ├── express-adapter.js                       ← Polar-style adapter demo
+│   ├── express-adapter.js                       ← Express adapter demo
 │   ├── basic.mjs                                ← Basic SDK usage
 │   └── package.json
 └── src/
@@ -51,7 +51,7 @@ npm run example:3
 
 # OR the original demos:
 npm run express              # Original manual implementation
-npm run express-adapter      # Polar-style adapter demo
+npm run express-adapter      # Express adapter demo
 ```
 
 ## 📚 Example Descriptions

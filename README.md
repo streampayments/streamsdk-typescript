@@ -40,7 +40,7 @@ Or add to `package.json`:
 
 ### 🚀 Express.js Adapter (Recommended for Express Apps)
 
-If you're using Express.js, use our Polar-style adapter for the simplest integration:
+If you're using Express.js, use our Express adapter for the simplest integration:
 
 ```typescript
 import express from 'express';

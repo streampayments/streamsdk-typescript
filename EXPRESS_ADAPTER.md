@@ -1,6 +1,6 @@
 # Stream SDK Express Adapter
 
-The Stream SDK Express Adapter provides a clean, declarative way to integrate Stream payments into your Express.js applications, inspired by [Polar's SDK approach](https://polar.sh/docs/integrate/sdk/adapters/express).
+The Stream SDK Express Adapter provides a clean, declarative way to integrate Stream payments into your Express.js applications.
 
 ## Features
 
@@ -354,18 +354,6 @@ PORT=3000
 4. **Use idempotency keys** in your webhook handlers to prevent duplicate processing
 5. **Log all webhook events** for debugging and audit purposes
 6. **Return 200 OK quickly** from webhook handlers (process async operations in background)
-
-## Comparison with Polar
-
-This adapter is inspired by Polar's Express SDK approach:
-
-| Feature | Stream SDK | Polar SDK |
-|---------|-----------|-----------|
-| Checkout Handler | ✅ `Checkout()` | ✅ `Checkout()` |
-| Webhook Handler | ✅ `Webhooks()` | ✅ `Webhooks()` |
-| Customer Portal | ❌ Not applicable | ✅ `CustomerPortal()` |
-| Event Routing | ✅ Granular callbacks | ✅ Granular callbacks |
-| TypeScript | ✅ Full support | ✅ Full support |
 
 ## Examples
 

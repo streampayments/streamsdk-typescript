@@ -25,7 +25,7 @@
    ✅ *.map files       - Source maps
 
 ✅ examples/
-   ✅ express-adapter.js                    - Polar-style demo
+   ✅ express-adapter.js                    - Express adapter demo
    ✅ use-cases/01-create-product-checkout.js
    ✅ use-cases/02-fetch-product-create-consumer-checkout.js
    ✅ use-cases/03-webhook-testing.js
@@ -148,7 +148,7 @@ npm run example:3  # Port 3003
 ### 4. Commit Changes
 ```bash
 git add .
-git commit -m "feat: add Polar-style Express adapter
+git commit -m "feat: add Express adapter
 
 - Add Express adapter with Checkout and Webhooks handlers
 - Implement HMAC-SHA256 webhook signature verification
@@ -206,7 +206,7 @@ const config: CheckoutConfig = {
 
 ### 🚀 New Features
 
-**Express.js Adapter (Polar-style)**
+**Express.js Adapter**
 - Added declarative Express adapter for simplified integration
 - Checkout handler with automatic resource management
 - Comprehensive webhook handler with all Stream events
@@ -305,7 +305,7 @@ All checks passed. The Express adapter is production-ready and can be safely dep
 **Estimated Impact:**
 - **Users:** Simplified integration, 90% less boilerplate code
 - **Security:** Enhanced with signature verification
-- **DX:** Improved developer experience with Polar-style API
+- **DX:** Improved developer experience with declarative API
 - **Compatibility:** 100% backward compatible
 
 ---

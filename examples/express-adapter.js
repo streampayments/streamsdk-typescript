@@ -1,7 +1,7 @@
 /**
  * Stream SDK Express Adapter Example
  *
- * This example demonstrates the new Polar-style Express adapter for Stream SDK.
+ * This example demonstrates the Express adapter for Stream SDK.
  * The adapter provides clean, declarative handlers for checkout flows and webhooks.
  *
  * Prerequisites:
@@ -328,7 +328,7 @@ app.get('/', (req, res) => {
       <body>
         <div class="container">
           <h1>🚀 Stream SDK Express Adapter Demo</h1>
-          <p>This demo showcases the new Polar-style Express adapter for Stream SDK.</p>
+          <p>This demo showcases the Express adapter for Stream SDK.</p>
 
           <h2>📖 Quick Start</h2>
           <div class="example">
