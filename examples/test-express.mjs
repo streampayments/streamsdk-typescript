@@ -1,4 +1,4 @@
-import StreamSDK from '@streampayments/stream-sdk';
+import StreamSDK from 'streampay-sdk';
 
 const API_KEY = process.env.STREAM_API_KEY;
 const BASE_URL = process.env.STREAM_BASE_URL || 'https://stream-app-service.streampay.sa';

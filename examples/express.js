@@ -1,5 +1,5 @@
 import express from 'express';
-import StreamSDK from '@streampayments/stream-sdk';
+import StreamSDK from 'streampay-sdk';
 
 const app = express();
 app.use(express.json());
@@ -199,7 +199,7 @@ app.post('/api/create-guest-payment', async (req, res) => {
  * Body: {
  *   name: "Shopping Cart #5678",
  *   customerPhone: "+966501234567",
- *   customerName: "Jane Smith",
+ *   customerName: "Fatima Ahmad",
  *   products: [
  *     { name: "Product A", price: 50.00, quantity: 2 },
  *     { name: "Product B", price: 75.00, quantity: 1 }

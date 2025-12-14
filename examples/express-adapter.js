@@ -23,8 +23,8 @@
  */
 
 import express from 'express';
-import StreamSDK from '@streampayments/stream-sdk';
-import { Checkout, Webhooks } from '@streampayments/stream-sdk/express';
+import StreamSDK from 'streampay-sdk';
+import { Checkout, Webhooks } from 'streampay-sdk/express';
 
 const app = express();
 
@@ -368,7 +368,7 @@ app.get('/', (req, res) => {
 
           <h2>💡 Example Code</h2>
           <pre>
-import { Checkout, Webhooks } from '@streampayments/stream-sdk/express';
+import { Checkout, Webhooks } from 'streampay-sdk/express';
 
 app.get('/checkout', Checkout({
   apiKey: process.env.STREAM_API_KEY,

@@ -130,7 +130,7 @@ interface WebhookPayload {
  * @example
  * ```typescript
  * import express from 'express';
- * import { Checkout } from '@streampayments/stream-sdk/express';
+ * import { Checkout } from 'streampay-sdk/express';
  *
  * const app = express();
  *
@@ -158,7 +158,7 @@ declare function Checkout(config: CheckoutConfig): (req: CheckoutRequest, res: R
  * @example
  * ```typescript
  * import express from 'express';
- * import { Webhooks } from '@streampayments/stream-sdk/express';
+ * import { Webhooks } from 'streampay-sdk/express';
  *
  * const app = express();
  *

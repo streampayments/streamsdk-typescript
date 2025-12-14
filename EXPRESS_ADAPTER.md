@@ -13,7 +13,7 @@ The Stream SDK Express Adapter provides a clean, declarative way to integrate St
 ## Installation
 
 ```bash
-npm install @streampayments/stream-sdk express
+npm install github:streampayments/stream-sdk express
 ```
 
 ## Quick Start
@@ -22,7 +22,7 @@ npm install @streampayments/stream-sdk express
 
 ```typescript
 import express from 'express';
-import { Checkout, Webhooks } from '@streampayments/stream-sdk/express';
+import { Checkout, Webhooks } from 'streampay-sdk/express';
 
 const app = express();
 app.use(express.json());
@@ -96,7 +96,7 @@ The checkout handler accepts the following query parameters:
 
 ```typescript
 import express from 'express';
-import { Checkout } from '@streampayments/stream-sdk/express';
+import { Checkout } from 'streampay-sdk/express';
 
 const app = express();
 
@@ -157,7 +157,7 @@ interface WebhookConfig {
 
 ```typescript
 import express from 'express';
-import { Webhooks } from '@streampayments/stream-sdk/express';
+import { Webhooks } from 'streampay-sdk/express';
 
 const app = express();
 app.use(express.json());
@@ -328,7 +328,7 @@ import type {
   CheckoutRequest,
   WebhookConfig,
   WebhookPayload
-} from '@streampayments/stream-sdk/express';
+} from 'streampay-sdk/express';
 ```
 
 ## Environment Variables

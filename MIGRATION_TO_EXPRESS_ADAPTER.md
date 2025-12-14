@@ -73,7 +73,7 @@ dist/
 The adapter is now available via:
 
 ```typescript
-import { Checkout, Webhooks } from '@streampayments/stream-sdk/express';
+import { Checkout, Webhooks } from 'streampay-sdk/express';
 ```
 
 This is configured in `package.json`:
@@ -137,7 +137,7 @@ app.post('/api/create-payment', async (req, res) => {
 
 ```typescript
 // 5 lines - clean and declarative
-import { Checkout } from '@streampayments/stream-sdk/express';
+import { Checkout } from 'streampay-sdk/express';
 
 app.get('/checkout', Checkout({
   apiKey: process.env.STREAM_API_KEY!,

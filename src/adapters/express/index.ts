@@ -6,7 +6,7 @@
  * @example
  * ```typescript
  * import express from 'express';
- * import { Checkout, Webhooks } from '@streampayments/stream-sdk/express';
+ * import { Checkout, Webhooks } from 'streampay-sdk/express';
  *
  * const app = express();
  *

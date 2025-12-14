@@ -1,4 +1,4 @@
-# @streampayments/stream-sdk
+# streampay-sdk
 
 Official Node.js/TypeScript SDK for StreamPay API - Payment processing with consumers, products, subscriptions, invoices, and payment links.
 
@@ -31,7 +31,7 @@ Or add to `package.json`:
 ```json
 {
   "dependencies": {
-    "@streampayments/stream-sdk": "github:streampayments/stream-sdk#v1.0.0"
+    "streampay-sdk": "github:streampayments/stream-sdk#v1.0.0"
   }
 }
 ```
@@ -44,7 +44,7 @@ If you're using Express.js, use our Polar-style adapter for the simplest integra
 
 ```typescript
 import express from 'express';
-import { Checkout, Webhooks } from '@streampayments/stream-sdk/express';
+import { Checkout, Webhooks } from 'streampay-sdk/express';
 
 const app = express();
 app.use(express.json());
@@ -92,7 +92,7 @@ Create a payment link in one call - SDK handles consumer and product creation au
 #### Single Product Payment
 
 ```typescript
-import StreamSDK from "@streampayments/stream-sdk";
+import StreamSDK from "streampay-sdk";
 
 const client = StreamSDK.init(process.env.STREAM_API_KEY!);
 
@@ -122,7 +122,7 @@ console.log("Product ID:", result.productId);
 console.log("Product IDs:", result.productIds); // Array of all product IDs
 ```
 
-#### Multiple Products Payment (Shopping Cart)
+#### Multiple Products Payment
 
 ```typescript
 // Shopping cart with multiple products - Example: School fees
@@ -241,7 +241,7 @@ const result = await client.createSimplePaymentLink({
   currency: "SAR",
   consumer: {
     phone: "+966501234567",  // Searches for existing consumer with this phone (primary)
-    name: "Jane Doe"
+    name: "Mohammad Ahmad"
   },
   product: {
     name: "Premium Package",         // Searches for existing product with this
@@ -266,7 +266,7 @@ const result = await client.createSimplePaymentLink({
 const result = await client.createSimplePaymentLink({
   name: "Order #1234",
   amount: 99.99,
-  consumer: { email: "customer@example.com", name: "Jane" },
+  consumer: { email: "customer@example.com", name: "Mohammad Ahmad" },
   product: { name: "Premium", price: 99.99 },
   options: { forceCreate: true }     // Always creates new resources
 });
@@ -294,8 +294,8 @@ const result = await client.createSimplePaymentLink({
 ```typescript
 // Create
 const consumer = await client.createConsumer({
-  name: "Jane Smith",
-  email: "jane@example.com",
+  name: "Mohammad Ahmad",
+  email: "mohammad.ahmad@example.com",
   phone_number: "+966501234567",
   preferred_language: "ar"
 });
@@ -308,7 +308,7 @@ const consumer = await client.getConsumer("consumer-id");
 
 // Update
 const updated = await client.updateConsumer("consumer-id", {
-  name: "Jane Doe"
+  name: "Fatima Ahmad"
 });
 
 // Delete
@@ -462,7 +462,7 @@ const refund = await client.refundPayment("payment-id", {
 ## Error Handling
 
 ```typescript
-import { StreamSDKError } from "@streampayments/stream-sdk";
+import { StreamSDKError } from "streampay-sdk";
 
 try {
   const consumer = await client.createConsumer(data);
@@ -482,7 +482,7 @@ import StreamSDK, {
   ConsumerCreate,
   ProductDto,
   PaymentLinkDetailed
-} from "@streampayments/stream-sdk";
+} from "streampay-sdk";
 
 const createConsumer = async (data: ConsumerCreate) => {
   return await client.createConsumer(data);
@@ -534,7 +534,7 @@ curl -X POST http://localhost:3000/api/create-cart-payment \
   -d '{
     "name": "Shopping Cart #5678",
     "customerPhone": "+966501234567",
-    "customerName": "Jane Smith",
+    "customerName": "Fatima Ahmad",
     "products": [
       { "name": "Product A", "price": 50.00, "quantity": 2 },
       { "name": "Product B", "price": 75.00, "quantity": 1 }

@@ -186,7 +186,7 @@ npm run example:3  # Terminal 3 (Port 3003)
 ### Basic Checkout Setup
 
 ```javascript
-import { Checkout } from '@streampayments/stream-sdk/express';
+import { Checkout } from 'streampay-sdk/express';
 
 app.get('/checkout', Checkout({
   apiKey: process.env.STREAM_API_KEY,
@@ -198,7 +198,7 @@ app.get('/checkout', Checkout({
 ### Complete Webhook Handler
 
 ```javascript
-import { Webhooks } from '@streampayments/stream-sdk/express';
+import { Webhooks } from 'streampay-sdk/express';
 
 app.post('/webhooks/stream', Webhooks({
   apiKey: process.env.STREAM_API_KEY,
@@ -231,7 +231,7 @@ app.post('/webhooks/stream', Webhooks({
 ### Create Product + Use in Checkout
 
 ```javascript
-import StreamSDK from '@streampayments/stream-sdk';
+import StreamSDK from 'streampay-sdk';
 
 const client = StreamSDK.init(process.env.STREAM_API_KEY);
 
