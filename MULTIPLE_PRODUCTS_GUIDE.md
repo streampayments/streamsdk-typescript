@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Stream SDK has been updated to support **multiple products** in a single payment link, enabling shopping cart functionality. This guide explains the capabilities and limitations.
+The Stream SDK has been updated to support **multiple products** in a single payment link. This guide explains the capabilities and limitations.
 
 ## What's Supported
 
@@ -10,7 +10,7 @@ The Stream SDK has been updated to support **multiple products** in a single pay
 - **YES** - You can add multiple products to a single payment link
 - Each product can have its own quantity
 - Products are matched by name and price (or use existing product IDs)
-- Perfect for shopping carts, bundles, and multi-item orders
+- Perfect for bundles and multi-item orders
 
 ### ❌ Multiple Consumers
 - **NO** - The Stream API only supports **ONE consumer per payment link**
@@ -21,10 +21,10 @@ The Stream SDK has been updated to support **multiple products** in a single pay
 
 ### ✅ Supported Use Cases
 
-1. **Shopping Cart** - One customer buying multiple products
+1. **Multiple Products** - One customer buying multiple products
    ```typescript
    const result = await client.createSimplePaymentLink({
-     name: "Shopping Cart #12345",
+     name: "Order #12345",
      consumer: { name: "Mohammad Ahmad", phone: "+966501234567" },  // ONE consumer
      products: [  // MULTIPLE products
        { name: "Product A", price: 50.00, quantity: 2 },
@@ -166,7 +166,7 @@ console.log("Anyone can pay:", result.paymentUrl);
 1. **Multiple Products**: ✅ Fully supported
    - Add as many products as needed
    - Each with individual quantity
-   - Perfect for shopping carts
+   - Perfect for bundles and multi-item orders
 
 2. **Single Consumer**: ⚠️ API limitation
    - Only ONE consumer per payment link
@@ -187,7 +187,7 @@ console.log("Anyone can pay:", result.paymentUrl);
 
 See the following files for complete examples:
 - **[examples/multiple-products.mjs](./examples/multiple-products.mjs)** - Comprehensive examples
-- **[examples/express.js](./examples/express.js)** - Express.js integration with shopping cart endpoint
+- **[examples/express.js](./examples/express.js)** - Express.js integration with multiple products endpoint
 - **[README.md](./README.md)** - Quick start guide
 
 ## Questions?

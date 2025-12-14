@@ -1,6 +1,6 @@
 import {
   StreamSDK
-} from "../../chunk-LGWP24GS.js";
+} from "../../chunk-6F2AK5OG.js";
 
 // src/adapters/express/checkout.ts
 function Checkout(config) {

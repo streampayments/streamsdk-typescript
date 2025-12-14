@@ -193,11 +193,11 @@ app.post('/api/create-guest-payment', async (req, res) => {
 });
 
 /**
- * Create payment link with multiple products (shopping cart)
+ * Create payment link with multiple products
  * POST /api/create-cart-payment
  *
  * Body: {
- *   name: "Shopping Cart #5678",
+ *   name: "Order #5678",
  *   customerPhone: "+966501234567",
  *   customerName: "Fatima Ahmad",
  *   products: [

@@ -85,7 +85,7 @@ Create a payment link in one call - SDK handles consumer and product creation au
 - **Product type** defaults to **ONE_OFF** (one-time purchase)
 
 **Supports:**
-- ✅ Single product OR multiple products (shopping cart)
+- ✅ Single product OR multiple products
 - ✅ Optional consumer (one consumer per payment link, or guest checkout)
 - ✅ Smart resource matching (reuses existing consumers/products)
 
@@ -125,7 +125,7 @@ console.log("Product IDs:", result.productIds); // Array of all product IDs
 #### Multiple Products Payment
 
 ```typescript
-// Shopping cart with multiple products - Example: School fees
+// Multiple products - Example: School fees
 const cartResult = await client.createSimplePaymentLink({
   name: "School Fees - First Semester",
   description: "Multiple registration fees",
@@ -527,12 +527,12 @@ curl -X POST http://localhost:3000/api/create-payment \
   }'
 ```
 
-**Multiple Products (Shopping Cart):**
+**Multiple Products:**
 ```bash
 curl -X POST http://localhost:3000/api/create-cart-payment \
   -H "Content-Type: application/json" \
   -d '{
-    "name": "Shopping Cart #5678",
+    "name": "Order #5678",
     "customerPhone": "+966501234567",
     "customerName": "Fatima Ahmad",
     "products": [

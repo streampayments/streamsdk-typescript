@@ -568,7 +568,7 @@ var StreamClient = class {
    *
    * // Multiple products
    * const result = await client.createSimplePaymentLink({
-   *   name: "Shopping Cart #5678",
+   *   name: "Order #5678",
    *   consumer: {
    *     phone: "+966501234567",
    *     name: "Jane Smith"
