@@ -10,7 +10,7 @@ Official Node.js/TypeScript SDK for StreamPay API - Payment processing with cons
 - 🔐 API Key and Bearer Token authentication
 - 👥 Consumer management (optional - supports guest checkout)
 - 📦 Product catalog
-- 🛒 **Multiple products** per payment link (shopping cart support)
+- 🛒 **Multiple products** per payment link
 - 🎟️ Coupons and discounts
 - 💳 Payment links
 - 🔄 Subscriptions
@@ -18,7 +18,7 @@ Official Node.js/TypeScript SDK for StreamPay API - Payment processing with cons
 - 💰 Payments and refunds
 - 📝 Full TypeScript support
 - ⚡ ES Modules and CommonJS
-- 🚀 **Express.js Adapter** - Polar-style declarative handlers for checkout and webhooks
+- 🚀 **Express.js Adapter** - Declarative handlers for checkout and webhooks
 
 ## Installation
 
