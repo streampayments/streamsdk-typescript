@@ -1,11 +1,13 @@
 {
   "name": "@streamsdk/typescript",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Official Node.js/TypeScript SDK for Stream API - Complete payment processing with consumers, products, subscriptions, invoices, and payment links",
   "license": "MIT",
   "type": "module",
   "sideEffects": false,
-  "engines": { "node": ">=18" },
+  "engines": {
+    "node": ">=18"
+  },
   "keywords": [
     "stream",
     "payment",
@@ -47,7 +49,12 @@
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "files": ["dist", "README.md", "LICENSE", "CHANGELOG.md"],
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
   "scripts": {
     "gen": "openapi-typescript https://stream-app-service.streampay.sa/openapi.json -o src/generated/openapi.ts",
     "build": "tsup",
