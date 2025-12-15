@@ -72,20 +72,6 @@ node multiple-products.mjs
 
 ---
 
-## 🚀 Express.js Integration
-
-For Express.js integration, use the separate **stream-sdk-express** package:
-
-**[stream-sdk-express →](https://github.com/streampayments/stream-sdk-express)**
-
-The Express adapter provides:
-- ✅ Drop-in middleware for checkout and webhooks
-- ✅ Declarative configuration
-- ✅ Complete examples and documentation
-- ✅ Production-ready patterns
-
----
-
 ## 📖 API Examples
 
 ### TypeScript SDK
@@ -114,37 +100,9 @@ const result = await client.createSimplePaymentLink({
 console.log("Payment URL:", result.paymentUrl);
 ```
 
-### Express Routes
-
-**Create payment endpoint:**
-```bash
-curl -X POST http://localhost:3000/api/create-payment \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Order #1234",
-    "amount": 99.99,
-    "customerPhone": "+966501234567",
-    "customerName": "Mohammad Ahmad",
-    "productName": "Premium Plan"
-  }'
-```
-
-### Express Adapter
-
-**Checkout URL:**
-```
-http://localhost:3000/checkout?products=prod_123&customerPhone=%2B966501234567&customerName=Mohammad%20Ahmad
-```
-
 ---
 
 ## 🔧 Testing
-
-### Test Express Server
-```bash
-npm run express        # Start server
-npm run test:express   # Run automated tests
-```
 
 ### Test Use Cases
 ```bash
@@ -193,12 +151,12 @@ npm run example:3  # Port 3003
 ## 📚 Documentation
 
 - [Main SDK Documentation](../README.md)
-- [Express Adapter Documentation](../EXPRESS_ADAPTER.md)
+- [Express Adapter Documentation](https://github.com/streampayments/streamsdk-express)
 - [Multiple Products Guide](../MULTIPLE_PRODUCTS_GUIDE.md)
 - [Framework Support](../FRAMEWORK_SUPPORT.md)
 
 ## 💡 Support
 
-- **Issues:** [GitHub Issues](https://github.com/streampayments/stream-sdk/issues)
+- **Issues:** [GitHub Issues](https://github.com/streampayments/streamsdk-typescript/issues)
 - **Email:** support@streampay.sa
 - **API Docs:** https://docs.streampay.sa/

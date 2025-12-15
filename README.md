@@ -1,4 +1,4 @@
-# stream-sdk
+# @streamsdk/typescript · Official Stream SDK for TypeScript
 
 <div align="center">
   <img src="https://streampay.sa/logo.png" alt="Stream Logo" width="200"/>
@@ -62,7 +62,7 @@ npm install @streamsdk/typescript
 **Or install from GitHub:**
 
 ```bash
-npm install github:streampayments/stream-sdk#v1.0.0
+npm install github:streampayments/streamsdk-typescript#v1.0.0
 ```
 
 ### Add to package.json
@@ -506,8 +506,8 @@ We welcome contributions! Please see our [Contributing Guide](./CONTRIBUTING.md)
 
 ```bash
 # Clone the repository
-git clone https://github.com/streampayments/stream-sdk.git
-cd stream-sdk
+git clone https://github.com/streampayments/streamsdk-typescript.git
+cd streamsdk-typescript
 
 # Install dependencies
 npm install
@@ -535,8 +535,8 @@ npm run example
 ### Help & Issues
 
 - **📧 Email:** support@streampay.sa
-- **🐛 Issues:** [GitHub Issues](https://github.com/streampayments/stream-sdk/issues)
-- **💬 Discussions:** [GitHub Discussions](https://github.com/streampayments/stream-sdk/discussions)
+- **🐛 Issues:** [GitHub Issues](https://github.com/streampayments/streamsdk-typescript/issues)
+- **💬 Discussions:** [GitHub Discussions](https://github.com/streampayments/streamsdk-typescript/discussions)
 
 ---
 

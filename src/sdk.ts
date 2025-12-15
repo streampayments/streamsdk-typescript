@@ -68,7 +68,7 @@ export default class StreamSDK {
     const httpOptions: { baseUrl: string; auth: Auth; fetchFn?: typeof fetch; userAgent: string } = {
       baseUrl: opts.baseUrl ?? DEFAULT_BASE_URL,
       auth,
-      userAgent: "stream-sdk/0.1.0"
+      userAgent: "@streamsdk/typescript/1.0.0"
     };
 
     if (opts.fetchFn !== undefined) {

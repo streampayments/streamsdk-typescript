@@ -41,7 +41,7 @@ export class StreamSDKError extends Error {
     constructor(opts: HttpClientOptions) {
       this.baseUrl = opts.baseUrl;
       this.fetchFn = opts.fetchFn ?? fetch;
-      this.userAgent = opts.userAgent ?? "stream-sdk/0.1.0";
+      this.userAgent = opts.userAgent ?? "@streamsdk/typescript/1.0.0";
       this.auth = opts.auth;
     }
   

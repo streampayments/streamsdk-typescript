@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
 /**
- * Stream SDK - Basic Usage Examples
+ * @streamsdk/typescript - Basic Usage Examples
  *
- * This example demonstrates how to use the Stream SDK to interact with the Stream API.
+ * This example demonstrates how to use the @streamsdk/typescript package to interact with the Stream API.
  * Make sure to set your API key in the STREAM_API_KEY environment variable.
  *
  * Usage:
@@ -11,7 +11,7 @@
  *   node examples/basic.mjs
  */
 
-import StreamSDK from "../dist/index.js";
+import StreamSDK from "@streamsdk/typescript";
 
 // Initialize the SDK with your API key
 const apiKey = process.env.STREAM_API_KEY;

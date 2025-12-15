@@ -52,7 +52,7 @@ var HttpClient = class {
   constructor(opts) {
     this.baseUrl = opts.baseUrl;
     this.fetchFn = opts.fetchFn ?? fetch;
-    this.userAgent = opts.userAgent ?? "stream-sdk/0.1.0";
+    this.userAgent = opts.userAgent ?? "@streamsdk/typescript/1.0.0";
     this.auth = opts.auth;
   }
   setAuth(auth) {
@@ -119,7 +119,7 @@ var StreamSDK = class {
     const httpOptions = {
       baseUrl: opts.baseUrl ?? DEFAULT_BASE_URL,
       auth,
-      userAgent: "stream-sdk/0.1.0"
+      userAgent: "@streamsdk/typescript/1.0.0"
     };
     if (opts.fetchFn !== void 0) {
       httpOptions.fetchFn = opts.fetchFn;

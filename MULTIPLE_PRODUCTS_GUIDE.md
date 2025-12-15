@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Stream SDK has been updated to support **multiple products** in a single payment link. This guide explains the capabilities and limitations.
+The `@streamsdk/typescript` package provides support for **multiple products** in a single payment link. This guide explains the capabilities and limitations.
 
 ## What's Supported
 
@@ -23,6 +23,7 @@ The Stream SDK has been updated to support **multiple products** in a single pay
 
 1. **Multiple Products** - One customer buying multiple products
    ```typescript
+   // Using @streamsdk/typescript
    const result = await client.createSimplePaymentLink({
      name: "Order #12345",
      consumer: { name: "Mohammad Ahmad", phone: "+966501234567" },  // ONE consumer
@@ -35,6 +36,7 @@ The Stream SDK has been updated to support **multiple products** in a single pay
 
 2. **Event Registration** - One person buying multiple ticket types
    ```typescript
+   // Using @streamsdk/typescript
    const result = await client.createSimplePaymentLink({
      name: "Conference Registration",
      consumer: { name: "Fatima", email: "fatima@example.com" },
@@ -47,6 +49,7 @@ The Stream SDK has been updated to support **multiple products** in a single pay
 
 3. **Subscription + Add-ons** - One customer with multiple items
    ```typescript
+   // Using @streamsdk/typescript
    const result = await client.createSimplePaymentLink({
      name: "Subscription Package",
      consumer: { phone: "+966501234567", name: "Mohammad" },
@@ -91,6 +94,7 @@ If you need multiple people to pay:
 
 ### Option 1: Create Separate Payment Links (Recommended)
 ```typescript
+// Using @streamsdk/typescript
 // Create individual payment link for each person
 const links = await Promise.all([
   client.createSimplePaymentLink({
@@ -112,6 +116,7 @@ console.log("Person 2 pays:", links[1].paymentUrl);
 
 ### Option 2: Use Guest Checkout
 ```typescript
+// Using @streamsdk/typescript
 // One payment link, no consumer - everyone can use it
 const result = await client.createSimplePaymentLink({
   name: "Group Event - Open Registration",
@@ -187,10 +192,11 @@ console.log("Anyone can pay:", result.paymentUrl);
 
 See the following files for complete examples:
 - **[examples/multiple-products.mjs](./examples/multiple-products.mjs)** - Comprehensive examples
-- **[examples/express.js](./examples/express.js)** - Express.js integration with multiple products endpoint
 - **[README.md](./README.md)** - Quick start guide
 
 ## Questions?
+
+This guide applies to `@streamsdk/typescript`.
 
 - **Q: Can I have multiple consumers?**
   - A: No, the API only supports one `organization_consumer_id` field

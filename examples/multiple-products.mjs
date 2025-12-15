@@ -8,7 +8,7 @@
  * - Smart resource matching (reuses existing products/consumers)
  */
 
-import StreamSDK from '../dist/index.js';
+import StreamSDK from '@streamsdk/typescript';
 
 const apiKey = process.env.STREAM_API_KEY;
 const baseUrl = process.env.STREAM_BASE_URL || 'https://stream-app-service.streampay.sa';
@@ -24,7 +24,7 @@ const client = StreamSDK.init(apiKey, { baseUrl });
 async function runExamples() {
   try {
     console.log('='.repeat(60));
-    console.log('Stream SDK - Multiple Products Examples');
+    console.log('@streamsdk/typescript - Multiple Products Examples');
     console.log('='.repeat(60));
 
     // Example 1: Shopping cart with multiple products

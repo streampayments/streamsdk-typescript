@@ -123,7 +123,7 @@
 
 ### 1. Review Changes
 ```bash
-cd stream-sdk
+cd streamsdk-typescript
 git status
 git diff
 ```

@@ -27,13 +27,13 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/streampayments/stream-sdk"
+    "url": "https://github.com/streampayments/streamsdk-typescript"
   },
   "bugs": {
-    "url": "https://github.com/streampayments/stream-sdk/issues",
+    "url": "https://github.com/streampayments/streamsdk-typescript/issues",
     "email": "support@streampay.sa"
   },
-  "homepage": "https://github.com/streampayments/stream-sdk#readme",
+  "homepage": "https://github.com/streampayments/streamsdk-typescript#readme",
   "publishConfig": {
     "access": "public"
   },

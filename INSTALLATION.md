@@ -3,7 +3,7 @@
 ## Install from GitHub
 
 ```bash
-npm install github:streampayments/stream-sdk#v1.0.0
+npm install github:streampayments/streamsdk-typescript#v1.0.0
 ```
 
 Or add to `package.json`:
@@ -11,7 +11,7 @@ Or add to `package.json`:
 ```json
 {
   "dependencies": {
-    "stream-sdk": "github:streampayments/stream-sdk#v1.0.0"
+    "@streamsdk/typescript": "github:streampayments/streamsdk-typescript#v1.0.0"
   }
 }
 ```
@@ -19,7 +19,7 @@ Or add to `package.json`:
 ## Usage
 
 ```typescript
-import StreamSDK from 'stream-sdk';
+import StreamSDK from '@streamsdk/typescript';
 
 const client = StreamSDK.init(process.env.STREAM_API_KEY);
 
@@ -33,7 +33,7 @@ const consumer = await client.createConsumer({
 
 ```bash
 cat > test-sdk.mjs << 'EOF'
-import StreamSDK from 'stream-sdk';
+import StreamSDK from '@streamsdk/typescript';
 console.log('Stream SDK loaded:', typeof StreamSDK.init);
 EOF
 
@@ -45,19 +45,19 @@ Expected output: `Stream SDK loaded: function`
 ## Upgrading
 
 ```bash
-npm install github:streampayments/stream-sdk#latest
+npm install github:streampayments/streamsdk-typescript#latest
 ```
 
 Or specific version:
 
 ```bash
-npm install github:streampayments/stream-sdk#v1.1.0
+npm install github:streampayments/streamsdk-typescript#v1.1.0
 ```
 
 Check current version:
 
 ```bash
-npm list stream-sdk
+npm list @streamsdk/typescript
 ```
 
 ## Requirements
@@ -116,4 +116,4 @@ Verify your API key is correct and active.
 
 - **Email**: support@streampay.sa
 - **Developer**: ibtisam@streampay.sa
-- **Issues**: https://github.com/streampayments/stream-sdk/issues
+- **Issues**: https://github.com/streampayments/streamsdk-typescript/issues

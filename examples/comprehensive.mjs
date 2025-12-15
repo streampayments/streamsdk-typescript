@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * Stream SDK - Comprehensive CRUD Examples
+ * @streamsdk/typescript - Comprehensive CRUD Examples
  *
  * This example demonstrates complete CRUD (Create, Read, Update, Delete) operations
  * for all SDK resources: Consumers, Products, Coupons, Payment Links, Subscriptions,
@@ -12,7 +12,7 @@
  *   node examples/comprehensive.mjs
  */
 
-import StreamSDK from "../dist/index.js";
+import StreamSDK from "@streamsdk/typescript";
 
 // Initialize the SDK
 const apiKey = process.env.STREAM_API_KEY;
@@ -614,7 +614,7 @@ async function cleanup(consumer, products, coupons) {
 async function main() {
   try {
     console.log("╔" + "═".repeat(68) + "╗");
-    console.log("║" + " ".repeat(15) + "🚀 Stream SDK - Comprehensive Examples" + " ".repeat(15) + "║");
+    console.log("║" + " ".repeat(8) + "🚀 @streamsdk/typescript - Comprehensive Examples" + " ".repeat(8) + "║");
     console.log("╚" + "═".repeat(68) + "╝");
 
     // Run all examples

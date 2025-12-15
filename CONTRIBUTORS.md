@@ -20,7 +20,7 @@ We welcome contributions! Here's how you can help:
 
 ### Reporting Issues
 Found a bug or have a feature request?
-- Open an issue: https://github.com/streampayments/stream-sdk/issues
+- Open an issue: https://github.com/streampayments/streamsdk-typescript/issues
 - Email us: support@streampay.sa
 - Contact developer: ibtisam@streampay.sa
 
