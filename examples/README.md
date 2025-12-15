@@ -1,6 +1,6 @@
 # StreamPay SDK Examples
 
-This directory contains example implementations of the StreamPay SDK.
+This directory contains example implementations demonstrating both the **TypeScript SDK** and **Express Adapter**.
 
 ## Setup
 
@@ -15,31 +15,213 @@ npm install
 export STREAM_API_KEY="your_api_key_here"
 ```
 
-## Express.js Example
+---
 
-A complete Express.js server showing how to create payment links with the StreamPay SDK.
+## 📦 TypeScript SDK Examples
 
-### Run the server:
+Pure TypeScript SDK usage examples - use these for maximum flexibility and control.
+
+### 1. Basic Usage (`basic.mjs`)
+
+Learn the fundamentals of the StreamPay SDK.
+
+**Run:**
+```bash
+node basic.mjs
+```
+
+**What it demonstrates:**
+- SDK initialization
+- Creating consumers (customers)
+- Creating products
+- Creating payment links
+- Listing resources
+
+### 2. Comprehensive Examples (`comprehensive.mjs`)
+
+Advanced SDK features and patterns.
+
+**Run:**
+```bash
+node comprehensive.mjs
+```
+
+**What it demonstrates:**
+- Consumer management (create, update, list, delete)
+- Product management
+- Payment link creation with various options
+- Subscriptions
+- Invoices
+- Coupons
+- Error handling
+
+### 3. Multiple Products (`multiple-products.mjs`)
+
+How to work with multiple products in a single payment.
+
+**Run:**
+```bash
+node multiple-products.mjs
+```
+
+**What it demonstrates:**
+- Creating multiple products
+- Single payment with multiple products
+- Product bundles
+- Smart consumer matching
+
+---
+
+## 🚀 Express Integration Examples
+
+Express.js server examples showing different integration approaches.
+
+### Option 1: TypeScript SDK with Express Routes (`express.js`)
+
+Direct SDK usage with Express routes - full control over the flow.
+
+**Run:**
 ```bash
 npm run express
 ```
 
-### Test the server:
-In a separate terminal, run the automated test script:
+**Test:**
 ```bash
 npm run test:express
 ```
 
-This will:
-- Create test products
-- Test all payment endpoints
-- Test single and multiple product payments
-- Test guest checkout
-- List all resources
+**What it demonstrates:**
+- Express server setup with SDK
+- Manual route handlers
+- Creating payments with SDK methods
+- Consumer and product management
+- Multiple products support
+- Guest checkout
 
-### Available endpoints:
+**Key Endpoints:**
+```bash
+POST /api/create-payment              # Create payment with new consumer & product
+POST /api/create-payment-with-product # Use existing product IDs
+POST /api/create-guest-payment        # Guest checkout (no consumer)
+GET  /api/consumers                   # List consumers
+GET  /api/products                    # List products
+GET  /api/payment-links               # List payment links
+```
 
-#### Create Payment (with new consumer and product)
+### Option 2: Express Adapter (`express-adapter.js`)
+
+Declarative Express handlers - quickest way to integrate.
+
+**Run:**
+```bash
+npm run express-adapter
+```
+
+**What it demonstrates:**
+- Express Checkout handler
+- Express Webhooks handler
+- Declarative configuration
+- Minimal boilerplate
+
+**Example Usage:**
+```typescript
+import { Checkout, Webhooks } from 'streampay-sdk/express';
+
+app.get('/checkout', Checkout({
+  apiKey: process.env.STREAM_API_KEY,
+  successUrl: '/success',
+  returnUrl: '/cancel'
+}));
+
+app.post('/webhooks/stream', Webhooks({
+  apiKey: process.env.STREAM_API_KEY,
+  onPaymentCompleted: async (data) => {
+    console.log('Payment completed:', data);
+  }
+}));
+```
+
+### Option 3: Use Cases (`use-cases/`)
+
+Real-world scenarios with Express adapter.
+
+**Run:**
+```bash
+npm run example:1  # Create product + checkout (Port 3001)
+npm run example:2  # Fetch products + create consumer (Port 3002)
+npm run example:3  # Webhook testing dashboard (Port 3003)
+```
+
+**What it demonstrates:**
+- Complete checkout flows
+- Webhook handling
+- Real-time webhook dashboard
+- Success/failure pages
+- Production patterns
+
+📚 **[See use-cases/README.md for detailed documentation](./use-cases/README.md)**
+
+---
+
+## 🎯 Which Example Should I Use?
+
+### Use TypeScript SDK Examples If:
+- ✅ Building a custom integration
+- ✅ Not using Express.js
+- ✅ Need full control over every step
+- ✅ Want to understand the SDK deeply
+
+**Start with:** `basic.mjs` → `comprehensive.mjs`
+
+### Use Express with SDK Routes If:
+- ✅ Using Express.js
+- ✅ Need custom business logic in routes
+- ✅ Want to build custom API endpoints
+- ✅ Need fine-grained control
+
+**Start with:** `express.js`
+
+### Use Express Adapter If:
+- ✅ Using Express.js
+- ✅ Want the quickest setup
+- ✅ Need declarative checkout & webhooks
+- ✅ Prefer minimal configuration
+
+**Start with:** `express-adapter.js` or `use-cases/01-create-product-checkout.js`
+
+---
+
+## 📖 API Examples
+
+### TypeScript SDK
+
+**Create a simple payment:**
+```typescript
+import StreamSDK from 'streampay-sdk';
+
+const client = StreamSDK.init(process.env.STREAM_API_KEY);
+
+const result = await client.createSimplePaymentLink({
+  name: "Order #1234",
+  amount: 99.99,
+  consumer: {
+    email: "customer@example.com",
+    name: "Mohammad Ahmad",
+    phone: "+966501234567"
+  },
+  product: {
+    name: "Premium Plan",
+    price: 99.99
+  },
+  successRedirectUrl: "https://yourapp.com/success"
+});
+
+console.log("Payment URL:", result.paymentUrl);
+```
+
+### Express Routes
+
+**Create payment endpoint:**
 ```bash
 curl -X POST http://localhost:3000/api/create-payment \
   -H "Content-Type: application/json" \
@@ -47,60 +229,39 @@ curl -X POST http://localhost:3000/api/create-payment \
     "name": "Order #1234",
     "amount": 99.99,
     "customerPhone": "+966501234567",
-    "customerName": "John Doe",
-    "productName": "Premium Subscription",
-    "description": "Monthly premium subscription"
+    "customerName": "Mohammad Ahmad",
+    "productName": "Premium Plan"
   }'
 ```
 
-#### Create Payment (with existing product)
-Fetches product details automatically and supports multiple products:
+### Express Adapter
+
+**Checkout URL:**
+```
+http://localhost:3000/checkout?products=prod_123&customerPhone=%2B966501234567&customerName=Mohammad%20Ahmad
+```
+
+---
+
+## 🔧 Testing
+
+### Test Express Server
 ```bash
-# Single product
-curl -X POST http://localhost:3000/api/create-payment-with-product \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Order #5678",
-    "productIds": ["prod_123"],
-    "customerPhone": "+966501234567",
-    "customerName": "John Doe"
-  }'
-
-# Multiple products
-curl -X POST http://localhost:3000/api/create-payment-with-product \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Bundle Order #9012",
-    "productIds": ["prod_123", "prod_456", "prod_789"],
-    "customerPhone": "+966501234567"
-  }'
+npm run express        # Start server
+npm run test:express   # Run automated tests
 ```
 
-#### Create Guest Payment (no consumer)
+### Test Use Cases
 ```bash
-curl -X POST http://localhost:3000/api/create-guest-payment \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Guest Order #3456",
-    "amount": 49.99,
-    "productName": "One-time Purchase",
-    "description": "Single item purchase"
-  }'
+# Run all examples simultaneously (different ports)
+npm run example:1  # Port 3001
+npm run example:2  # Port 3002
+npm run example:3  # Port 3003
 ```
 
-#### List Resources
-```bash
-# List consumers
-curl http://localhost:3000/api/consumers?page=1&size=10
+---
 
-# List products
-curl http://localhost:3000/api/products?page=1&size=10
-
-# List payment links
-curl http://localhost:3000/api/payment-links?page=1&size=10
-```
-
-### Response Examples:
+## 📝 Response Examples
 
 **Simple Payment (with consumer):**
 ```json
@@ -112,7 +273,18 @@ curl http://localhost:3000/api/payment-links?page=1&size=10
 }
 ```
 
-**Simple Payment (guest checkout - no consumer):**
+**Multiple Products:**
+```json
+{
+  "success": true,
+  "paymentUrl": "https://checkout.streampay.sa/pay/link_abc123",
+  "totalAmount": 299.97,
+  "productIds": ["prod_123", "prod_456"],
+  "consumerId": "cons_xyz789"
+}
+```
+
+**Guest Checkout:**
 ```json
 {
   "success": true,
@@ -121,34 +293,17 @@ curl http://localhost:3000/api/payment-links?page=1&size=10
 }
 ```
 
-**Payment with Existing Products:**
-```json
-{
-  "success": true,
-  "paymentUrl": "https://checkout.streampay.sa/pay/link_abc123",
-  "totalAmount": 299.97,
-  "products": [
-    {
-      "id": "prod_123",
-      "name": "Premium Plan",
-      "price": "99.99"
-    },
-    {
-      "id": "prod_456",
-      "name": "Add-on Feature",
-      "price": "199.98"
-    }
-  ]
-}
-```
+---
 
-## Key Features Demonstrated
+## 📚 Documentation
 
-1. **Simple Payment Creation**: Create payment link with consumer and product in one call
-2. **Multiple Products**: Use existing product IDs (single or multiple)
-3. **Automatic Amount Calculation**: Fetches product details and calculates total
-4. **Smart Consumer Matching**: Reuses existing consumers by phone number
-5. **Guest Checkout**: Create payment without consumer (phone collected at checkout)
-6. **Custom Payment Link Names**: User-defined payment link names
-7. **Redirect URLs**: Success and failure redirect handling
-8. **Error Handling**: Proper error handling and response formatting
+- [Main SDK Documentation](../README.md)
+- [Express Adapter Documentation](../EXPRESS_ADAPTER.md)
+- [Multiple Products Guide](../MULTIPLE_PRODUCTS_GUIDE.md)
+- [Framework Support](../FRAMEWORK_SUPPORT.md)
+
+## 💡 Support
+
+- **Issues:** [GitHub Issues](https://github.com/streampayments/stream-sdk/issues)
+- **Email:** support@streampay.sa
+- **API Docs:** https://docs.streampay.sa/
