@@ -38,44 +38,7 @@ Or add to `package.json`:
 
 ## Quick Start
 
-### 🚀 Express.js Adapter (Recommended for Express Apps)
-
-If you're using Express.js, use our Express adapter for the simplest integration:
-
-```typescript
-import express from 'express';
-import { Checkout, Webhooks } from 'streampay-sdk/express';
-
-const app = express();
-app.use(express.json());
-
-// Checkout - creates payment link and redirects
-app.get('/checkout', Checkout({
-  apiKey: process.env.STREAM_API_KEY!,
-  successUrl: 'https://myapp.com/success',
-  returnUrl: 'https://myapp.com/cancel'
-}));
-
-// Webhooks - handle payment events
-app.post('/webhooks/stream', Webhooks({
-  apiKey: process.env.STREAM_API_KEY!,
-  onPaymentCompleted: async (data) => {
-    console.log('Payment completed:', data);
-    // Update your database, send confirmation email, etc.
-  }
-}));
-
-app.listen(3000);
-```
-
-**Usage:**
-```
-/checkout?products=prod_123&customerPhone=+966501234567&customerName=Mohammad%20Ahmad
-```
-
-📚 **[Complete Express Adapter Documentation →](./EXPRESS_ADAPTER.md)**
-
-### Simple Payment Link Creation (Recommended)
+### Simple Payment Link Creation
 
 Create a payment link in one call - SDK handles consumer and product creation automatically.
 
@@ -220,6 +183,24 @@ const guestLink = await client.createLink({
 
 console.log("Payment URL:", client.getPaymentUrl(paymentLink));
 ```
+
+---
+
+## 🚀 Express.js Integration
+
+Using Express.js? Check out our dedicated Express adapter for simplified integration with declarative handlers:
+
+📚 **[Express Adapter Documentation →](./EXPRESS_ADAPTER.md)**
+
+Quick preview:
+```typescript
+import { Checkout, Webhooks } from 'streampay-sdk/express';
+
+app.get('/checkout', Checkout({ apiKey, successUrl, returnUrl }));
+app.post('/webhooks/stream', Webhooks({ apiKey, onPaymentCompleted }));
+```
+
+---
 
 ## API Reference
 
