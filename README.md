@@ -1,31 +1,73 @@
 # stream-sdk
 
-Official Node.js/TypeScript SDK for StreamPay API - Payment processing with consumers, products, subscriptions, invoices, and payment links.
+<div align="center">
+  <img src="https://streampay.sa/logo.png" alt="StreamPay Logo" width="200"/>
 
-[![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+  Official Node.js/TypeScript SDK for StreamPay API
 
-## Features
+  [![npm version](https://img.shields.io/npm/v/stream-sdk.svg)](https://www.npmjs.com/package/stream-sdk)
+  [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/)
+  [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+</div>
 
-- 🔐 API Key and Bearer Token authentication
-- 👥 Consumer management (optional - supports guest checkout)
-- 📦 Product catalog
-- 🛒 **Multiple products** per payment link
-- 🎟️ Coupons and discounts
-- 💳 Payment links
-- 🔄 Subscriptions
-- 🧾 Invoices
-- 💰 Payments and refunds
+---
+
+## 📚 Table of Contents
+
+- [Overview](#overview)
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [SDK Features](#sdk-features)
+- [Usage](#usage)
+  - [Authentication](#authentication)
+  - [Consumers](#consumers)
+  - [Products](#products)
+  - [Payment Links](#payment-links)
+  - [Subscriptions](#subscriptions)
+  - [Invoices](#invoices)
+  - [Coupons](#coupons)
+- [Examples](#examples)
+- [Express.js Integration](#expressjs-integration)
+- [API Documentation](#api-documentation)
+- [Error Handling](#error-handling)
+- [Contributing](#contributing)
+- [Support](#support)
+- [License](#license)
+
+---
+
+## Overview
+
+The Stream SDK provides a complete TypeScript/JavaScript interface to the StreamPay payment platform. Process payments, manage subscriptions, create invoices, and handle customer data with full type safety and modern JavaScript features.
+
+**Key Features:**
+- 🔐 Secure API Key authentication
+- 👥 Customer (Consumer) management
+- 📦 Product catalog management
+- 💳 Payment link creation
+- 🔄 Subscription handling
+- 🧾 Invoice generation
+- 🎟️ Coupon & discount management
 - 📝 Full TypeScript support
-- ⚡ ES Modules and CommonJS
+- ⚡ ES Modules and CommonJS compatible
+
+---
 
 ## Installation
+
+### NPM (Coming Soon)
+
+```bash
+npm install stream-sdk
+```
+
+### GitHub
 
 ```bash
 npm install github:streampayments/stream-sdk#v1.0.0
 ```
 
-Or add to `package.json`:
+### Add to package.json
 
 ```json
 {
@@ -35,91 +77,191 @@ Or add to `package.json`:
 }
 ```
 
+---
+
 ## Quick Start
 
 ```typescript
 import StreamSDK from "stream-sdk";
 
+// Initialize the SDK
 const client = StreamSDK.init(process.env.STREAM_API_KEY!);
 
+// Create a payment link
 const result = await client.createSimplePaymentLink({
-  name: "Monthly Gym Membership",
-  amount: 250.00,
+  name: "Monthly Subscription",
+  amount: 99.99,
   consumer: {
-    email: "mohammad.ahmad@example.com",
-    name: "Mohammad Ahmad",
+    email: "customer@example.com",
+    name: "John Doe",
     phone: "+966501234567"
   },
   product: {
-    name: "Monthly Gym Membership",
-    price: 250.00
+    name: "Premium Plan",
+    price: 99.99
   },
-  successRedirectUrl: "https://yourapp.com/success"
+  successRedirectUrl: "https://yourapp.com/success",
+  failureRedirectUrl: "https://yourapp.com/failure"
 });
 
 console.log("Payment URL:", result.paymentUrl);
 ```
 
-**Features:**
-- ✅ Single or multiple products per payment link
-- ✅ Optional consumer (guest checkout supported)
-- ✅ Smart resource matching (reuses existing consumers/products)
-- ✅ Currency defaults to SAR
-- ✅ Full TypeScript support
+---
 
-### Using Express.js?
+## SDK Features
 
-Check out **[stream-sdk-express](https://github.com/streampayments/stream-sdk-express)** - Declarative Express handlers for checkout and webhooks.
+### Core Capabilities
 
-```bash
-npm install stream-sdk-express
-```
+| Feature | Description |
+|---------|-------------|
+| **Authentication** | API Key and Bearer Token support |
+| **Consumers** | Create, update, list, and delete customers |
+| **Products** | Manage your product catalog |
+| **Payment Links** | Generate secure payment links |
+| **Subscriptions** | Handle recurring payments |
+| **Invoices** | Create and manage invoices |
+| **Coupons** | Discount and promotion management |
+| **Webhooks** | Real-time event notifications |
 
-```typescript
-import { Checkout, Webhooks } from 'stream-sdk-express';
+### Supported Features
 
-app.get('/checkout', Checkout({ apiKey, successUrl, returnUrl }));
-app.post('/webhooks/stream', Webhooks({ apiKey, onPaymentCompleted }));
-```
+- ✅ Single or multiple products per payment
+- ✅ Guest checkout (no consumer required)
+- ✅ Smart resource matching (automatic deduplication)
+- ✅ SAR currency (default)
+- ✅ Custom metadata support
+- ✅ Full TypeScript type definitions
+- ✅ ESM and CommonJS support
 
 ---
 
-## Simple Payment Link Creation
+## Usage
 
-Create a payment link in one call - SDK handles consumer and product creation automatically.
+### Authentication
 
-**Default Values:**
-- **Consumer** is **optional** - omit for guest checkout (phone number collected at checkout page)
-- **Currency** defaults to **SAR** if not specified
-- **Product type** defaults to **ONE_OFF** (one-time purchase)
-
-**Supports:**
-- ✅ Single product OR multiple products
-- ✅ Optional consumer (one consumer per payment link, or guest checkout)
-- ✅ Smart resource matching (reuses existing consumers/products)
-
-### Single Product Payment
+Initialize the SDK with your API key:
 
 ```typescript
 import StreamSDK from "stream-sdk";
 
-const client = StreamSDK.init(process.env.STREAM_API_KEY!);
+// Option 1: Direct initialization
+const client = StreamSDK.init("your-api-key");
 
-// With consumer (registered customer) - Example: Gym membership
+// Option 2: With configuration
+const client = StreamSDK.init("your-api-key", {
+  baseUrl: "https://stream-app-service.streampay.sa"
+});
+
+// Option 3: Using environment variable
+const client = StreamSDK.init(process.env.STREAM_API_KEY!);
+```
+
+---
+
+### Consumers
+
+Manage your customers (consumers):
+
+#### Create a Consumer
+
+```typescript
+const consumer = await client.createConsumer({
+  name: "John Doe",
+  email: "john@example.com",
+  phone_number: "+966501234567",
+  preferred_language: "en"
+});
+```
+
+#### List Consumers
+
+```typescript
+const consumers = await client.listConsumers({
+  page: 1,
+  size: 10
+});
+```
+
+#### Update a Consumer
+
+```typescript
+const updated = await client.updateConsumer("consumer_id", {
+  name: "John Smith",
+  email: "johnsmith@example.com"
+});
+```
+
+#### Delete a Consumer
+
+```typescript
+await client.deleteConsumer("consumer_id");
+```
+
+---
+
+### Products
+
+Manage your product catalog:
+
+#### Create a Product
+
+```typescript
+const product = await client.createProduct({
+  name: "Premium Subscription",
+  price: 99.99,
+  currency: "SAR",
+  type: "ONE_OFF",
+  description: "Monthly premium subscription"
+});
+```
+
+#### List Products
+
+```typescript
+const products = await client.listProducts({
+  page: 1,
+  size: 20
+});
+```
+
+#### Update a Product
+
+```typescript
+const updated = await client.updateProduct("product_id", {
+  price: 89.99,
+  description: "Updated description"
+});
+```
+
+#### Delete a Product
+
+```typescript
+await client.deleteProduct("product_id");
+```
+
+---
+
+### Payment Links
+
+Create payment links for your customers:
+
+#### Simple Payment Link (Recommended)
+
+The SDK handles consumer and product creation automatically:
+
+```typescript
 const result = await client.createSimplePaymentLink({
-  name: "Monthly Gym Membership",
-  description: "Monthly gym membership subscription",
+  name: "Order #1234",
   amount: 250.00,
-  consumer: {  // Optional: omit entire consumer object for guest checkout
-    email: "mohammad.ahmad@example.com",
-    name: "Mohammad Ahmad",
+  consumer: {
+    email: "customer@example.com",
+    name: "Jane Doe",
     phone: "+966501234567"
   },
   product: {
-    name: "Monthly Gym Membership",
+    name: "Premium Package",
     price: 250.00
-    // currency defaults to SAR
-    // type defaults to ONE_OFF
   },
   successRedirectUrl: "https://yourapp.com/success",
   failureRedirectUrl: "https://yourapp.com/failure"
@@ -128,462 +270,317 @@ const result = await client.createSimplePaymentLink({
 console.log("Payment URL:", result.paymentUrl);
 console.log("Consumer ID:", result.consumerId);
 console.log("Product ID:", result.productId);
-console.log("Product IDs:", result.productIds); // Array of all product IDs
 ```
 
-### Multiple Products Payment
+#### Multiple Products
 
 ```typescript
-// Multiple products - Example: School fees
-const cartResult = await client.createSimplePaymentLink({
-  name: "School Fees - First Semester",
-  description: "Multiple registration fees",
+const result = await client.createSimplePaymentLink({
+  name: "Bundle Order",
   consumer: {
-    name: "Fatima Ahmad",
-    phone: "+966501234567",
-    email: "fatima.ahmad@example.com"
+    name: "John Doe",
+    phone: "+966501234567"
   },
-  products: [  // Multiple products array
-    {
-      name: "Tuition Fee - First Semester",
-      price: 3500.00,
-      quantity: 1
-    },
-    {
-      name: "School Transportation Fee",
-      price: 800.00,
-      quantity: 1
-    },
-    {
-      name: "School Uniform",
-      price: 350.00,
-      quantity: 2
-    }
+  products: [
+    { name: "Product A", price: 50.00, quantity: 2 },
+    { name: "Product B", price: 75.00, quantity: 1 }
   ],
   currency: "SAR",
-  successRedirectUrl: "https://yourapp.com/cart/success"
+  successRedirectUrl: "https://yourapp.com/success"
 });
 
-console.log("Payment URL:", cartResult.paymentUrl);
-console.log("Consumer ID:", cartResult.consumerId);
-console.log("Product IDs:", cartResult.productIds); // ['prod_1', 'prod_2', 'prod_3']
-console.log("Total Products:", cartResult.productIds.length); // 3
+console.log("Product IDs:", result.productIds);
 ```
 
-### Guest Checkout (No Consumer)
+#### Guest Checkout
+
+Create a payment without requiring customer details:
 
 ```typescript
-// Guest checkout (no consumer - customer provides phone number at checkout)
-const guestResult = await client.createSimplePaymentLink({
+const result = await client.createSimplePaymentLink({
   name: "Guest Order",
   amount: 49.99,
   product: {
     name: "One-time Purchase",
     price: 49.99
   },
-  // consumer omitted - guest checkout (phone number required at checkout)
+  // No consumer - phone collected at checkout
   successRedirectUrl: "https://yourapp.com/success"
 });
-
-console.log("Payment URL:", guestResult.paymentUrl);
-console.log("Consumer ID:", guestResult.consumerId); // undefined for guest
-console.log("Product ID:", guestResult.productId);
 ```
 
-### Advanced Usage (Step-by-Step)
+#### Advanced Payment Link
 
 For more control, create resources separately:
 
 ```typescript
-// Create a consumer (optional - can be null for guest checkout)
+// Create consumer
 const consumer = await client.createConsumer({
   name: "John Doe",
   email: "john@example.com",
   phone_number: "+966501234567"
 });
 
-// Create a product
+// Create product
 const product = await client.createProduct({
   name: "Premium Plan",
   price: 99.99,
-  currency: "SAR"  // Optional, defaults to SAR
+  currency: "SAR"
 });
 
-// Generate a payment link with consumer
-const paymentLink = await client.createLink({
+// Create payment link
+const paymentLink = await client.createPaymentLink({
   name: "Payment",
-  consumerId: consumer.id,  // Optional: omit or pass null for guest checkout
-  productId: product.id,
-  successRedirectUrl: "https://yourapp.com/success",
-  failureRedirectUrl: "https://yourapp.com/failure"
+  organization_consumer_id: consumer.id,
+  items: [{ product_id: product.id, quantity: 1 }],
+  success_redirect_url: "https://yourapp.com/success",
+  failure_redirect_url: "https://yourapp.com/failure"
 });
 
-// Or create guest payment link (no consumer)
-const guestLink = await client.createLink({
-  name: "Guest Payment",
-  consumerId: null,  // Guest checkout
-  productId: product.id,
-  successRedirectUrl: "https://yourapp.com/success",
-  failureRedirectUrl: "https://yourapp.com/failure"
-});
-
-console.log("Payment URL:", client.getPaymentUrl(paymentLink));
+const paymentUrl = client.getPaymentUrl(paymentLink);
 ```
-
-## API Reference
-
-### Simple Payment Links
-
-The easiest way to create payment links with automatic resource creation and smart matching:
-
-**Smart Matching:**
-- Automatically searches for existing consumers by phone number (primary) or email (secondary)
-- Automatically searches for existing products by name and price
-- Reuses existing resources to avoid duplicates
-- Creates new resources only when no match is found
-
-```typescript
-// Reuses existing consumer/product if they exist
-const result = await client.createSimplePaymentLink({
-  name: "Order #1234",
-  amount: 199.99,
-  currency: "SAR",
-  consumer: {
-    phone: "+966501234567",  // Searches for existing consumer with this phone (primary)
-    name: "Mohammad Ahmad"
-  },
-  product: {
-    name: "Premium Package",         // Searches for existing product with this
-    price: 199.99                    // name and price combination
-  },
-  successRedirectUrl: "https://yourapp.com/success"
-});
-
-// Use specific existing resources by ID (skips search)
-const result = await client.createSimplePaymentLink({
-  name: "Order #1234",
-  amount: 99.99,
-  product: {
-    id: "prod_existing_123"          // Uses this specific product
-  },
-  consumer: {
-    id: "cons_existing_456"          // Uses this specific consumer
-  }
-});
-
-// Force creation of new resources (no search)
-const result = await client.createSimplePaymentLink({
-  name: "Order #1234",
-  amount: 99.99,
-  consumer: { email: "customer@example.com", name: "Mohammad Ahmad" },
-  product: { name: "Premium", price: 99.99 },
-  options: { forceCreate: true }     // Always creates new resources
-});
-
-// Guest checkout (no consumer)
-const result = await client.createSimplePaymentLink({
-  name: "Guest Order",
-  amount: 49.99,
-  product: {
-    name: "One-time Purchase",
-    price: 49.99
-  },
-  contactInformationType: "EMAIL"
-});
-
-// Response includes:
-// - paymentUrl: Direct link to payment page
-// - consumerId: ID of matched or created consumer
-// - productId: ID of matched or created product
-// - paymentLink: Full payment link details
-```
-
-### Consumers
-
-```typescript
-// Create
-const consumer = await client.createConsumer({
-  name: "Mohammad Ahmad",
-  email: "mohammad.ahmad@example.com",
-  phone_number: "+966501234567",
-  preferred_language: "ar"
-});
-
-// List
-const consumers = await client.listConsumers({ page: 1, size: 20 });
-
-// Get
-const consumer = await client.getConsumer("consumer-id");
-
-// Update
-const updated = await client.updateConsumer("consumer-id", {
-  name: "Fatima Ahmad"
-});
-
-// Delete
-await client.deleteConsumer("consumer-id");
-```
-
-### Products
-
-```typescript
-// Create
-const product = await client.createProduct({
-  name: "Premium Subscription",
-  price: 149.99,
-  currency: "SAR",  // Optional: defaults to SAR if not specified
-  type: "ONE_OFF"   // ONE_OFF or RECURRING
-});
-
-// Create with minimal fields (using defaults)
-const simpleProduct = await client.createProduct({
-  name: "Basic Product",
-  price: 99.99
-  // currency defaults to SAR
-  // type defaults to ONE_OFF
-});
-
-// List
-const products = await client.listProducts({ page: 1, size: 10 });
-
-// Get
-const product = await client.getProduct("product-id");
-
-// Update
-const updated = await client.updateProduct("product-id", { price: 129.99 });
-
-// Delete
-await client.deleteProduct("product-id");
-```
-
-### Coupons
-
-```typescript
-// Create
-const coupon = await client.createCoupon({
-  code: "SUMMER2024",
-  discount_type: "PERCENTAGE",
-  discount_value: 25,
-  active: true
-});
-
-// List
-const coupons = await client.listCoupons({ page: 1, size: 10 });
-
-// Get
-const coupon = await client.getCoupon("coupon-id");
-
-// Update
-const updated = await client.updateCoupon("coupon-id", { active: false });
-
-// Delete
-await client.deleteCoupon("coupon-id");
-```
-
-### Payment Links
-
-```typescript
-// Create with consumer
-const link = await client.createLink({
-  name: "Product Payment",
-  productId: "product-id",
-  consumerId: "consumer-id",  // Optional: set to null for guest checkout
-  coupons: ["SAVE20"],
-  successRedirectUrl: "https://yourapp.com/success",
-  failureRedirectUrl: "https://yourapp.com/failure"
-});
-
-// Create for guest checkout (no consumer)
-const guestLink = await client.createLink({
-  name: "Guest Payment",
-  productId: "product-id",
-  consumerId: null,  // Guest checkout - phone number collected at checkout
-  successRedirectUrl: "https://yourapp.com/success",
-  failureRedirectUrl: "https://yourapp.com/failure"
-});
-
-// List
-const links = await client.listPaymentLinks({ page: 1, size: 10 });
-
-// Get
-const link = await client.getPaymentLink("link-id");
-
-// Get payment URL
-const url = client.getPaymentUrl(link);
-```
-
-### Subscriptions
-
-```typescript
-// Create
-const subscription = await client.createSubscription({
-  organization_consumer_id: "consumer-id",
-  items: [{ product_id: "product-id", quantity: 1 }],
-  billing_cycle: "MONTHLY"
-});
-
-// List
-const subscriptions = await client.listSubscriptions({ page: 1, size: 10 });
-
-// Get
-const subscription = await client.getSubscription("subscription-id");
-
-// Update
-const updated = await client.updateSubscription("subscription-id", {
-  items: [{ product_id: "new-product-id", quantity: 2 }]
-});
-
-// Freeze
-const freeze = await client.freezeSubscription("subscription-id", {
-  start_date: new Date().toISOString(),
-  end_date: new Date("2024-12-31").toISOString()
-});
-
-// Delete
-await client.deleteSubscription("subscription-id");
-```
-
-### Invoices
-
-```typescript
-// List
-const invoices = await client.listInvoices({ page: 1, size: 20 });
-
-// Get
-const invoice = await client.getInvoice("invoice-id");
-```
-
-### Payments
-
-```typescript
-// List
-const payments = await client.listPayments();
-
-// Get
-const payment = await client.getPayment("payment-id");
-
-// Refund
-const refund = await client.refundPayment("payment-id", {
-  reason: "CUSTOMER_REQUEST"
-});
-```
-
-## Error Handling
-
-```typescript
-import { StreamSDKError } from "stream-sdk";
-
-try {
-  const consumer = await client.createConsumer(data);
-} catch (error) {
-  if (error instanceof StreamSDKError) {
-    console.error("Status:", error.status);
-    console.error("Request ID:", error.requestId);
-    console.error("Body:", error.body);
-  }
-}
-```
-
-## TypeScript Support
-
-```typescript
-import StreamSDK, {
-  ConsumerCreate,
-  ProductDto,
-  PaymentLinkDetailed
-} from "stream-sdk";
-
-const createConsumer = async (data: ConsumerCreate) => {
-  return await client.createConsumer(data);
-};
-```
-
-## Framework Support
-
-Works with all Node.js frameworks:
-
-- Express, Fastify, Koa, NestJS, Hono
-- Next.js, Remix, SvelteKit, Nuxt
-- AWS Lambda, Vercel, Cloudflare Workers
-
-See [FRAMEWORK_SUPPORT.md](./FRAMEWORK_SUPPORT.md) for examples.
-
-## Examples
-
-### Express.js Integration
-
-See [examples/express.js](./examples/express.js) for a complete Express.js server implementation.
-
-```bash
-cd examples
-npm install
-export STREAM_API_KEY="your-api-key"
-npm run express
-```
-
-Test the API:
-
-**Single Product:**
-```bash
-curl -X POST http://localhost:3000/api/create-payment \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Order #1234",
-    "amount": 99.99,
-    "customerPhone": "+966501234567",
-    "customerName": "John Doe",
-    "productName": "Premium Plan"
-  }'
-```
-
-**Multiple Products:**
-```bash
-curl -X POST http://localhost:3000/api/create-cart-payment \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Order #5678",
-    "customerPhone": "+966501234567",
-    "customerName": "Fatima Ahmad",
-    "products": [
-      { "name": "Product A", "price": 50.00, "quantity": 2 },
-      { "name": "Product B", "price": 75.00, "quantity": 1 }
-    ]
-  }'
-```
-
-### More Examples
-
-- **[examples/multiple-products.mjs](./examples/multiple-products.mjs)** - Complete guide to multiple products
-- **[examples/basic.mjs](./examples/basic.mjs)** - Basic SDK usage
-- **[examples/comprehensive.mjs](./examples/comprehensive.mjs)** - Advanced features
-- **[examples/README.md](./examples/README.md)** - Full examples documentation
-
-## Development
-
-```bash
-# Generate types from OpenAPI
-npm run gen
-
-# Build
-npm run build
-
-# Type check
-npm run typecheck
-
-# Watch mode
-npm run dev
-```
-
-## Support
-
-- **Email**: support@streampay.sa
-- **Issues**: https://github.com/streampayments/stream-sdk/issues
-- **Documentation**: https://github.com/streampayments/stream-sdk
-
-## License
-
-MIT
 
 ---
 
-**Maintained by**: Ibtisam (ibtisam@streampay.sa)
+### Subscriptions
+
+Handle recurring payments:
+
+#### Create a Subscription
+
+```typescript
+const subscription = await client.createSubscription({
+  organization_consumer_id: "consumer_id",
+  organization_product_id: "product_id",
+  billing_cycle: "MONTHLY",
+  start_date: new Date().toISOString()
+});
+```
+
+#### List Subscriptions
+
+```typescript
+const subscriptions = await client.listSubscriptions({
+  page: 1,
+  size: 10
+});
+```
+
+#### Cancel a Subscription
+
+```typescript
+await client.cancelSubscription("subscription_id");
+```
+
+---
+
+### Invoices
+
+Create and manage invoices:
+
+#### Create an Invoice
+
+```typescript
+const invoice = await client.createInvoice({
+  organization_consumer_id: "consumer_id",
+  items: [
+    { product_id: "product_id", quantity: 1 }
+  ],
+  due_date: "2024-12-31",
+  notes: "Payment due within 30 days"
+});
+```
+
+#### List Invoices
+
+```typescript
+const invoices = await client.listInvoices({
+  page: 1,
+  size: 10
+});
+```
+
+---
+
+### Coupons
+
+Manage discounts and promotions:
+
+#### Create a Coupon
+
+```typescript
+const coupon = await client.createCoupon({
+  code: "SUMMER2024",
+  discount_type: "PERCENTAGE",
+  discount_value: 20,
+  valid_from: "2024-06-01",
+  valid_to: "2024-08-31"
+});
+```
+
+#### List Coupons
+
+```typescript
+const coupons = await client.listCoupons({
+  page: 1,
+  size: 10
+});
+```
+
+---
+
+## Examples
+
+Explore complete examples in the [examples directory](./examples):
+
+### TypeScript SDK Examples
+
+- **[basic.mjs](./examples/basic.mjs)** - Basic SDK usage
+- **[comprehensive.mjs](./examples/comprehensive.mjs)** - Advanced features
+- **[multiple-products.mjs](./examples/multiple-products.mjs)** - Multiple products guide
+
+### Express.js Examples
+
+- **[express.js](./examples/express.js)** - Express with SDK routes
+- **[express-adapter.js](./examples/express-adapter.js)** - Express adapter demo
+- **[use-cases/](./examples/use-cases/)** - Real-world use cases
+
+**[View All Examples →](./examples/README.md)**
+
+---
+
+## Express.js Integration
+
+For Express.js applications, we provide a separate adapter package for simplified integration:
+
+### stream-sdk-express
+
+```bash
+npm install stream-sdk-express
+```
+
+```typescript
+import { Checkout, Webhooks } from 'stream-sdk-express';
+
+app.get('/checkout', Checkout({
+  apiKey: process.env.STREAM_API_KEY!,
+  successUrl: 'https://myapp.com/success',
+  returnUrl: 'https://myapp.com/cancel'
+}));
+
+app.post('/webhooks/stream', Webhooks({
+  apiKey: process.env.STREAM_API_KEY!,
+  onPaymentCompleted: async (data) => {
+    console.log('Payment completed:', data);
+  }
+}));
+```
+
+**[Learn More →](https://github.com/streampayments/stream-sdk-express)**
+
+---
+
+## API Documentation
+
+### Available Methods
+
+| Method | Description |
+|--------|-------------|
+| `createConsumer(data)` | Create a new consumer |
+| `listConsumers(params)` | List all consumers |
+| `updateConsumer(id, data)` | Update a consumer |
+| `deleteConsumer(id)` | Delete a consumer |
+| `createProduct(data)` | Create a new product |
+| `listProducts(params)` | List all products |
+| `updateProduct(id, data)` | Update a product |
+| `deleteProduct(id)` | Delete a product |
+| `createSimplePaymentLink(data)` | Create payment link (recommended) |
+| `createPaymentLink(data)` | Create payment link (advanced) |
+| `listPaymentLinks(params)` | List all payment links |
+| `getPaymentUrl(link)` | Get payment URL from link |
+| `createSubscription(data)` | Create a subscription |
+| `listSubscriptions(params)` | List all subscriptions |
+| `cancelSubscription(id)` | Cancel a subscription |
+| `createInvoice(data)` | Create an invoice |
+| `listInvoices(params)` | List all invoices |
+| `createCoupon(data)` | Create a coupon |
+| `listCoupons(params)` | List all coupons |
+
+**[Full API Reference →](./API_REFERENCE.md)**
+
+---
+
+## Error Handling
+
+The SDK throws errors for failed requests:
+
+```typescript
+try {
+  const consumer = await client.createConsumer({
+    name: "John Doe",
+    email: "invalid-email"
+  });
+} catch (error) {
+  console.error("Error creating consumer:", error.message);
+  console.error("Status:", error.status);
+  console.error("Response:", error.response);
+}
+```
+
+---
+
+## Contributing
+
+We welcome contributions! Please see our [Contributing Guide](./CONTRIBUTING.md) for details.
+
+### Development Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/streampayments/stream-sdk.git
+cd stream-sdk
+
+# Install dependencies
+npm install
+
+# Build the SDK
+npm run build
+
+# Run examples
+npm run example
+```
+
+---
+
+## Support
+
+### Documentation
+
+- **[API Documentation](https://docs.streampay.sa/)**
+- **[Examples](./examples/README.md)**
+- **[Express Adapter](https://github.com/streampayments/stream-sdk-express)**
+- **[Multiple Products Guide](./MULTIPLE_PRODUCTS_GUIDE.md)**
+- **[Framework Support](./FRAMEWORK_SUPPORT.md)**
+
+### Help & Issues
+
+- **📧 Email:** support@streampay.sa
+- **🐛 Issues:** [GitHub Issues](https://github.com/streampayments/stream-sdk/issues)
+- **💬 Discussions:** [GitHub Discussions](https://github.com/streampayments/stream-sdk/discussions)
+
+---
+
+## License
+
+MIT License - see [LICENSE](LICENSE) for details.
+
+---
+
+<div align="center">
+  <p>Made with ❤️ by <a href="https://streampay.sa">StreamPay</a></p>
+  <p>
+    <a href="https://streampay.sa">Website</a> •
+    <a href="https://docs.streampay.sa">Documentation</a> •
+    <a href="https://github.com/streampayments">GitHub</a>
+  </p>
+</div>
