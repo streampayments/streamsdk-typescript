@@ -283,40 +283,6 @@ ngrok http 3000
 # https://your-ngrok-url.ngrok.io/webhooks/stream
 ```
 
-## Migration from Manual Implementation
-
-If you're currently using the manual Express implementation, here's how to migrate:
-
-**Before (Manual):**
-```typescript
-app.post('/api/create-payment', async (req, res) => {
-  try {
-    const { productIds, customerPhone } = req.body;
-    const streamClient = StreamSDK.init(process.env.STREAM_API_KEY);
-
-    // ... lots of boilerplate code ...
-
-    const paymentLink = await streamClient.createPaymentLink(data);
-    const paymentUrl = streamClient.getPaymentUrl(paymentLink);
-
-    res.json({ paymentUrl });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-```
-
-**After (Express Adapter):**
-```typescript
-app.get('/checkout', Checkout({
-  apiKey: process.env.STREAM_API_KEY!,
-  successUrl: 'https://myapp.com/success',
-  returnUrl: 'https://myapp.com/cancel'
-}));
-
-// That's it! Call with: /checkout?products=prod_123&customerPhone=...
-```
-
 ## TypeScript Support
 
 The adapter is fully typed and exports all necessary types:

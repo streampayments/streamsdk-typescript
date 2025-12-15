@@ -226,8 +226,9 @@ After trying these examples, you can:
 
 ## Documentation
 
+- [Main SDK Docs](../../README.md)
 - [Express Adapter Docs](../../EXPRESS_ADAPTER.md)
-- [Migration Guide](../../MIGRATION_TO_EXPRESS_ADAPTER.md)
+- [Multiple Products Guide](../../MULTIPLE_PRODUCTS_GUIDE.md)
 - [Stream API Docs](https://docs.streampay.sa/)
 
 ## Support

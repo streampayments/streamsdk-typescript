@@ -128,13 +128,13 @@ console.log("Anyone can pay:", result.paymentUrl);
 
 ## API Response
 
-### Single Product Response (Backward Compatible)
+### Single Product Response
 ```typescript
 {
   paymentLink: {...},
   paymentUrl: "https://checkout.streampay.sa/pay/link_abc123",
-  productId: "prod_123",      // First product ID (legacy)
-  productIds: ["prod_123"],   // Array of all products (new)
+  productId: "prod_123",      // First product ID
+  productIds: ["prod_123"],   // Array of all products
   consumerId: "cons_456"
 }
 ```
@@ -144,7 +144,7 @@ console.log("Anyone can pay:", result.paymentUrl);
 {
   paymentLink: {...},
   paymentUrl: "https://checkout.streampay.sa/pay/link_abc123",
-  productId: "prod_123",              // First product (backward compatible)
+  productId: "prod_123",              // First product
   productIds: ["prod_123", "prod_456", "prod_789"],  // All products
   consumerId: "cons_999"              // ONE consumer only
 }
@@ -173,9 +173,9 @@ console.log("Anyone can pay:", result.paymentUrl);
    - This is an API constraint
    - Consumer is optional (guest checkout available)
 
-3. **Backward Compatibility**: ✅ Maintained
-   - Old code using `product` (singular) still works
-   - New code can use `products` (array)
+3. **Flexible API**: ✅ Supported
+   - Use `product` (singular) for single product
+   - Use `products` (array) for multiple products
    - Response includes both `productId` and `productIds`
 
 4. **Smart Matching**: ✅ Available
@@ -201,5 +201,5 @@ See the following files for complete examples:
 - **Q: What if I need multiple people to pay?**
   - A: Create separate payment links for each person, or use guest checkout
 
-- **Q: Is the old single-product format still supported?**
-  - A: Yes, `product` (singular) still works for backward compatibility
+- **Q: Can I use both `product` and `products`?**
+  - A: Yes! Use `product` (singular) for single items, `products` (array) for multiple items

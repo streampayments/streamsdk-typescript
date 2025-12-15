@@ -12,7 +12,7 @@ stream-sdk/
 │   │   ├── 02-fetch-product-create-consumer-checkout.js  ← Fetch + create + checkout
 │   │   ├── 03-webhook-testing.js                ← Comprehensive webhook testing
 │   │   └── README.md
-│   ├── express.js                               ← Original manual implementation
+│   ├── express.js                               ← TypeScript SDK with Express
 │   ├── express-adapter.js                       ← Express adapter demo
 │   ├── basic.mjs                                ← Basic SDK usage
 │   └── package.json
@@ -49,8 +49,8 @@ npm run example:2
 # Example 3: Webhook Testing Dashboard (Port 3003)
 npm run example:3
 
-# OR the original demos:
-npm run express              # Original manual implementation
+# OR run the demos:
+npm run express              # TypeScript SDK with Express
 npm run express-adapter      # Express adapter demo
 ```
 
@@ -326,8 +326,9 @@ const checkoutUrl = `/checkout?products=${product.id}&customerName=John`;
 After completing the examples:
 
 1. **Read the documentation:**
-   - [EXPRESS_ADAPTER.md](../EXPRESS_ADAPTER.md) - Complete API reference
-   - [MIGRATION_TO_EXPRESS_ADAPTER.md](../MIGRATION_TO_EXPRESS_ADAPTER.md) - Migration guide
+   - [README.md](../README.md) - Main SDK documentation
+   - [EXPRESS_ADAPTER.md](../EXPRESS_ADAPTER.md) - Express adapter API reference
+   - [MULTIPLE_PRODUCTS_GUIDE.md](../MULTIPLE_PRODUCTS_GUIDE.md) - Multiple products guide
 
 2. **Integrate into your app:**
    - Copy the patterns from examples
@@ -344,7 +345,7 @@ After completing the examples:
 
 | Feature | express.js | express-adapter.js | Example 1 | Example 2 | Example 3 |
 |---------|------------|-------------------|-----------|-----------|-----------|
-| Manual SDK calls | ✅ | ❌ | ✅ | ✅ | ❌ |
+| TypeScript SDK | ✅ | ❌ | ✅ | ✅ | ❌ |
 | Checkout adapter | ❌ | ✅ | ✅ | ✅ | ❌ |
 | Webhook adapter | ❌ | ✅ | ✅ | ✅ | ✅ |
 | Product creation | ❌ | ❌ | ✅ | ❌ | ❌ |
