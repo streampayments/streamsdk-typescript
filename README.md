@@ -38,7 +38,81 @@ Or add to `package.json`:
 
 ## Quick Start
 
-### Simple Payment Link Creation
+Choose your integration approach:
+
+### TypeScript SDK (Full Control)
+
+Perfect for custom integrations and maximum flexibility.
+
+```typescript
+import StreamSDK from "streampay-sdk";
+
+const client = StreamSDK.init(process.env.STREAM_API_KEY!);
+
+const result = await client.createSimplePaymentLink({
+  name: "Monthly Gym Membership",
+  amount: 250.00,
+  consumer: {
+    email: "mohammad.ahmad@example.com",
+    name: "Mohammad Ahmad",
+    phone: "+966501234567"
+  },
+  product: {
+    name: "Monthly Gym Membership",
+    price: 250.00
+  },
+  successRedirectUrl: "https://yourapp.com/success"
+});
+
+console.log("Payment URL:", result.paymentUrl);
+```
+
+**Features:**
+- ✅ Single or multiple products
+- ✅ Optional consumer (guest checkout supported)
+- ✅ Smart resource matching (reuses existing consumers/products)
+- ✅ Currency defaults to SAR
+- ✅ Auto-generates product types
+
+[See more SDK examples →](#simple-payment-link-creation)
+
+### Express.js Adapter (Quick Setup)
+
+Perfect for Express.js applications - declarative handlers with minimal code.
+
+```typescript
+import express from 'express';
+import { Checkout, Webhooks } from 'streampay-sdk/express';
+
+const app = express();
+app.use(express.json());
+
+app.get('/checkout', Checkout({
+  apiKey: process.env.STREAM_API_KEY!,
+  successUrl: 'https://myapp.com/success',
+  returnUrl: 'https://myapp.com/cancel'
+}));
+
+app.post('/webhooks/stream', Webhooks({
+  apiKey: process.env.STREAM_API_KEY!,
+  onPaymentCompleted: async (data) => {
+    console.log('Payment completed:', data);
+  }
+}));
+
+app.listen(3000);
+```
+
+**Usage:**
+```
+/checkout?products=prod_123&customerPhone=%2B966501234567&customerName=Mohammad%20Ahmad
+```
+
+📚 **[Complete Express Adapter Documentation →](./EXPRESS_ADAPTER.md)**
+
+---
+
+## Simple Payment Link Creation
 
 Create a payment link in one call - SDK handles consumer and product creation automatically.
 
@@ -52,7 +126,7 @@ Create a payment link in one call - SDK handles consumer and product creation au
 - ✅ Optional consumer (one consumer per payment link, or guest checkout)
 - ✅ Smart resource matching (reuses existing consumers/products)
 
-#### Single Product Payment
+### Single Product Payment
 
 ```typescript
 import StreamSDK from "streampay-sdk";
@@ -85,7 +159,7 @@ console.log("Product ID:", result.productId);
 console.log("Product IDs:", result.productIds); // Array of all product IDs
 ```
 
-#### Multiple Products Payment
+### Multiple Products Payment
 
 ```typescript
 // Multiple products - Example: School fees
@@ -124,7 +198,7 @@ console.log("Product IDs:", cartResult.productIds); // ['prod_1', 'prod_2', 'pro
 console.log("Total Products:", cartResult.productIds.length); // 3
 ```
 
-#### Guest Checkout (No Consumer)
+### Guest Checkout (No Consumer)
 
 ```typescript
 // Guest checkout (no consumer - customer provides phone number at checkout)
@@ -183,24 +257,6 @@ const guestLink = await client.createLink({
 
 console.log("Payment URL:", client.getPaymentUrl(paymentLink));
 ```
-
----
-
-## 🚀 Express.js Integration
-
-Using Express.js? Check out our dedicated Express adapter for simplified integration with declarative handlers:
-
-📚 **[Express Adapter Documentation →](./EXPRESS_ADAPTER.md)**
-
-Quick preview:
-```typescript
-import { Checkout, Webhooks } from 'streampay-sdk/express';
-
-app.get('/checkout', Checkout({ apiKey, successUrl, returnUrl }));
-app.post('/webhooks/stream', Webhooks({ apiKey, onPaymentCompleted }));
-```
-
----
 
 ## API Reference
 
