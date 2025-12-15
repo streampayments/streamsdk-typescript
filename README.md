@@ -451,32 +451,9 @@ Explore complete examples in the [examples directory](./examples):
 
 ## Express.js Integration
 
-For Express.js applications, we provide a separate adapter package for simplified integration:
+For Express.js applications, we provide a separate adapter package with declarative handlers for checkout and webhooks:
 
-### stream-sdk-express
-
-```bash
-npm install stream-sdk-express
-```
-
-```typescript
-import { Checkout, Webhooks } from 'stream-sdk-express';
-
-app.get('/checkout', Checkout({
-  apiKey: process.env.STREAM_API_KEY!,
-  successUrl: 'https://myapp.com/success',
-  returnUrl: 'https://myapp.com/cancel'
-}));
-
-app.post('/webhooks/stream', Webhooks({
-  apiKey: process.env.STREAM_API_KEY!,
-  onPaymentCompleted: async (data) => {
-    console.log('Payment completed:', data);
-  }
-}));
-```
-
-**[Learn More →](https://github.com/streampayments/stream-sdk-express)**
+**[stream-sdk-express →](https://github.com/streampayments/stream-sdk-express)**
 
 ---
 
