@@ -39,11 +39,6 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
-    },
-    "./express": {
-      "types": "./dist/adapters/express/index.d.ts",
-      "import": "./dist/adapters/express/index.js",
-      "require": "./dist/adapters/express/index.cjs"
     }
   },
   "main": "./dist/index.cjs",

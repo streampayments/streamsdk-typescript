@@ -18,7 +18,6 @@ Official Node.js/TypeScript SDK for StreamPay API - Payment processing with cons
 - 💰 Payments and refunds
 - 📝 Full TypeScript support
 - ⚡ ES Modules and CommonJS
-- 🚀 **Express.js Adapter** - Declarative handlers for checkout and webhooks
 
 ## Installation
 
@@ -37,12 +36,6 @@ Or add to `package.json`:
 ```
 
 ## Quick Start
-
-Choose your integration approach:
-
-### TypeScript SDK (Full Control)
-
-Perfect for custom integrations and maximum flexibility.
 
 ```typescript
 import StreamSDK from "stream-sdk";
@@ -68,47 +61,26 @@ console.log("Payment URL:", result.paymentUrl);
 ```
 
 **Features:**
-- ✅ Single or multiple products
+- ✅ Single or multiple products per payment link
 - ✅ Optional consumer (guest checkout supported)
 - ✅ Smart resource matching (reuses existing consumers/products)
 - ✅ Currency defaults to SAR
-- ✅ Auto-generates product types
+- ✅ Full TypeScript support
 
-[See more SDK examples →](#simple-payment-link-creation)
+### Using Express.js?
 
-### Express.js Adapter (Quick Setup)
+Check out **[stream-sdk-express](https://github.com/streampayments/stream-sdk-express)** - Declarative Express handlers for checkout and webhooks.
 
-Perfect for Express.js applications - declarative handlers with minimal code.
+```bash
+npm install stream-sdk-express
+```
 
 ```typescript
-import express from 'express';
-import { Checkout, Webhooks } from 'stream-sdk/express';
+import { Checkout, Webhooks } from 'stream-sdk-express';
 
-const app = express();
-app.use(express.json());
-
-app.get('/checkout', Checkout({
-  apiKey: process.env.STREAM_API_KEY!,
-  successUrl: 'https://myapp.com/success',
-  returnUrl: 'https://myapp.com/cancel'
-}));
-
-app.post('/webhooks/stream', Webhooks({
-  apiKey: process.env.STREAM_API_KEY!,
-  onPaymentCompleted: async (data) => {
-    console.log('Payment completed:', data);
-  }
-}));
-
-app.listen(3000);
+app.get('/checkout', Checkout({ apiKey, successUrl, returnUrl }));
+app.post('/webhooks/stream', Webhooks({ apiKey, onPaymentCompleted }));
 ```
-
-**Usage:**
-```
-/checkout?products=prod_123&customerPhone=%2B966501234567&customerName=Mohammad%20Ahmad
-```
-
-📚 **[Complete Express Adapter Documentation →](./EXPRESS_ADAPTER.md)**
 
 ---
 
