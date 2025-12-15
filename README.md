@@ -5,7 +5,7 @@
 
   Official Node.js/TypeScript SDK for Stream API
 
-  [![npm version](https://img.shields.io/npm/v/stream-sdk.svg)](https://www.npmjs.com/package/stream-sdk)
+  [![npm version](https://img.shields.io/npm/v/@streamsdk/typescript.svg)](https://www.npmjs.com/package/@streamsdk/typescript)
   [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/)
   [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 </div>

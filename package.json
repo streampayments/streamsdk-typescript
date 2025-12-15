@@ -1,5 +1,5 @@
 {
-  "name": "@streamsdk/typescriptstreampay/sdk",
+  "name": "@streamsdk/typescript",
   "version": "1.0.0",
   "description": "Official Node.js/TypeScript SDK for Stream API - Complete payment processing with consumers, products, subscriptions, invoices, and payment links",
   "license": "MIT",
