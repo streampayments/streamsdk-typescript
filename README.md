@@ -431,21 +431,15 @@ const coupons = await client.listCoupons({
 
 ## Examples
 
-Explore complete examples in the [examples directory](./examples):
-
-### TypeScript SDK Examples
+Explore complete TypeScript SDK examples in the [examples directory](./examples):
 
 - **[basic.mjs](./examples/basic.mjs)** - Basic SDK usage
 - **[comprehensive.mjs](./examples/comprehensive.mjs)** - Advanced features
 - **[multiple-products.mjs](./examples/multiple-products.mjs)** - Multiple products guide
 
-### Express.js Examples
-
-- **[express.js](./examples/express.js)** - Express with SDK routes
-- **[express-adapter.js](./examples/express-adapter.js)** - Express adapter demo
-- **[use-cases/](./examples/use-cases/)** - Real-world use cases
-
 **[View All Examples →](./examples/README.md)**
+
+For Express.js examples, see **[stream-sdk-express](https://github.com/streampayments/stream-sdk-express)**
 
 ---
 
@@ -534,6 +528,7 @@ npm run example
 ### Documentation
 
 - **[API Documentation](https://docs.streampay.sa/)**
+- **[OpenAPI Specification](https://stream-app-service.streampay.sa/openapi.json)**
 - **[Examples](./examples/README.md)**
 - **[Express Adapter](https://github.com/streampayments/stream-sdk-express)**
 - **[Multiple Products Guide](./MULTIPLE_PRODUCTS_GUIDE.md)**

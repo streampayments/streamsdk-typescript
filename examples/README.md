@@ -72,122 +72,17 @@ node multiple-products.mjs
 
 ---
 
-## 🚀 Express Integration Examples
+## 🚀 Express.js Integration
 
-Express.js server examples showing different integration approaches.
+For Express.js integration, use the separate **stream-sdk-express** package:
 
-### Option 1: TypeScript SDK with Express Routes (`express.js`)
+**[stream-sdk-express →](https://github.com/streampayments/stream-sdk-express)**
 
-Direct SDK usage with Express routes - full control over the flow.
-
-**Run:**
-```bash
-npm run express
-```
-
-**Test:**
-```bash
-npm run test:express
-```
-
-**What it demonstrates:**
-- Express server setup with SDK
-- Manual route handlers
-- Creating payments with SDK methods
-- Consumer and product management
-- Multiple products support
-- Guest checkout
-
-**Key Endpoints:**
-```bash
-POST /api/create-payment              # Create payment with new consumer & product
-POST /api/create-payment-with-product # Use existing product IDs
-POST /api/create-guest-payment        # Guest checkout (no consumer)
-GET  /api/consumers                   # List consumers
-GET  /api/products                    # List products
-GET  /api/payment-links               # List payment links
-```
-
-### Option 2: Express Adapter (`express-adapter.js`)
-
-Declarative Express handlers - quickest way to integrate.
-
-**Run:**
-```bash
-npm run express-adapter
-```
-
-**What it demonstrates:**
-- Express Checkout handler
-- Express Webhooks handler
-- Declarative configuration
-- Minimal boilerplate
-
-**Example Usage:**
-```typescript
-import { Checkout, Webhooks } from 'stream-sdk/express';
-
-app.get('/checkout', Checkout({
-  apiKey: process.env.STREAM_API_KEY,
-  successUrl: '/success',
-  returnUrl: '/cancel'
-}));
-
-app.post('/webhooks/stream', Webhooks({
-  apiKey: process.env.STREAM_API_KEY,
-  onPaymentCompleted: async (data) => {
-    console.log('Payment completed:', data);
-  }
-}));
-```
-
-### Option 3: Use Cases (`use-cases/`)
-
-Real-world scenarios with Express adapter.
-
-**Run:**
-```bash
-npm run example:1  # Create product + checkout (Port 3001)
-npm run example:2  # Fetch products + create consumer (Port 3002)
-npm run example:3  # Webhook testing dashboard (Port 3003)
-```
-
-**What it demonstrates:**
-- Complete checkout flows
-- Webhook handling
-- Real-time webhook dashboard
-- Success/failure pages
-- Production patterns
-
-📚 **[See use-cases/README.md for detailed documentation](./use-cases/README.md)**
-
----
-
-## 🎯 Which Example Should I Use?
-
-### Use TypeScript SDK Examples If:
-- ✅ Building a custom integration
-- ✅ Not using Express.js
-- ✅ Need full control over every step
-- ✅ Want to understand the SDK deeply
-
-**Start with:** `basic.mjs` → `comprehensive.mjs`
-
-### Use Express with SDK Routes If:
-- ✅ Using Express.js
-- ✅ Need custom business logic in routes
-- ✅ Want to build custom API endpoints
-- ✅ Need fine-grained control
-
-**Start with:** `express.js`
-
-### Use Express Adapter If:
-- ✅ Using Express.js
-- ✅ Want the quickest setup
-- ✅ Need declarative checkout & webhooks
-- ✅ Prefer minimal configuration
-
-**Start with:** `express-adapter.js` or `use-cases/01-create-product-checkout.js`
+The Express adapter provides:
+- ✅ Drop-in middleware for checkout and webhooks
+- ✅ Declarative configuration
+- ✅ Complete examples and documentation
+- ✅ Production-ready patterns
 
 ---
 
