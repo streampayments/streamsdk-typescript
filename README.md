@@ -1,13 +1,14 @@
 # @streamsdk/typescript · Official Stream SDK for TypeScript
 
 <div align="center">
-  <img src="https://streampay.sa/logo.png" alt="Stream Logo" width="200"/>
+  <img src="https://app.streampay.sa/media/logos/dark-logo.svg" alt="Stream Logo" width="200"/>
 
-  Official Node.js/TypeScript SDK for Stream API
+Official Node.js/TypeScript SDK for Stream API
 
-  [![npm version](https://img.shields.io/npm/v/@streamsdk/typescript.svg)](https://www.npmjs.com/package/@streamsdk/typescript)
-  [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/)
-  [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![npm version](https://img.shields.io/npm/v/@streamsdk/typescript.svg)](https://www.npmjs.com/package/@streamsdk/typescript)
+[![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+
 </div>
 
 ---
@@ -41,6 +42,7 @@
 The Stream SDK provides a complete TypeScript/JavaScript interface to the Stream payment platform. Process payments, manage subscriptions, create invoices, and handle customer data with full type safety and modern JavaScript features.
 
 **Key Features:**
+
 - 🔐 Secure API Key authentication
 - 👥 Customer (Consumer) management
 - 📦 Product catalog management
@@ -92,14 +94,14 @@ const result = await client.createSimplePaymentLink({
   consumer: {
     email: "customer@example.com",
     name: "Ahmad Ali",
-    phone: "+966501234567"
+    phone: "+966501234567",
   },
   product: {
     name: "Premium Plan",
-    price: 99.99
+    price: 99.99,
   },
   successRedirectUrl: "https://yourapp.com/success",
-  failureRedirectUrl: "https://yourapp.com/failure"
+  failureRedirectUrl: "https://yourapp.com/failure",
 });
 
 console.log("Payment URL:", result.paymentUrl);
@@ -111,16 +113,16 @@ console.log("Payment URL:", result.paymentUrl);
 
 ### Core Capabilities
 
-| Feature | Description |
-|---------|-------------|
-| **Authentication** | API Key and Bearer Token support |
-| **Consumers** | Create, update, list, and delete customers |
-| **Products** | Manage your product catalog |
-| **Payment Links** | Generate secure payment links |
-| **Subscriptions** | Handle recurring payments |
-| **Invoices** | Create and manage invoices |
-| **Coupons** | Discount and promotion management |
-| **Webhooks** | Real-time event notifications |
+| Feature            | Description                                |
+| ------------------ | ------------------------------------------ |
+| **Authentication** | API Key and Bearer Token support           |
+| **Consumers**      | Create, update, list, and delete customers |
+| **Products**       | Manage your product catalog                |
+| **Payment Links**  | Generate secure payment links              |
+| **Subscriptions**  | Handle recurring payments                  |
+| **Invoices**       | Create and manage invoices                 |
+| **Coupons**        | Discount and promotion management          |
+| **Webhooks**       | Real-time event notifications              |
 
 ### Supported Features
 
@@ -148,7 +150,7 @@ const client = StreamSDK.init("your-api-key");
 
 // Option 2: With configuration
 const client = StreamSDK.init("your-api-key", {
-  baseUrl: "https://stream-app-service.streampay.sa"
+  baseUrl: "https://stream-app-service.streampay.sa",
 });
 
 // Option 3: Using environment variable
@@ -168,7 +170,7 @@ const consumer = await client.createConsumer({
   name: "Ahmad Ali",
   email: "ahmad.ali@example.com",
   phone_number: "+966501234567",
-  preferred_language: "en"
+  preferred_language: "en",
 });
 ```
 
@@ -177,7 +179,7 @@ const consumer = await client.createConsumer({
 ```typescript
 const consumers = await client.listConsumers({
   page: 1,
-  size: 10
+  size: 10,
 });
 ```
 
@@ -186,7 +188,7 @@ const consumers = await client.listConsumers({
 ```typescript
 const updated = await client.updateConsumer("consumer_id", {
   name: "Ahmad Ali",
-  email: "ahmad.ali@example.com"
+  email: "ahmad.ali@example.com",
 });
 ```
 
@@ -210,7 +212,7 @@ const product = await client.createProduct({
   price: 99.99,
   currency: "SAR",
   type: "ONE_OFF",
-  description: "Monthly premium subscription"
+  description: "Monthly premium subscription",
 });
 ```
 
@@ -219,7 +221,7 @@ const product = await client.createProduct({
 ```typescript
 const products = await client.listProducts({
   page: 1,
-  size: 20
+  size: 20,
 });
 ```
 
@@ -228,7 +230,7 @@ const products = await client.listProducts({
 ```typescript
 const updated = await client.updateProduct("product_id", {
   price: 89.99,
-  description: "Updated description"
+  description: "Updated description",
 });
 ```
 
@@ -251,18 +253,18 @@ The SDK handles consumer and product creation automatically:
 ```typescript
 const result = await client.createSimplePaymentLink({
   name: "Order #1234",
-  amount: 250.00,
+  amount: 250.0,
   consumer: {
     email: "customer@example.com",
     name: "Fatima Ahmed",
-    phone: "+966501234567"
+    phone: "+966501234567",
   },
   product: {
     name: "Premium Package",
-    price: 250.00
+    price: 250.0,
   },
   successRedirectUrl: "https://yourapp.com/success",
-  failureRedirectUrl: "https://yourapp.com/failure"
+  failureRedirectUrl: "https://yourapp.com/failure",
 });
 
 console.log("Payment URL:", result.paymentUrl);
@@ -277,14 +279,14 @@ const result = await client.createSimplePaymentLink({
   name: "Bundle Order",
   consumer: {
     name: "Ahmad Ali",
-    phone: "+966501234567"
+    phone: "+966501234567",
   },
   products: [
-    { name: "Product A", price: 50.00, quantity: 2 },
-    { name: "Product B", price: 75.00, quantity: 1 }
+    { name: "Product A", price: 50.0, quantity: 2 },
+    { name: "Product B", price: 75.0, quantity: 1 },
   ],
   currency: "SAR",
-  successRedirectUrl: "https://yourapp.com/success"
+  successRedirectUrl: "https://yourapp.com/success",
 });
 
 console.log("Product IDs:", result.productIds);
@@ -300,10 +302,10 @@ const result = await client.createSimplePaymentLink({
   amount: 49.99,
   product: {
     name: "One-time Purchase",
-    price: 49.99
+    price: 49.99,
   },
   // No consumer - phone collected at checkout
-  successRedirectUrl: "https://yourapp.com/success"
+  successRedirectUrl: "https://yourapp.com/success",
 });
 ```
 
@@ -316,14 +318,14 @@ For more control, create resources separately:
 const consumer = await client.createConsumer({
   name: "Ahmad Ali",
   email: "ahmad.ali@example.com",
-  phone_number: "+966501234567"
+  phone_number: "+966501234567",
 });
 
 // Create product
 const product = await client.createProduct({
   name: "Premium Plan",
   price: 99.99,
-  currency: "SAR"
+  currency: "SAR",
 });
 
 // Create payment link
@@ -332,7 +334,7 @@ const paymentLink = await client.createPaymentLink({
   organization_consumer_id: consumer.id,
   items: [{ product_id: product.id, quantity: 1 }],
   success_redirect_url: "https://yourapp.com/success",
-  failure_redirect_url: "https://yourapp.com/failure"
+  failure_redirect_url: "https://yourapp.com/failure",
 });
 
 const paymentUrl = client.getPaymentUrl(paymentLink);
@@ -351,7 +353,7 @@ const subscription = await client.createSubscription({
   organization_consumer_id: "consumer_id",
   organization_product_id: "product_id",
   billing_cycle: "MONTHLY",
-  start_date: new Date().toISOString()
+  start_date: new Date().toISOString(),
 });
 ```
 
@@ -360,7 +362,7 @@ const subscription = await client.createSubscription({
 ```typescript
 const subscriptions = await client.listSubscriptions({
   page: 1,
-  size: 10
+  size: 10,
 });
 ```
 
@@ -381,11 +383,9 @@ Create and manage invoices:
 ```typescript
 const invoice = await client.createInvoice({
   organization_consumer_id: "consumer_id",
-  items: [
-    { product_id: "product_id", quantity: 1 }
-  ],
+  items: [{ product_id: "product_id", quantity: 1 }],
   due_date: "2024-12-31",
-  notes: "Payment due within 30 days"
+  notes: "Payment due within 30 days",
 });
 ```
 
@@ -394,7 +394,7 @@ const invoice = await client.createInvoice({
 ```typescript
 const invoices = await client.listInvoices({
   page: 1,
-  size: 10
+  size: 10,
 });
 ```
 
@@ -412,7 +412,7 @@ const coupon = await client.createCoupon({
   discount_type: "PERCENTAGE",
   discount_value: 20,
   valid_from: "2024-06-01",
-  valid_to: "2024-08-31"
+  valid_to: "2024-08-31",
 });
 ```
 
@@ -421,7 +421,7 @@ const coupon = await client.createCoupon({
 ```typescript
 const coupons = await client.listCoupons({
   page: 1,
-  size: 10
+  size: 10,
 });
 ```
 
@@ -453,27 +453,27 @@ For Express.js applications, we provide a separate adapter package with declarat
 
 ### Available Methods
 
-| Method | Description |
-|--------|-------------|
-| `createConsumer(data)` | Create a new consumer |
-| `listConsumers(params)` | List all consumers |
-| `updateConsumer(id, data)` | Update a consumer |
-| `deleteConsumer(id)` | Delete a consumer |
-| `createProduct(data)` | Create a new product |
-| `listProducts(params)` | List all products |
-| `updateProduct(id, data)` | Update a product |
-| `deleteProduct(id)` | Delete a product |
+| Method                          | Description                       |
+| ------------------------------- | --------------------------------- |
+| `createConsumer(data)`          | Create a new consumer             |
+| `listConsumers(params)`         | List all consumers                |
+| `updateConsumer(id, data)`      | Update a consumer                 |
+| `deleteConsumer(id)`            | Delete a consumer                 |
+| `createProduct(data)`           | Create a new product              |
+| `listProducts(params)`          | List all products                 |
+| `updateProduct(id, data)`       | Update a product                  |
+| `deleteProduct(id)`             | Delete a product                  |
 | `createSimplePaymentLink(data)` | Create payment link (recommended) |
-| `createPaymentLink(data)` | Create payment link (advanced) |
-| `listPaymentLinks(params)` | List all payment links |
-| `getPaymentUrl(link)` | Get payment URL from link |
-| `createSubscription(data)` | Create a subscription |
-| `listSubscriptions(params)` | List all subscriptions |
-| `cancelSubscription(id)` | Cancel a subscription |
-| `createInvoice(data)` | Create an invoice |
-| `listInvoices(params)` | List all invoices |
-| `createCoupon(data)` | Create a coupon |
-| `listCoupons(params)` | List all coupons |
+| `createPaymentLink(data)`       | Create payment link (advanced)    |
+| `listPaymentLinks(params)`      | List all payment links            |
+| `getPaymentUrl(link)`           | Get payment URL from link         |
+| `createSubscription(data)`      | Create a subscription             |
+| `listSubscriptions(params)`     | List all subscriptions            |
+| `cancelSubscription(id)`        | Cancel a subscription             |
+| `createInvoice(data)`           | Create an invoice                 |
+| `listInvoices(params)`          | List all invoices                 |
+| `createCoupon(data)`            | Create a coupon                   |
+| `listCoupons(params)`           | List all coupons                  |
 
 **[Full API Reference →](./API_REFERENCE.md)**
 
@@ -487,7 +487,7 @@ The SDK throws errors for failed requests:
 try {
   const consumer = await client.createConsumer({
     name: "Ahmad Ali",
-    email: "invalid-email"
+    email: "invalid-email",
   });
 } catch (error) {
   console.error("Error creating consumer:", error.message);
