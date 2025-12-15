@@ -93,7 +93,7 @@ const result = await client.createSimplePaymentLink({
   amount: 99.99,
   consumer: {
     email: "customer@example.com",
-    name: "John Doe",
+    name: "Ahmad Ali",
     phone: "+966501234567"
   },
   product: {
@@ -167,8 +167,8 @@ Manage your customers (consumers):
 
 ```typescript
 const consumer = await client.createConsumer({
-  name: "John Doe",
-  email: "john@example.com",
+  name: "Ahmad Ali",
+  email: "ahmad.ali@example.com",
   phone_number: "+966501234567",
   preferred_language: "en"
 });
@@ -187,8 +187,8 @@ const consumers = await client.listConsumers({
 
 ```typescript
 const updated = await client.updateConsumer("consumer_id", {
-  name: "John Smith",
-  email: "johnsmith@example.com"
+  name: "Ahmad Ali",
+  email: "ahmad.ali@example.com"
 });
 ```
 
@@ -278,7 +278,7 @@ console.log("Product ID:", result.productId);
 const result = await client.createSimplePaymentLink({
   name: "Bundle Order",
   consumer: {
-    name: "John Doe",
+    name: "Ahmad Ali",
     phone: "+966501234567"
   },
   products: [
@@ -316,8 +316,8 @@ For more control, create resources separately:
 ```typescript
 // Create consumer
 const consumer = await client.createConsumer({
-  name: "John Doe",
-  email: "john@example.com",
+  name: "Ahmad Ali",
+  email: "ahmad.ali@example.com",
   phone_number: "+966501234567"
 });
 
@@ -494,7 +494,7 @@ The SDK throws errors for failed requests:
 ```typescript
 try {
   const consumer = await client.createConsumer({
-    name: "John Doe",
+    name: "Ahmad Ali",
     email: "invalid-email"
   });
 } catch (error) {
