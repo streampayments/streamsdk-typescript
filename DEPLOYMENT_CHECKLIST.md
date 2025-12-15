@@ -178,19 +178,19 @@ npm publish
 ### Test Installation
 ```bash
 # In a new directory
-npm install streampay-sdk
+npm install stream-sdk
 
 # Test imports
-node -e "const { Checkout, Webhooks } = require('streampay-sdk/express'); console.log('✅ CJS import works')"
+node -e "const { Checkout, Webhooks } = require('stream-sdk/express'); console.log('✅ CJS import works')"
 
-node -e "import('streampay-sdk/express').then(m => console.log('✅ ESM import works'))"
+node -e "import('stream-sdk/express').then(m => console.log('✅ ESM import works'))"
 ```
 
 ### Test TypeScript
 ```typescript
 // test.ts
-import { Checkout, Webhooks } from 'streampay-sdk/express';
-import type { CheckoutConfig, WebhookConfig } from 'streampay-sdk/express';
+import { Checkout, Webhooks } from 'stream-sdk/express';
+import type { CheckoutConfig, WebhookConfig } from 'stream-sdk/express';
 
 // Should compile without errors
 const config: CheckoutConfig = {
@@ -216,7 +216,7 @@ const config: CheckoutConfig = {
 ### 📦 New Exports
 
 ```typescript
-import { Checkout, Webhooks } from 'streampay-sdk/express';
+import { Checkout, Webhooks } from 'stream-sdk/express';
 ```
 
 ### 🎯 Supported Events

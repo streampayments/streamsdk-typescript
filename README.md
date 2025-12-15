@@ -1,4 +1,4 @@
-# streampay-sdk
+# stream-sdk
 
 Official Node.js/TypeScript SDK for StreamPay API - Payment processing with consumers, products, subscriptions, invoices, and payment links.
 
@@ -31,7 +31,7 @@ Or add to `package.json`:
 ```json
 {
   "dependencies": {
-    "streampay-sdk": "github:streampayments/stream-sdk#v1.0.0"
+    "stream-sdk": "github:streampayments/stream-sdk#v1.0.0"
   }
 }
 ```
@@ -45,7 +45,7 @@ Choose your integration approach:
 Perfect for custom integrations and maximum flexibility.
 
 ```typescript
-import StreamSDK from "streampay-sdk";
+import StreamSDK from "stream-sdk";
 
 const client = StreamSDK.init(process.env.STREAM_API_KEY!);
 
@@ -82,7 +82,7 @@ Perfect for Express.js applications - declarative handlers with minimal code.
 
 ```typescript
 import express from 'express';
-import { Checkout, Webhooks } from 'streampay-sdk/express';
+import { Checkout, Webhooks } from 'stream-sdk/express';
 
 const app = express();
 app.use(express.json());
@@ -129,7 +129,7 @@ Create a payment link in one call - SDK handles consumer and product creation au
 ### Single Product Payment
 
 ```typescript
-import StreamSDK from "streampay-sdk";
+import StreamSDK from "stream-sdk";
 
 const client = StreamSDK.init(process.env.STREAM_API_KEY!);
 
@@ -499,7 +499,7 @@ const refund = await client.refundPayment("payment-id", {
 ## Error Handling
 
 ```typescript
-import { StreamSDKError } from "streampay-sdk";
+import { StreamSDKError } from "stream-sdk";
 
 try {
   const consumer = await client.createConsumer(data);
@@ -519,7 +519,7 @@ import StreamSDK, {
   ConsumerCreate,
   ProductDto,
   PaymentLinkDetailed
-} from "streampay-sdk";
+} from "stream-sdk";
 
 const createConsumer = async (data: ConsumerCreate) => {
   return await client.createConsumer(data);

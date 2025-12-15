@@ -11,7 +11,7 @@ Or add to `package.json`:
 ```json
 {
   "dependencies": {
-    "streampay-sdk": "github:streampayments/stream-sdk#v1.0.0"
+    "stream-sdk": "github:streampayments/stream-sdk#v1.0.0"
   }
 }
 ```
@@ -19,7 +19,7 @@ Or add to `package.json`:
 ## Usage
 
 ```typescript
-import StreamSDK from 'streampay-sdk';
+import StreamSDK from 'stream-sdk';
 
 const client = StreamSDK.init(process.env.STREAM_API_KEY);
 
@@ -33,7 +33,7 @@ const consumer = await client.createConsumer({
 
 ```bash
 cat > test-sdk.mjs << 'EOF'
-import StreamSDK from 'streampay-sdk';
+import StreamSDK from 'stream-sdk';
 console.log('Stream SDK loaded:', typeof StreamSDK.init);
 EOF
 
@@ -57,7 +57,7 @@ npm install github:streampayments/stream-sdk#v1.1.0
 Check current version:
 
 ```bash
-npm list streampay-sdk
+npm list stream-sdk
 ```
 
 ## Requirements

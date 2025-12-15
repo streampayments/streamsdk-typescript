@@ -13,8 +13,8 @@
  */
 
 import express from 'express';
-import StreamSDK from 'streampay-sdk';
-import { Checkout, Webhooks } from 'streampay-sdk/express';
+import StreamSDK from 'stream-sdk';
+import { Checkout, Webhooks } from 'stream-sdk/express';
 
 const app = express();
 app.use(express.json());

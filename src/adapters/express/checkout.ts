@@ -8,7 +8,7 @@ import type { CheckoutConfig, CheckoutRequest } from './types';
  * @example
  * ```typescript
  * import express from 'express';
- * import { Checkout } from 'streampay-sdk/express';
+ * import { Checkout } from 'stream-sdk/express';
  *
  * const app = express();
  *

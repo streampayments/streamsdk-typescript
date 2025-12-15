@@ -22,7 +22,7 @@ npm install github:streampayments/stream-sdk express
 
 ```typescript
 import express from 'express';
-import { Checkout, Webhooks } from 'streampay-sdk/express';
+import { Checkout, Webhooks } from 'stream-sdk/express';
 
 const app = express();
 app.use(express.json());
@@ -96,7 +96,7 @@ The checkout handler accepts the following query parameters:
 
 ```typescript
 import express from 'express';
-import { Checkout } from 'streampay-sdk/express';
+import { Checkout } from 'stream-sdk/express';
 
 const app = express();
 
@@ -157,7 +157,7 @@ interface WebhookConfig {
 
 ```typescript
 import express from 'express';
-import { Webhooks } from 'streampay-sdk/express';
+import { Webhooks } from 'stream-sdk/express';
 
 const app = express();
 app.use(express.json());
@@ -294,7 +294,7 @@ import type {
   CheckoutRequest,
   WebhookConfig,
   WebhookPayload
-} from 'streampay-sdk/express';
+} from 'stream-sdk/express';
 ```
 
 ## Environment Variables

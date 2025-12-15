@@ -16,7 +16,7 @@
  */
 
 import express from 'express';
-import { Webhooks } from 'streampay-sdk/express';
+import { Webhooks } from 'stream-sdk/express';
 
 const app = express();
 app.use(express.json());

@@ -32,7 +32,7 @@ See [INSTALLATION.md](../INSTALLATION.md) for:
 
 ### Bug Reports
 When reporting bugs, please include:
-1. SDK version: `npm list streampay-sdk`
+1. SDK version: `npm list stream-sdk`
 2. Node.js version: `node --version`
 3. Error message and stack trace
 4. Minimal code to reproduce

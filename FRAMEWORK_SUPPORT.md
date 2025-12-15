@@ -1,6 +1,6 @@
 # Framework Support
 
-The `streampay-sdk` is a **framework-agnostic** Node.js SDK that works with all popular frameworks and environments.
+The `stream-sdk` is a **framework-agnostic** Node.js SDK that works with all popular frameworks and environments.
 
 ## ✅ Supported Frameworks & Environments
 
@@ -9,7 +9,7 @@ The `streampay-sdk` is a **framework-agnostic** Node.js SDK that works with all 
 #### **Express.js**
 ```javascript
 import express from 'express';
-import StreamSDK from 'streampay-sdk';
+import StreamSDK from 'stream-sdk';
 
 const app = express();
 app.use(express.json());
@@ -60,7 +60,7 @@ app.post('/api/create-payment', async (req, res) => {
 #### **NestJS**
 ```typescript
 import { Injectable } from '@nestjs/common';
-import StreamSDK from 'streampay-sdk';
+import StreamSDK from 'stream-sdk';
 
 @Injectable()
 export class PaymentService {
@@ -99,7 +99,7 @@ export class PaymentService {
 #### **Fastify**
 ```javascript
 import Fastify from 'fastify';
-import StreamSDK from 'streampay-sdk';
+import StreamSDK from 'stream-sdk';
 
 const fastify = Fastify();
 const streamClient = StreamSDK.init(process.env.STREAM_API_KEY);
@@ -127,7 +127,7 @@ fastify.post('/payment', async (request, reply) => {
 #### **Koa**
 ```javascript
 import Koa from 'koa';
-import StreamSDK from 'streampay-sdk';
+import StreamSDK from 'stream-sdk';
 
 const app = new Koa();
 const streamClient = StreamSDK.init(process.env.STREAM_API_KEY);
@@ -155,7 +155,7 @@ app.use(async ctx => {
 #### **Hono** (Edge Runtime Compatible)
 ```typescript
 import { Hono } from 'hono';
-import StreamSDK from 'streampay-sdk';
+import StreamSDK from 'stream-sdk';
 
 const app = new Hono();
 const streamClient = StreamSDK.init(process.env.STREAM_API_KEY);
@@ -186,7 +186,7 @@ app.post('/payment', async (c) => {
 ```typescript
 // app/api/payment/route.ts
 import { NextRequest, NextResponse } from 'next/server';
-import StreamSDK from 'streampay-sdk';
+import StreamSDK from 'stream-sdk';
 
 const streamClient = StreamSDK.init(process.env.STREAM_API_KEY!);
 
@@ -232,7 +232,7 @@ export async function POST(request: NextRequest) {
 ```typescript
 // pages/api/payment.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
-import StreamSDK from 'streampay-sdk';
+import StreamSDK from 'stream-sdk';
 
 const streamClient = StreamSDK.init(process.env.STREAM_API_KEY!);
 
@@ -267,7 +267,7 @@ export default async function handler(
 ```typescript
 // app/routes/api.payment.ts
 import { ActionFunction, json } from '@remix-run/node';
-import StreamSDK from 'streampay-sdk';
+import StreamSDK from 'stream-sdk';
 
 const streamClient = StreamSDK.init(process.env.STREAM_API_KEY!);
 
@@ -295,7 +295,7 @@ export const action: ActionFunction = async ({ request }) => {
 ```typescript
 // src/routes/api/payment/+server.ts
 import { json } from '@sveltejs/kit';
-import StreamSDK from 'streampay-sdk';
+import StreamSDK from 'stream-sdk';
 import { STREAM_API_KEY } from '$env/static/private';
 
 const streamClient = StreamSDK.init(STREAM_API_KEY);
@@ -323,7 +323,7 @@ export async function POST({ request }) {
 #### **Nuxt 3**
 ```typescript
 // server/api/payment.post.ts
-import StreamSDK from 'streampay-sdk';
+import StreamSDK from 'stream-sdk';
 
 const streamClient = StreamSDK.init(process.env.STREAM_API_KEY!);
 
@@ -351,7 +351,7 @@ export default defineEventHandler(async (event) => {
 
 #### **AWS Lambda**
 ```javascript
-import StreamSDK from 'streampay-sdk';
+import StreamSDK from 'stream-sdk';
 
 const streamClient = StreamSDK.init(process.env.STREAM_API_KEY);
 
@@ -382,7 +382,7 @@ export const handler = async (event) => {
 
 #### **Vercel Edge Functions**
 ```typescript
-import StreamSDK from 'streampay-sdk';
+import StreamSDK from 'stream-sdk';
 
 export const config = {
   runtime: 'edge',
@@ -414,7 +414,7 @@ export default async function handler(request: Request) {
 
 #### **Cloudflare Workers**
 ```typescript
-import StreamSDK from 'streampay-sdk';
+import StreamSDK from 'stream-sdk';
 
 export default {
   async fetch(request: Request, env: Env) {
@@ -451,7 +451,7 @@ import StreamSDK, {
   ConsumerCreate,
   ProductDto,
   PaymentLinkCreateDto
-} from 'streampay-sdk';
+} from 'stream-sdk';
 
 // Full type safety
 const consumer: ConsumerCreate = {
@@ -478,12 +478,12 @@ const result = await client.createConsumer(consumer);
 
 ### ES Modules (Recommended)
 ```javascript
-import StreamSDK from 'streampay-sdk';
+import StreamSDK from 'stream-sdk';
 ```
 
 ### CommonJS
 ```javascript
-const StreamSDK = require('streampay-sdk');
+const StreamSDK = require('stream-sdk');
 ```
 
 ## 🚫 Not Supported
@@ -521,7 +521,7 @@ const client = StreamSDK.init(process.env.STREAM_API_KEY, { baseUrl });
 
 ### 3. **Error Handling**
 ```javascript
-import { StreamSDKError } from 'streampay-sdk';
+import { StreamSDKError } from 'stream-sdk';
 
 try {
   const consumer = await streamClient.createConsumer(data);
@@ -540,7 +540,7 @@ try {
 
 ```javascript
 // config/stream.js
-import StreamSDK from 'streampay-sdk';
+import StreamSDK from 'stream-sdk';
 
 const environments = {
   development: {

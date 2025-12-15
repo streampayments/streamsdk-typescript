@@ -125,7 +125,7 @@ npm run express-adapter
 
 **Example Usage:**
 ```typescript
-import { Checkout, Webhooks } from 'streampay-sdk/express';
+import { Checkout, Webhooks } from 'stream-sdk/express';
 
 app.get('/checkout', Checkout({
   apiKey: process.env.STREAM_API_KEY,
@@ -197,7 +197,7 @@ npm run example:3  # Webhook testing dashboard (Port 3003)
 
 **Create a simple payment:**
 ```typescript
-import StreamSDK from 'streampay-sdk';
+import StreamSDK from 'stream-sdk';
 
 const client = StreamSDK.init(process.env.STREAM_API_KEY);
 

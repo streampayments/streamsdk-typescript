@@ -115,7 +115,7 @@ npm run example:3
 ### Checkout Adapter Usage
 
 ```javascript
-import { Checkout } from 'streampay-sdk/express';
+import { Checkout } from 'stream-sdk/express';
 
 app.get('/checkout', Checkout({
   apiKey: process.env.STREAM_API_KEY,
@@ -136,7 +136,7 @@ app.get('/checkout', Checkout({
 ### Webhook Handler Usage
 
 ```javascript
-import { Webhooks } from 'streampay-sdk/express';
+import { Webhooks } from 'stream-sdk/express';
 
 app.post('/webhooks/stream', Webhooks({
   apiKey: process.env.STREAM_API_KEY,

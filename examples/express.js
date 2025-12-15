@@ -1,5 +1,5 @@
 import express from 'express';
-import StreamSDK from 'streampay-sdk';
+import StreamSDK from 'stream-sdk';
 
 const app = express();
 app.use(express.json());
