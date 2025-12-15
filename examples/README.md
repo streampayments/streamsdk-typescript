@@ -78,7 +78,7 @@ node multiple-products.mjs
 
 **Create a simple payment:**
 ```typescript
-import StreamSDK from 'stream-sdk';
+import StreamSDK from '@streamsdk/typescript';
 
 const client = StreamSDK.init(process.env.STREAM_API_KEY);
 

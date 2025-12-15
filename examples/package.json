@@ -1,5 +1,5 @@
 {
-  "name": "stream-sdk-examples",
+  "name": "streamsdk-examples",
   "version": "1.0.0",
   "type": "module",
   "description": "Examples for @streamsdk/typescript",

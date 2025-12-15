@@ -1,105 +1,15 @@
 # Framework Support
 
-The `stream-sdk` is a **framework-agnostic** Node.js SDK that works with all popular frameworks and environments.
+The `streamsdk-typescript` package is a **framework-agnostic** Node.js SDK that works with all popular frameworks and environments.
 
 ## ✅ Supported Frameworks & Environments
 
-### Backend Frameworks
-
-#### **Express.js**
-```javascript
-import express from 'express';
-import StreamSDK from 'stream-sdk';
-
-const app = express();
-app.use(express.json());
-const streamClient = StreamSDK.init(process.env.STREAM_API_KEY);
-
-app.post('/api/create-payment', async (req, res) => {
-  try {
-    const { amount, customerPhone, customerName, productName } = req.body;
-
-    const paymentData = {
-      name: productName || "Payment",
-      amount,
-      product: {
-        name: productName,
-        price: amount
-      },
-      successRedirectUrl: "https://yourapp.com/success",
-      failureRedirectUrl: "https://yourapp.com/failure"
-    };
-
-    // Add consumer only if both phone and name are provided (optional for guest checkout)
-    if (customerPhone && customerName) {
-      paymentData.consumer = {
-        phone: customerPhone,
-        name: customerName
-      };
-    }
-
-    const result = await streamClient.createSimplePaymentLink(paymentData);
-
-    const response = {
-      paymentUrl: result.paymentUrl,
-      productId: result.productId
-    };
-
-    // Only include consumerId if consumer was created
-    if (result.consumerId) {
-      response.consumerId = result.consumerId;
-    }
-
-    res.json(response);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-```
-
-#### **NestJS**
-```typescript
-import { Injectable } from '@nestjs/common';
-import StreamSDK from 'stream-sdk';
-
-@Injectable()
-export class PaymentService {
-  private streamClient = StreamSDK.init(process.env.STREAM_API_KEY);
-
-  async createPayment(data: {
-    amount: number;
-    customerPhone?: string;
-    customerName?: string;
-    productName: string;
-  }) {
-    const paymentData: any = {
-      name: data.productName,
-      amount: data.amount,
-      product: {
-        name: data.productName,
-        price: data.amount
-      },
-      successRedirectUrl: `${process.env.APP_URL}/success`,
-      failureRedirectUrl: `${process.env.APP_URL}/failure`
-    };
-
-    // Add consumer only if both phone and name are provided (optional for guest checkout)
-    if (data.customerPhone && data.customerName) {
-      paymentData.consumer = {
-        phone: data.customerPhone,
-        name: data.customerName
-      };
-    }
-
-    return await this.streamClient.createSimplePaymentLink(paymentData);
-  }
-}
-```
+### Backend & Full-Stack Frameworks
 
 #### **Fastify**
 ```javascript
 import Fastify from 'fastify';
-import StreamSDK from 'stream-sdk';
+import StreamSDK from '@streamsdk/typescript';
 
 const fastify = Fastify();
 const streamClient = StreamSDK.init(process.env.STREAM_API_KEY);
@@ -124,44 +34,17 @@ fastify.post('/payment', async (request, reply) => {
 });
 ```
 
-#### **Koa**
-```javascript
-import Koa from 'koa';
-import StreamSDK from 'stream-sdk';
-
-const app = new Koa();
-const streamClient = StreamSDK.init(process.env.STREAM_API_KEY);
-
-app.use(async ctx => {
-  const { amount, customerPhone, customerName, productName } = ctx.request.body;
-
-  const paymentData = {
-    name: productName,
-    amount,
-    product: { name: productName, price: amount }
-  };
-
-  // Add consumer only if both phone and name are provided (optional for guest checkout)
-  if (customerPhone && customerName) {
-    paymentData.consumer = { phone: customerPhone, name: customerName };
-  }
-
-  const result = await streamClient.createSimplePaymentLink(paymentData);
-
-  ctx.body = { paymentUrl: result.paymentUrl };
-});
-```
-
-#### **Hono** (Edge Runtime Compatible)
+#### **Express**
 ```typescript
-import { Hono } from 'hono';
-import StreamSDK from 'stream-sdk';
+// routes/payment.ts
+import express from 'express';
+import StreamSDK from '@streamsdk/typescript';
 
-const app = new Hono();
-const streamClient = StreamSDK.init(process.env.STREAM_API_KEY);
+const router = express.Router();
+const streamClient = StreamSDK.init(process.env.STREAM_API_KEY!);
 
-app.post('/payment', async (c) => {
-  const { amount, customerPhone, customerName, productName } = await c.req.json();
+router.post('/payment', async (req, res) => {
+  const { amount, customerPhone, customerName, productName } = req.body;
 
   const paymentData: any = {
     name: productName,
@@ -169,16 +52,23 @@ app.post('/payment', async (c) => {
     product: { name: productName, price: amount }
   };
 
-  // Add consumer only if both phone and name are provided (optional for guest checkout)
   if (customerPhone && customerName) {
     paymentData.consumer = { phone: customerPhone, name: customerName };
   }
 
-  const result = await streamClient.createSimplePaymentLink(paymentData);
-
-  return c.json({ paymentUrl: result.paymentUrl });
+  try {
+    const result = await streamClient.createSimplePaymentLink(paymentData);
+    return res.json({ paymentUrl: result.paymentUrl });
+  } catch (err) {
+    console.error('Stream SDK Error:', err);
+    return res.status(500).json({ error: 'Failed to create payment link' });
+  }
 });
+
+export default router;
 ```
+
+👉 For a full Express SDK with built-in helpers, see the [`streamsdk/express`](https://github.com/streampay/streamsdk/tree/main/express) repo.
 
 ### Full-Stack Frameworks
 
@@ -186,7 +76,7 @@ app.post('/payment', async (c) => {
 ```typescript
 // app/api/payment/route.ts
 import { NextRequest, NextResponse } from 'next/server';
-import StreamSDK from 'stream-sdk';
+import StreamSDK from '@streamsdk/typescript';
 
 const streamClient = StreamSDK.init(process.env.STREAM_API_KEY!);
 
@@ -232,7 +122,7 @@ export async function POST(request: NextRequest) {
 ```typescript
 // pages/api/payment.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
-import StreamSDK from 'stream-sdk';
+import StreamSDK from '@streamsdk/typescript';
 
 const streamClient = StreamSDK.init(process.env.STREAM_API_KEY!);
 
@@ -267,7 +157,7 @@ export default async function handler(
 ```typescript
 // app/routes/api.payment.ts
 import { ActionFunction, json } from '@remix-run/node';
-import StreamSDK from 'stream-sdk';
+import StreamSDK from '@streamsdk/typescript';
 
 const streamClient = StreamSDK.init(process.env.STREAM_API_KEY!);
 
@@ -295,7 +185,7 @@ export const action: ActionFunction = async ({ request }) => {
 ```typescript
 // src/routes/api/payment/+server.ts
 import { json } from '@sveltejs/kit';
-import StreamSDK from 'stream-sdk';
+import StreamSDK from '@streamsdk/typescript';
 import { STREAM_API_KEY } from '$env/static/private';
 
 const streamClient = StreamSDK.init(STREAM_API_KEY);
@@ -323,7 +213,7 @@ export async function POST({ request }) {
 #### **Nuxt 3**
 ```typescript
 // server/api/payment.post.ts
-import StreamSDK from 'stream-sdk';
+import StreamSDK from '@streamsdk/typescript';
 
 const streamClient = StreamSDK.init(process.env.STREAM_API_KEY!);
 
@@ -351,7 +241,7 @@ export default defineEventHandler(async (event) => {
 
 #### **AWS Lambda**
 ```javascript
-import StreamSDK from 'stream-sdk';
+import StreamSDK from '@streamsdk/typescript';
 
 const streamClient = StreamSDK.init(process.env.STREAM_API_KEY);
 
@@ -382,7 +272,7 @@ export const handler = async (event) => {
 
 #### **Vercel Edge Functions**
 ```typescript
-import StreamSDK from 'stream-sdk';
+import StreamSDK from '@streamsdk/typescript';
 
 export const config = {
   runtime: 'edge',
@@ -414,7 +304,7 @@ export default async function handler(request: Request) {
 
 #### **Cloudflare Workers**
 ```typescript
-import StreamSDK from 'stream-sdk';
+import StreamSDK from '@streamsdk/typescript';
 
 export default {
   async fetch(request: Request, env: Env) {
@@ -451,7 +341,7 @@ import StreamSDK, {
   ConsumerCreate,
   ProductDto,
   PaymentLinkCreateDto
-} from 'stream-sdk';
+} from '@streamsdk/typescript';
 
 // Full type safety
 const consumer: ConsumerCreate = {
@@ -478,12 +368,12 @@ const result = await client.createConsumer(consumer);
 
 ### ES Modules (Recommended)
 ```javascript
-import StreamSDK from 'stream-sdk';
+import StreamSDK from '@streamsdk/typescript';
 ```
 
 ### CommonJS
 ```javascript
-const StreamSDK = require('stream-sdk');
+const StreamSDK = require('@streamsdk/typescript');
 ```
 
 ## 🚫 Not Supported
@@ -521,7 +411,7 @@ const client = StreamSDK.init(process.env.STREAM_API_KEY, { baseUrl });
 
 ### 3. **Error Handling**
 ```javascript
-import { StreamSDKError } from 'stream-sdk';
+import { StreamSDKError } from '@streamsdk/typescript';
 
 try {
   const consumer = await streamClient.createConsumer(data);
@@ -540,7 +430,7 @@ try {
 
 ```javascript
 // config/stream.js
-import StreamSDK from 'stream-sdk';
+import StreamSDK from '@streamsdk/typescript';
 
 const environments = {
   development: {
@@ -567,10 +457,7 @@ export const streamClient = StreamSDK.init(config.apiKey, {
 
 ## 📚 Framework-Specific Examples
 
-Check the [examples](./examples) directory for more framework-specific examples:
-
-- `examples/express.js` - Complete Express.js server with smart resource matching
-- `examples/README.md` - Setup and testing instructions
+Check the [examples](./examples) directory for more framework-specific examples.
 
 ## 🆘 Need Help?
 
