@@ -8,9 +8,9 @@
 - Role: Lead SDK Developer
 - Contributions: Architecture, implementation, documentation
 
-## StreamPay Team
+## Stream Team
 
-**StreamPay Engineering**
+**Stream Engineering**
 - Email: support@streampay.sa
 - Website: https://streampay.sa
 

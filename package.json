@@ -1,13 +1,13 @@
 {
-  "name": "stream-sdk",
+  "name": "@streamsdk/typescriptstreampay/sdk",
   "version": "1.0.0",
-  "description": "Official Node.js/TypeScript SDK for StreamPay API - Complete payment processing with consumers, products, subscriptions, invoices, and payment links",
+  "description": "Official Node.js/TypeScript SDK for Stream API - Complete payment processing with consumers, products, subscriptions, invoices, and payment links",
   "license": "MIT",
   "type": "module",
   "sideEffects": false,
   "engines": { "node": ">=18" },
   "keywords": [
-    "streampay",
+    "stream",
     "payment",
     "sdk",
     "subscription",
@@ -18,7 +18,7 @@
     "saudi-arabia",
     "fintech"
   ],
-  "author": "StreamPay <support@streampay.sa>",
+  "author": "Stream <support@streampay.sa>",
   "contributors": [
     {
       "name": "Ibtisam",
@@ -34,6 +34,9 @@
     "email": "support@streampay.sa"
   },
   "homepage": "https://github.com/streampayments/stream-sdk#readme",
+  "publishConfig": {
+    "access": "public"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -44,7 +47,7 @@
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "files": ["dist"],
+  "files": ["dist", "README.md", "LICENSE", "CHANGELOG.md"],
   "scripts": {
     "gen": "openapi-typescript https://stream-app-service.streampay.sa/openapi.json -o src/generated/openapi.ts",
     "build": "tsup",

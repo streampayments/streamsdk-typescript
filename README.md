@@ -1,9 +1,9 @@
 # stream-sdk
 
 <div align="center">
-  <img src="https://streampay.sa/logo.png" alt="StreamPay Logo" width="200"/>
+  <img src="https://streampay.sa/logo.png" alt="Stream Logo" width="200"/>
 
-  Official Node.js/TypeScript SDK for StreamPay API
+  Official Node.js/TypeScript SDK for Stream API
 
   [![npm version](https://img.shields.io/npm/v/stream-sdk.svg)](https://www.npmjs.com/package/stream-sdk)
   [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/)
@@ -38,7 +38,7 @@
 
 ## Overview
 
-The Stream SDK provides a complete TypeScript/JavaScript interface to the StreamPay payment platform. Process payments, manage subscriptions, create invoices, and handle customer data with full type safety and modern JavaScript features.
+The Stream SDK provides a complete TypeScript/JavaScript interface to the Stream payment platform. Process payments, manage subscriptions, create invoices, and handle customer data with full type safety and modern JavaScript features.
 
 **Key Features:**
 - 🔐 Secure API Key authentication
@@ -55,13 +55,11 @@ The Stream SDK provides a complete TypeScript/JavaScript interface to the Stream
 
 ## Installation
 
-### NPM (Coming Soon)
-
 ```bash
-npm install stream-sdk
+npm install @streamsdk/typescript
 ```
 
-### GitHub
+**Or install from GitHub:**
 
 ```bash
 npm install github:streampayments/stream-sdk#v1.0.0
@@ -72,7 +70,7 @@ npm install github:streampayments/stream-sdk#v1.0.0
 ```json
 {
   "dependencies": {
-    "stream-sdk": "github:streampayments/stream-sdk#v1.0.0"
+    "@streamsdk/typescript": "^1.0.0"
   }
 }
 ```
@@ -82,7 +80,7 @@ npm install github:streampayments/stream-sdk#v1.0.0
 ## Quick Start
 
 ```typescript
-import StreamSDK from "stream-sdk";
+import StreamSDK from "@streamsdk/typescript";
 
 // Initialize the SDK
 const client = StreamSDK.init(process.env.STREAM_API_KEY!);
@@ -143,7 +141,7 @@ console.log("Payment URL:", result.paymentUrl);
 Initialize the SDK with your API key:
 
 ```typescript
-import StreamSDK from "stream-sdk";
+import StreamSDK from "@streamsdk/typescript";
 
 // Option 1: Direct initialization
 const client = StreamSDK.init("your-api-key");
@@ -549,7 +547,7 @@ MIT License - see [LICENSE](LICENSE) for details.
 ---
 
 <div align="center">
-  <p>Made with ❤️ by <a href="https://streampay.sa">StreamPay</a></p>
+  <p>Made with ❤️ by <a href="https://streampay.sa">Stream</a></p>
   <p>
     <a href="https://streampay.sa">Website</a> •
     <a href="https://docs.streampay.sa">Documentation</a> •

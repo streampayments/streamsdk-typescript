@@ -79,14 +79,9 @@ Have an idea for improvement?
 - [Basic Usage](../examples/basic.mjs) - Comprehensive examples
 - [API Documentation](https://stream-app-service.streampay.sa/openapi.json) - OpenAPI spec
 
-### Community
-- GitHub Discussions (coming soon)
-- Developer Discord (coming soon)
-- Twitter: @StreamPaySA (coming soon)
-
 ## Business Hours
 
-**StreamPay Support**
+**Stream Support**
 - Sunday - Thursday: 9:00 AM - 6:00 PM (Riyadh Time/AST)
 - Friday - Saturday: Closed
 - Timezone: UTC+3 (Arabia Standard Time)
@@ -117,4 +112,4 @@ Found a security vulnerability?
 
 **Thank you for using Stream SDK!**
 
-Maintained by Ibtisam (ibtisam@streampay.sa) and the StreamPay team.
+Maintained by Ibtisam (ibtisam@streampay.sa) and the Stream team.

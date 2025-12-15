@@ -1,4 +1,4 @@
-# StreamPay SDK Examples
+# Stream SDK Examples
 
 This directory contains example implementations demonstrating both the **TypeScript SDK** and **Express Adapter**.
 
@@ -23,7 +23,7 @@ Pure TypeScript SDK usage examples - use these for maximum flexibility and contr
 
 ### 1. Basic Usage (`basic.mjs`)
 
-Learn the fundamentals of the StreamPay SDK.
+Learn the fundamentals of the Stream SDK.
 
 **Run:**
 ```bash

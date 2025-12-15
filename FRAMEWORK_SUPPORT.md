@@ -580,14 +580,3 @@ If you encounter issues with a specific framework:
 2. Ensure you're using the SDK in **server-side code only**
 3. Verify your API key is correctly set in environment variables
 4. Contact support: support@streampay.sa
-
-## 🔄 Future SDKs
-
-StreamPay is planning SDKs for:
-- Python (Django, Flask, FastAPI)
-- PHP (Laravel, Symfony)
-- Ruby (Rails)
-- Go
-- Java (Spring Boot)
-
-Stay tuned for updates!
