@@ -437,7 +437,7 @@ Explore complete TypeScript SDK examples in the [examples directory](./examples)
 
 **[View All Examples →](./examples/README.md)**
 
-For Express.js examples, see **[stream-sdk-express](https://github.com/streampayments/stream-sdk-express)**
+For Express.js examples, see **[streamsdk-express](https://github.com/streampayments/streamsdk-express)**
 
 ---
 
@@ -445,7 +445,7 @@ For Express.js examples, see **[stream-sdk-express](https://github.com/streampay
 
 For Express.js applications, we provide a separate adapter package with declarative handlers for checkout and webhooks:
 
-**[stream-sdk-express →](https://github.com/streampayments/stream-sdk-express)**
+**[streamsdk-express →](https://github.com/streampayments/streamsdk-express)**
 
 ---
 
@@ -528,7 +528,7 @@ npm run example
 - **[API Documentation](https://docs.streampay.sa/)**
 - **[OpenAPI Specification](https://stream-app-service.streampay.sa/openapi.json)**
 - **[Examples](./examples/README.md)**
-- **[Express Adapter](https://github.com/streampayments/stream-sdk-express)**
+- **[Express Adapter](https://github.com/streampayments/streamsdk-express)**
 - **[Multiple Products Guide](./MULTIPLE_PRODUCTS_GUIDE.md)**
 - **[Framework Support](./FRAMEWORK_SUPPORT.md)**
 
