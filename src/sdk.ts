@@ -569,7 +569,7 @@ export class StreamClient {
    *   amount: 99.99,
    *   consumer: {
    *     email: "customer@example.com",
-   *     name: "John Doe"
+   *     name: "Ahmad Ali"
    *   },
    *   product: {
    *     name: "Premium Subscription",
@@ -583,7 +583,7 @@ export class StreamClient {
    *   name: "Order #5678",
    *   consumer: {
    *     phone: "+966501234567",
-   *     name: "Jane Smith"
+   *     name: "Fatima Ahmed"
    *   },
    *   products: [
    *     { name: "Product A", price: 50.00, quantity: 2 },
@@ -596,7 +596,7 @@ export class StreamClient {
    * const result = await client.createSimplePaymentLink({
    *   name: "Order #1234",
    *   amount: 99.99,
-   *   consumer: { email: "customer@example.com", name: "John Doe" },
+   *   consumer: { email: "customer@example.com", name: "Ahmad Ali" },
    *   product: { name: "Premium Subscription", price: 99.99 },
    *   options: { forceCreate: true }
    * });

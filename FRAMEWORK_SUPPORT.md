@@ -455,7 +455,7 @@ import StreamSDK, {
 
 // Full type safety
 const consumer: ConsumerCreate = {
-  name: "John Doe",
+  name: "Ahmad Ali",
   email: "john@example.com",
   phone_number: "+966501234567"
 };

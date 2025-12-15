@@ -14,7 +14,7 @@ const streamClient = StreamSDK.init(process.env.STREAM_API_KEY);
  *   name: "Order #1234",
  *   amount: 99.99,
  *   customerPhone: "+966501234567",
- *   customerName: "John Doe",
+ *   customerName: "Ahmad Ali",
  *   productName: "Premium Subscription",
  *   description: "Monthly premium subscription"
  * }
@@ -76,7 +76,7 @@ app.post('/api/create-payment', async (req, res) => {
  *   name: "Order for Premium Package",
  *   productIds: ["prod_123", "prod_456"],  // Single or multiple products
  *   customerPhone: "+966501234567",
- *   customerName: "John Doe"
+ *   customerName: "Ahmad Ali"
  * }
  */
 app.post('/api/create-payment-with-product', async (req, res) => {
@@ -340,7 +340,7 @@ app.listen(PORT, () => {
   console.log(`\n1. Simple payment (creates new product):`);
   console.log(`curl -X POST http://localhost:${PORT}/api/create-payment \\`);
   console.log(`  -H "Content-Type: application/json" \\`);
-  console.log(`  -d '{"name": "Order #1234", "amount": 99.99, "customerPhone": "+966501234567", "customerName": "John Doe", "productName": "Premium Plan"}'`);
+  console.log(`  -d '{"name": "Order #1234", "amount": 99.99, "customerPhone": "+966501234567", "customerName": "Ahmad Ali", "productName": "Premium Plan"}'`);
   console.log(`\n2. Payment with existing product(s):`);
   console.log(`curl -X POST http://localhost:${PORT}/api/create-payment-with-product \\`);
   console.log(`  -H "Content-Type: application/json" \\`);

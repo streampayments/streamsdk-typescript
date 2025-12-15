@@ -256,7 +256,7 @@ const result = await client.createSimplePaymentLink({
   amount: 250.00,
   consumer: {
     email: "customer@example.com",
-    name: "Jane Doe",
+    name: "Fatima Ahmed",
     phone: "+966501234567"
   },
   product: {

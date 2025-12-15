@@ -36,9 +36,9 @@ async function consumerExamples() {
   // CREATE
   console.log("\n📝 CREATE Consumer:");
   const consumer = await client.createConsumer({
-    name: "Sarah Johnson",
+    name: "Fatima Ahmed",
     phone_number: "+966501234567",
-    email: "sarah.johnson@example.com",
+    email: "fatima.ahmed@example.com",
     preferred_language: "en",
     metadata: {
       source: "web_signup",
@@ -74,7 +74,7 @@ async function consumerExamples() {
   // UPDATE
   console.log("\n✏️  UPDATE Consumer:");
   const updatedConsumer = await client.updateConsumer(consumer.id, {
-    name: "Sarah Johnson-Smith",
+    name: "Fatima Ahmed",
     phone_number: "+966509876543",
     preferred_language: "ar",
     metadata: {

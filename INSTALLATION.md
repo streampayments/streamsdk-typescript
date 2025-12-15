@@ -24,7 +24,7 @@ import StreamSDK from 'stream-sdk';
 const client = StreamSDK.init(process.env.STREAM_API_KEY);
 
 const consumer = await client.createConsumer({
-  name: "John Doe",
+  name: "Ahmad Ali",
   email: "john@example.com"
 });
 ```

@@ -18,7 +18,7 @@
  *    node express-adapter.js
  *
  * Usage:
- * - Checkout: http://localhost:3000/checkout?products=prod_123&customerPhone=+966501234567&customerName=John
+ * - Checkout: http://localhost:3000/checkout?products=prod_123&customerPhone=+966501234567&customerName=Ahmad
  * - Webhooks will be received at: POST http://localhost:3000/webhooks/stream
  */
 
@@ -45,7 +45,7 @@ app.use(express.json());
  * - metadata: URL-encoded JSON metadata (optional)
  *
  * Examples:
- * - Single product: /checkout?products=prod_123&customerPhone=+966501234567&customerName=John
+ * - Single product: /checkout?products=prod_123&customerPhone=+966501234567&customerName=Ahmad
  * - Multiple products: /checkout?products=prod_123,prod_456&customerPhone=+966501234567
  * - With metadata: /checkout?products=prod_123&metadata=%7B%22orderId%22%3A%22ORD-123%22%7D
  */
@@ -404,6 +404,6 @@ app.listen(PORT, () => {
   console.log(`   Checkout: http://localhost:${PORT}/checkout?products=PRODUCT_ID&customerPhone=PHONE`);
   console.log(`   Webhooks: http://localhost:${PORT}/webhooks/stream`);
   console.log(`\n✨ Example checkout URL:`);
-  console.log(`   http://localhost:${PORT}/checkout?products=prod_123&customerPhone=%2B966501234567&customerName=John%20Doe`);
+  console.log(`   http://localhost:${PORT}/checkout?products=prod_123&customerPhone=%2B966501234567&customerName=Ahmad%20Doe`);
   console.log('\n');
 });

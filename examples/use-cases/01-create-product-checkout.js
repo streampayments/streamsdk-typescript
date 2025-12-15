@@ -9,7 +9,7 @@
  * Usage:
  * 1. export STREAM_API_KEY="your-api-key"
  * 2. node use-cases/01-create-product-checkout.js
- * 3. Visit http://localhost:3001/checkout?products=PRODUCT_ID&customerName=John&customerPhone=+966501234567
+ * 3. Visit http://localhost:3001/checkout?products=PRODUCT_ID&customerName=Ahmad&customerPhone=+966501234567
  */
 
 import express from 'express';
@@ -213,7 +213,7 @@ async function start() {
       console.log(`🌍 Server running at: http://localhost:${PORT}`);
       console.log(`\n📍 Endpoints:`);
       console.log(`   Home:     http://localhost:${PORT}/`);
-      console.log(`   Checkout: http://localhost:${PORT}/checkout?products=${createdProduct.id}&customerName=John&customerPhone=%2B966501234567`);
+      console.log(`   Checkout: http://localhost:${PORT}/checkout?products=${createdProduct.id}&customerName=Ahmad&customerPhone=%2B966501234567`);
       console.log(`   Webhooks: http://localhost:${PORT}/webhooks/stream`);
       console.log(`\n✨ Visit http://localhost:${PORT}/ to get started!`);
       console.log('\n');

@@ -35,9 +35,9 @@ async function main() {
     // ===========================
     console.log("📋 1. Creating a consumer...");
     const consumer = await client.createConsumer({
-      name: "John Doe",
+      name: "Ahmad Ali",
       phone_number: "+966501234567",
-      email: "john.doe@example.com",
+      email: "ahmad.ali@example.com",
       preferred_language: "en"
     });
     console.log(`✅ Created consumer: ${consumer.id}`);

@@ -145,7 +145,7 @@ app.get('/checkout', Checkout({
   returnUrl: 'https://myapp.com/cancel'
 }));
 
-// Usage: /checkout?products=prod_123&customerPhone=+966501234567&customerName=John
+// Usage: /checkout?products=prod_123&customerPhone=+966501234567&customerName=Ahmad
 ```
 
 ## Key Features
@@ -203,7 +203,7 @@ npm run express-adapter
 
 Open in browser:
 ```
-http://localhost:3000/checkout?products=prod_123&customerPhone=%2B966501234567&customerName=John%20Doe
+http://localhost:3000/checkout?products=prod_123&customerPhone=%2B966501234567&customerName=Ahmad%20Doe
 ```
 
 ### 3. Test Webhooks
