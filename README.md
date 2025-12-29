@@ -20,13 +20,6 @@ Official Node.js/TypeScript SDK for Stream API
 - [Quick Start](#quick-start)
 - [SDK Features](#sdk-features)
 - [Usage](#usage)
-  - [Authentication](#authentication)
-  - [Consumers](#consumers)
-  - [Products](#products)
-  - [Payment Links](#payment-links)
-  - [Subscriptions](#subscriptions)
-  - [Invoices](#invoices)
-  - [Coupons](#coupons)
 - [Examples](#examples)
 - [Express.js Integration](#expressjs-integration)
 - [API Documentation](#api-documentation)
@@ -138,6 +131,8 @@ console.log("Payment URL:", result.paymentUrl);
 
 ## Usage
 
+For detailed usage examples and API documentation, please refer to the [API Documentation](#api-documentation) section below.
+
 ### Authentication
 
 Initialize the SDK with your API key:
@@ -145,285 +140,10 @@ Initialize the SDK with your API key:
 ```typescript
 import StreamSDK from "@streamsdk/typescript";
 
-// Option 1: Direct initialization
-const client = StreamSDK.init("your-api-key");
-
-// Option 2: With configuration
-const client = StreamSDK.init("your-api-key", {
-  baseUrl: "https://stream-app-service.streampay.sa",
-});
-
-// Option 3: Using environment variable
 const client = StreamSDK.init(process.env.STREAM_API_KEY!);
 ```
 
----
-
-### Consumers
-
-Manage your customers (consumers):
-
-#### Create a Consumer
-
-```typescript
-const consumer = await client.createConsumer({
-  name: "Ahmad Ali",
-  email: "ahmad.ali@example.com",
-  phone_number: "+966501234567",
-  preferred_language: "en",
-});
-```
-
-#### List Consumers
-
-```typescript
-const consumers = await client.listConsumers({
-  page: 1,
-  size: 10,
-});
-```
-
-#### Update a Consumer
-
-```typescript
-const updated = await client.updateConsumer("consumer_id", {
-  name: "Ahmad Ali",
-  email: "ahmad.ali@example.com",
-});
-```
-
-#### Delete a Consumer
-
-```typescript
-await client.deleteConsumer("consumer_id");
-```
-
----
-
-### Products
-
-Manage your product catalog:
-
-#### Create a Product
-
-```typescript
-const product = await client.createProduct({
-  name: "Premium Subscription",
-  price: 99.99,
-  currency: "SAR",
-  type: "ONE_OFF",
-  description: "Monthly premium subscription",
-});
-```
-
-#### List Products
-
-```typescript
-const products = await client.listProducts({
-  page: 1,
-  size: 20,
-});
-```
-
-#### Update a Product
-
-```typescript
-const updated = await client.updateProduct("product_id", {
-  price: 89.99,
-  description: "Updated description",
-});
-```
-
-#### Delete a Product
-
-```typescript
-await client.deleteProduct("product_id");
-```
-
----
-
-### Payment Links
-
-Create payment links for your customers:
-
-#### Simple Payment Link (Recommended)
-
-The SDK handles consumer and product creation automatically:
-
-```typescript
-const result = await client.createSimplePaymentLink({
-  name: "Order #1234",
-  amount: 250.0,
-  consumer: {
-    email: "customer@example.com",
-    name: "Fatima Ahmed",
-    phone: "+966501234567",
-  },
-  product: {
-    name: "Premium Package",
-    price: 250.0,
-  },
-  successRedirectUrl: "https://yourapp.com/success",
-  failureRedirectUrl: "https://yourapp.com/failure",
-});
-
-console.log("Payment URL:", result.paymentUrl);
-console.log("Consumer ID:", result.consumerId);
-console.log("Product ID:", result.productId);
-```
-
-#### Multiple Products
-
-```typescript
-const result = await client.createSimplePaymentLink({
-  name: "Bundle Order",
-  consumer: {
-    name: "Ahmad Ali",
-    phone: "+966501234567",
-  },
-  products: [
-    { name: "Product A", price: 50.0, quantity: 2 },
-    { name: "Product B", price: 75.0, quantity: 1 },
-  ],
-  currency: "SAR",
-  successRedirectUrl: "https://yourapp.com/success",
-});
-
-console.log("Product IDs:", result.productIds);
-```
-
-#### Guest Checkout
-
-Create a payment without requiring customer details:
-
-```typescript
-const result = await client.createSimplePaymentLink({
-  name: "Guest Order",
-  amount: 49.99,
-  product: {
-    name: "One-time Purchase",
-    price: 49.99,
-  },
-  // No consumer - phone collected at checkout
-  successRedirectUrl: "https://yourapp.com/success",
-});
-```
-
-#### Advanced Payment Link
-
-For more control, create resources separately:
-
-```typescript
-// Create consumer
-const consumer = await client.createConsumer({
-  name: "Ahmad Ali",
-  email: "ahmad.ali@example.com",
-  phone_number: "+966501234567",
-});
-
-// Create product
-const product = await client.createProduct({
-  name: "Premium Plan",
-  price: 99.99,
-  currency: "SAR",
-});
-
-// Create payment link
-const paymentLink = await client.createPaymentLink({
-  name: "Payment",
-  organization_consumer_id: consumer.id,
-  items: [{ product_id: product.id, quantity: 1 }],
-  success_redirect_url: "https://yourapp.com/success",
-  failure_redirect_url: "https://yourapp.com/failure",
-});
-
-const paymentUrl = client.getPaymentUrl(paymentLink);
-```
-
----
-
-### Subscriptions
-
-Handle recurring payments:
-
-#### Create a Subscription
-
-```typescript
-const subscription = await client.createSubscription({
-  organization_consumer_id: "consumer_id",
-  organization_product_id: "product_id",
-  billing_cycle: "MONTHLY",
-  start_date: new Date().toISOString(),
-});
-```
-
-#### List Subscriptions
-
-```typescript
-const subscriptions = await client.listSubscriptions({
-  page: 1,
-  size: 10,
-});
-```
-
-#### Cancel a Subscription
-
-```typescript
-await client.cancelSubscription("subscription_id");
-```
-
----
-
-### Invoices
-
-Create and manage invoices:
-
-#### Create an Invoice
-
-```typescript
-const invoice = await client.createInvoice({
-  organization_consumer_id: "consumer_id",
-  items: [{ product_id: "product_id", quantity: 1 }],
-  due_date: "2024-12-31",
-  notes: "Payment due within 30 days",
-});
-```
-
-#### List Invoices
-
-```typescript
-const invoices = await client.listInvoices({
-  page: 1,
-  size: 10,
-});
-```
-
----
-
-### Coupons
-
-Manage discounts and promotions:
-
-#### Create a Coupon
-
-```typescript
-const coupon = await client.createCoupon({
-  code: "SUMMER2024",
-  discount_type: "PERCENTAGE",
-  discount_value: 20,
-  valid_from: "2024-06-01",
-  valid_to: "2024-08-31",
-});
-```
-
-#### List Coupons
-
-```typescript
-const coupons = await client.listCoupons({
-  page: 1,
-  size: 10,
-});
-```
+For more authentication options and detailed examples for each resource, see the documentation links in the [Available Resources and Operations](#available-resources-and-operations) section.
 
 ---
 
@@ -451,31 +171,70 @@ For Express.js applications, we provide a separate adapter package with declarat
 
 ## API Documentation
 
-### Available Methods
+### Available Resources and Operations
 
-| Method                          | Description                       |
-| ------------------------------- | --------------------------------- |
-| `createConsumer(data)`          | Create a new consumer             |
-| `listConsumers(params)`         | List all consumers                |
-| `updateConsumer(id, data)`      | Update a consumer                 |
-| `deleteConsumer(id)`            | Delete a consumer                 |
-| `createProduct(data)`           | Create a new product              |
-| `listProducts(params)`          | List all products                 |
-| `updateProduct(id, data)`       | Update a product                  |
-| `deleteProduct(id)`             | Delete a product                  |
-| `createSimplePaymentLink(data)` | Create payment link (recommended) |
-| `createPaymentLink(data)`       | Create payment link (advanced)    |
-| `listPaymentLinks(params)`      | List all payment links            |
-| `getPaymentUrl(link)`           | Get payment URL from link         |
-| `createSubscription(data)`      | Create a subscription             |
-| `listSubscriptions(params)`     | List all subscriptions            |
-| `cancelSubscription(id)`        | Cancel a subscription             |
-| `createInvoice(data)`           | Create an invoice                 |
-| `listInvoices(params)`          | List all invoices                 |
-| `createCoupon(data)`            | Create a coupon                   |
-| `listCoupons(params)`           | List all coupons                  |
+<details open>
+<summary>Available methods</summary>
 
-**[Full API Reference →](./API_REFERENCE.md)**
+#### [Consumers](docs/sdks/consumers/README.md)
+
+* [create](docs/sdks/consumers/README.md#create) - Create Consumer
+* [list](docs/sdks/consumers/README.md#list) - Get All Consumers
+* [get](docs/sdks/consumers/README.md#get) - Get Consumer
+* [update](docs/sdks/consumers/README.md#update) - Update Consumer
+* [delete](docs/sdks/consumers/README.md#delete) - Delete Consumer
+
+#### [Coupons](docs/sdks/coupons/README.md)
+
+* [list](docs/sdks/coupons/README.md#list) - List Coupons
+* [create](docs/sdks/coupons/README.md#create) - Create Coupon
+* [update](docs/sdks/coupons/README.md#update) - Update Coupon
+* [get](docs/sdks/coupons/README.md#get) - Get Coupon
+* [delete](docs/sdks/coupons/README.md#delete) - Delete Coupon
+
+#### [Invoices](docs/sdks/invoices/README.md)
+
+* [get](docs/sdks/invoices/README.md#get) - Get Invoice
+* [list](docs/sdks/invoices/README.md#list) - List Invoices
+
+#### [PaymentLinks](docs/sdks/paymentlinks/README.md)
+
+* [get](docs/sdks/paymentlinks/README.md#get) - Get Payment Link
+* [create](docs/sdks/paymentlinks/README.md#create) - Create Payment Link
+* [list](docs/sdks/paymentlinks/README.md#list) - List Payment Links
+
+#### [Payments](docs/sdks/payments/README.md)
+
+* [list](docs/sdks/payments/README.md#list) - List Payments
+* [get](docs/sdks/payments/README.md#get) - Get Payment
+* [refund](docs/sdks/payments/README.md#refund) - Refund Payment
+
+#### [Products](docs/sdks/products/README.md)
+
+* [list](docs/sdks/products/README.md#list) - List Products
+* [create](docs/sdks/products/README.md#create) - Create Product
+* [get](docs/sdks/products/README.md#get) - Get Product
+* [update](docs/sdks/products/README.md#update) - Update Product
+* [delete](docs/sdks/products/README.md#delete) - Delete Product
+
+#### [Subscriptions](docs/sdks/subscriptions/README.md)
+
+* [get](docs/sdks/subscriptions/README.md#get) - Get Subscription
+* [update](docs/sdks/subscriptions/README.md#update) - Update Subscription
+* [list](docs/sdks/subscriptions/README.md#list) - List Subscriptions
+* [create](docs/sdks/subscriptions/README.md#create) - Create Subscription
+* [cancel](docs/sdks/subscriptions/README.md#cancel) - Cancel Subscription
+* [freeze](docs/sdks/subscriptions/README.md#freeze) - Freeze Subscription
+* [listFreezes](docs/sdks/subscriptions/README.md#listfreezes) - List Subscription Freezes
+* [updateFreeze](docs/sdks/subscriptions/README.md#updatefreeze) - Update Subscription Freeze
+
+#### [Subscriptions.Freeze](docs/sdks/freeze/README.md)
+
+* [delete](docs/sdks/freeze/README.md#delete) - Delete Subscription Freeze
+
+</details>
+
+> Click on each resource above to see detailed documentation with code examples, parameters, and response types.
 
 ---
 
