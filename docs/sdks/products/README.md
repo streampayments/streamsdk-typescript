@@ -24,7 +24,7 @@ const streamSDK = new StreamSDK();
 
 async function run() {
   const result = await streamSDK.products.list({
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     filters: {},
   });
@@ -49,7 +49,7 @@ const streamSDK = new StreamSDKCore();
 
 async function run() {
   const res = await productsList(streamSDK, {
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     filters: {},
   });
@@ -99,7 +99,7 @@ const streamSDK = new StreamSDK();
 
 async function run() {
   const result = await streamSDK.products.create({
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     name: "<value>",
     price: 7923.08,
@@ -126,7 +126,7 @@ const streamSDK = new StreamSDKCore();
 
 async function run() {
   const res = await productsCreate(streamSDK, {
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     name: "<value>",
     price: 7923.08,
@@ -178,7 +178,7 @@ const streamSDK = new StreamSDK();
 
 async function run() {
   const result = await streamSDK.products.get({
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     productId: "5f71e522-fd60-4b11-af2a-0fcc86b65a9d",
   });
@@ -203,7 +203,7 @@ const streamSDK = new StreamSDKCore();
 
 async function run() {
   const res = await productsGet(streamSDK, {
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     productId: "5f71e522-fd60-4b11-af2a-0fcc86b65a9d",
   });
@@ -253,7 +253,7 @@ const streamSDK = new StreamSDK();
 
 async function run() {
   const result = await streamSDK.products.update({
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     productId: "54f966a4-b2a2-4a38-9b67-cb09640e8817",
     body: {},
@@ -279,7 +279,7 @@ const streamSDK = new StreamSDKCore();
 
 async function run() {
   const res = await productsUpdate(streamSDK, {
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     productId: "54f966a4-b2a2-4a38-9b67-cb09640e8817",
     body: {},
@@ -330,7 +330,7 @@ const streamSDK = new StreamSDK();
 
 async function run() {
   const result = await streamSDK.products.delete({
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     productId: "6b2d6be5-21e3-44b5-96fe-efa50fadf04b",
   });
@@ -355,7 +355,7 @@ const streamSDK = new StreamSDKCore();
 
 async function run() {
   const res = await productsDelete(streamSDK, {
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     productId: "6b2d6be5-21e3-44b5-96fe-efa50fadf04b",
   });

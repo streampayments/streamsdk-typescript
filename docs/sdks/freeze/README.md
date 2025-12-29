@@ -20,7 +20,7 @@ const streamSDK = new StreamSDK();
 
 async function run() {
   const result = await streamSDK.subscriptions.freeze.delete({
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     subscriptionId: "1fea6d4a-2626-46ad-b4df-40a9041a730c",
     freezeId: "e9ab8b18-9b85-4e4d-996c-da675ac1ad7a",
@@ -46,7 +46,7 @@ const streamSDK = new StreamSDKCore();
 
 async function run() {
   const res = await subscriptionsFreezeDelete(streamSDK, {
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     subscriptionId: "1fea6d4a-2626-46ad-b4df-40a9041a730c",
     freezeId: "e9ab8b18-9b85-4e4d-996c-da675ac1ad7a",

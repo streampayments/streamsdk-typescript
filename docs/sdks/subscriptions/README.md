@@ -27,7 +27,7 @@ const streamSDK = new StreamSDK();
 
 async function run() {
   const result = await streamSDK.subscriptions.get({
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     subscriptionId: "e0712d06-bf48-4d11-b03a-690f471633e5",
   });
@@ -52,7 +52,7 @@ const streamSDK = new StreamSDKCore();
 
 async function run() {
   const res = await subscriptionsGet(streamSDK, {
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     subscriptionId: "e0712d06-bf48-4d11-b03a-690f471633e5",
   });
@@ -113,7 +113,7 @@ const streamSDK = new StreamSDK();
 
 async function run() {
   const result = await streamSDK.subscriptions.update({
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     subscriptionId: "9146adfc-2851-4f4b-969d-7e5b7011ed49",
     body: {
@@ -149,7 +149,7 @@ const streamSDK = new StreamSDKCore();
 
 async function run() {
   const res = await subscriptionsUpdate(streamSDK, {
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     subscriptionId: "9146adfc-2851-4f4b-969d-7e5b7011ed49",
     body: {
@@ -210,7 +210,7 @@ const streamSDK = new StreamSDK();
 
 async function run() {
   const result = await streamSDK.subscriptions.list({
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     filters: {},
   });
@@ -235,7 +235,7 @@ const streamSDK = new StreamSDKCore();
 
 async function run() {
   const res = await subscriptionsList(streamSDK, {
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     filters: {},
   });
@@ -285,7 +285,7 @@ const streamSDK = new StreamSDK();
 
 async function run() {
   const result = await streamSDK.subscriptions.create({
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     items: [
       {
@@ -317,7 +317,7 @@ const streamSDK = new StreamSDKCore();
 
 async function run() {
   const res = await subscriptionsCreate(streamSDK, {
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     items: [
       {
@@ -374,7 +374,7 @@ const streamSDK = new StreamSDK();
 
 async function run() {
   const result = await streamSDK.subscriptions.cancel({
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     subscriptionId: "a9781421-b12f-46fc-8d28-8850f0b04508",
     body: {},
@@ -400,7 +400,7 @@ const streamSDK = new StreamSDKCore();
 
 async function run() {
   const res = await subscriptionsCancel(streamSDK, {
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     subscriptionId: "a9781421-b12f-46fc-8d28-8850f0b04508",
     body: {},
@@ -451,7 +451,7 @@ const streamSDK = new StreamSDK();
 
 async function run() {
   const result = await streamSDK.subscriptions.freeze({
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     subscriptionId: "3c939eaa-f4dd-47a0-82d3-607de6352145",
     body: {
@@ -479,7 +479,7 @@ const streamSDK = new StreamSDKCore();
 
 async function run() {
   const res = await subscriptionsFreeze(streamSDK, {
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     subscriptionId: "3c939eaa-f4dd-47a0-82d3-607de6352145",
     body: {
@@ -532,7 +532,7 @@ const streamSDK = new StreamSDK();
 
 async function run() {
   const result = await streamSDK.subscriptions.listFreezes({
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     subscriptionId: "4b9792a6-dad4-41d5-8e26-38a29c774f48",
   });
@@ -557,7 +557,7 @@ const streamSDK = new StreamSDKCore();
 
 async function run() {
   const res = await subscriptionsListFreezes(streamSDK, {
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     subscriptionId: "4b9792a6-dad4-41d5-8e26-38a29c774f48",
   });
@@ -607,7 +607,7 @@ const streamSDK = new StreamSDK();
 
 async function run() {
   const result = await streamSDK.subscriptions.updateFreeze({
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     subscriptionId: "033c1a47-537e-4fb5-840f-7e845b73adc2",
     freezeId: "2827f92b-2fad-4922-bd87-dcb11eda1b00",
@@ -638,7 +638,7 @@ const streamSDK = new StreamSDKCore();
 
 async function run() {
   const res = await subscriptionsUpdateFreeze(streamSDK, {
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     subscriptionId: "033c1a47-537e-4fb5-840f-7e845b73adc2",
     freezeId: "2827f92b-2fad-4922-bd87-dcb11eda1b00",

@@ -21,7 +21,7 @@ const streamSDK = new StreamSDK();
 
 async function run() {
   const result = await streamSDK.invoices.get({
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     invoiceId: "34ac51ea-e2e8-4e82-8723-2cc444e6eaec",
   });
@@ -46,7 +46,7 @@ const streamSDK = new StreamSDKCore();
 
 async function run() {
   const res = await invoicesGet(streamSDK, {
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     invoiceId: "34ac51ea-e2e8-4e82-8723-2cc444e6eaec",
   });
@@ -96,7 +96,7 @@ const streamSDK = new StreamSDK();
 
 async function run() {
   const result = await streamSDK.invoices.list({
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     filters: {},
   });
@@ -121,7 +121,7 @@ const streamSDK = new StreamSDKCore();
 
 async function run() {
   const res = await invoicesList(streamSDK, {
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     filters: {},
   });

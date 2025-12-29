@@ -22,7 +22,7 @@ const streamSDK = new StreamSDK();
 
 async function run() {
   const result = await streamSDK.paymentLinks.get({
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     paymentLinkId: "4f0363ba-de89-46d3-b151-61eb67db9814",
   });
@@ -47,7 +47,7 @@ const streamSDK = new StreamSDKCore();
 
 async function run() {
   const res = await paymentLinksGet(streamSDK, {
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     paymentLinkId: "4f0363ba-de89-46d3-b151-61eb67db9814",
   });
@@ -97,7 +97,7 @@ const streamSDK = new StreamSDK();
 
 async function run() {
   const result = await streamSDK.paymentLinks.create({
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     name: "<value>",
     items: [],
@@ -123,7 +123,7 @@ const streamSDK = new StreamSDKCore();
 
 async function run() {
   const res = await paymentLinksCreate(streamSDK, {
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     name: "<value>",
     items: [],
@@ -174,7 +174,7 @@ const streamSDK = new StreamSDK();
 
 async function run() {
   const result = await streamSDK.paymentLinks.list({
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     filters: {},
   });
@@ -199,7 +199,7 @@ const streamSDK = new StreamSDKCore();
 
 async function run() {
   const res = await paymentLinksList(streamSDK, {
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     filters: {},
   });

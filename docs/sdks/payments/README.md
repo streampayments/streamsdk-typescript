@@ -22,7 +22,7 @@ const streamSDK = new StreamSDK();
 
 async function run() {
   const result = await streamSDK.payments.list({
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     invoiceId: "ad4f42db-8d4a-4ac4-b3e9-cfe42d747e4c",
   });
@@ -47,7 +47,7 @@ const streamSDK = new StreamSDKCore();
 
 async function run() {
   const res = await paymentsList(streamSDK, {
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     invoiceId: "ad4f42db-8d4a-4ac4-b3e9-cfe42d747e4c",
   });
@@ -97,7 +97,7 @@ const streamSDK = new StreamSDK();
 
 async function run() {
   const result = await streamSDK.payments.get({
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     paymentId: "852175f4-11e6-4823-b1c4-1948d4844143",
   });
@@ -122,7 +122,7 @@ const streamSDK = new StreamSDKCore();
 
 async function run() {
   const res = await paymentsGet(streamSDK, {
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     paymentId: "852175f4-11e6-4823-b1c4-1948d4844143",
   });
@@ -172,7 +172,7 @@ const streamSDK = new StreamSDK();
 
 async function run() {
   const result = await streamSDK.payments.refund({
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     paymentId: "b777c2d7-fa36-4137-8cf8-5eff650791f4",
     body: {
@@ -200,7 +200,7 @@ const streamSDK = new StreamSDKCore();
 
 async function run() {
   const res = await paymentsRefund(streamSDK, {
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     paymentId: "b777c2d7-fa36-4137-8cf8-5eff650791f4",
     body: {

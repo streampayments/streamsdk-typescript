@@ -24,7 +24,7 @@ const streamSDK = new StreamSDK();
 
 async function run() {
   const result = await streamSDK.coupons.list({
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {});
 
   console.log(result);
@@ -47,7 +47,7 @@ const streamSDK = new StreamSDKCore();
 
 async function run() {
   const res = await couponsList(streamSDK, {
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {});
   if (res.ok) {
     const { value: result } = res;
@@ -95,7 +95,7 @@ const streamSDK = new StreamSDK();
 
 async function run() {
   const result = await streamSDK.coupons.create({
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     name: "<value>",
     discountValue: 9026.08,
@@ -121,7 +121,7 @@ const streamSDK = new StreamSDKCore();
 
 async function run() {
   const res = await couponsCreate(streamSDK, {
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     name: "<value>",
     discountValue: 9026.08,
@@ -172,7 +172,7 @@ const streamSDK = new StreamSDK();
 
 async function run() {
   const result = await streamSDK.coupons.update({
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     couponId: "456cbab6-8de3-491b-b401-76e483196d04",
     body: {},
@@ -198,7 +198,7 @@ const streamSDK = new StreamSDKCore();
 
 async function run() {
   const res = await couponsUpdate(streamSDK, {
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     couponId: "456cbab6-8de3-491b-b401-76e483196d04",
     body: {},
@@ -249,7 +249,7 @@ const streamSDK = new StreamSDK();
 
 async function run() {
   const result = await streamSDK.coupons.get({
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     couponId: "220c2f2f-1810-44ea-961d-841fb0e59efa",
   });
@@ -274,7 +274,7 @@ const streamSDK = new StreamSDKCore();
 
 async function run() {
   const res = await couponsGet(streamSDK, {
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     couponId: "220c2f2f-1810-44ea-961d-841fb0e59efa",
   });
@@ -324,7 +324,7 @@ const streamSDK = new StreamSDK();
 
 async function run() {
   const result = await streamSDK.coupons.delete({
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     couponId: "46ca8c3f-3a35-4faa-86f3-008798464074",
   });
@@ -349,7 +349,7 @@ const streamSDK = new StreamSDKCore();
 
 async function run() {
   const res = await couponsDelete(streamSDK, {
-    jwtBearer: process.env["STREAMSDK_JWT_BEARER"] ?? "",
+    xApiKey: process.env["STREAM_API_KEY"] ?? "",
   }, {
     couponId: "46ca8c3f-3a35-4faa-86f3-008798464074",
   });
