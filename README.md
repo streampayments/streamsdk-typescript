@@ -1,7 +1,11 @@
 # @streamsdk/typescript · Official Stream SDK for TypeScript
 
 <div align="center">
-  <img src="https://app.streampay.sa/media/logos/dark-logo.svg" alt="Stream Logo" width="200"/>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://app.streampay.sa/media/logos/light-logo.svg">
+    <source media="(prefers-color-scheme: light)" srcset="https://app.streampay.sa/media/logos/dark-logo.svg">
+    <img src="https://app.streampay.sa/media/logos/dark-logo.svg" alt="Stream Logo" width="200"/>
+  </picture>
 
 Official Node.js/TypeScript SDK for Stream API
 
