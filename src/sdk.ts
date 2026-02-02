@@ -718,6 +718,9 @@ export class StreamClient {
 
         if (existingProduct) {
           // Use existing product
+          if (!existingProduct.id) {
+            throw new Error('Product ID is missing from existing product');
+          }
           productId = existingProduct.id;
         } else {
           // Create new product
@@ -725,7 +728,8 @@ export class StreamClient {
             name: productName,
             price: productPrice,
             type: 'ONE_OFF',  // Default to one-time purchase
-            currency: productInput.currency || input.currency || 'SAR'  // Default to SAR
+            is_one_time: true,  // Required field for one-off products
+            recurring_interval_count: 1  // Required field with default value
           };
 
           if (productInput.description !== undefined) {
@@ -733,6 +737,9 @@ export class StreamClient {
           }
 
           const product = await this.createProduct(productData);
+          if (!product.id) {
+            throw new Error('Product ID is missing from created product');
+          }
           productId = product.id;
         }
       }

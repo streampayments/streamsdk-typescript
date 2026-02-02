@@ -42,7 +42,7 @@ export type InvoiceListResponse = components["schemas"]["ListResource_InvoiceLis
 // Payments
 // ===========================
 export type PaymentResponse = components["schemas"]["PaymentResponse"];
-export type PaymentListResponse = components["schemas"]["PaymentListResponse"];
+export type PaymentListResponse = components["schemas"]["ListResource_PaymentResponse_"];
 export type PaymentRefundRequest = components["schemas"]["PaymentRefundRequest"];
 
 // ===========================

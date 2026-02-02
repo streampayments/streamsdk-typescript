@@ -109,17 +109,18 @@ async function runExamples() {
     const product1 = await client.createProduct({
       name: 'Monthly Subscription',
       price: 99.99,
-      currency: 'SAR',
       type: 'RECURRING',
-      recurring: true,
-      billing_period: 'MONTHLY'
+      is_one_time: false,
+      recurring_interval: 'MONTHLY',
+      recurring_interval_count: 1
     });
 
     const product2 = await client.createProduct({
       name: 'Setup Fee',
       price: 49.99,
-      currency: 'SAR',
-      type: 'ONE_OFF'
+      type: 'ONE_OFF',
+      is_one_time: true,
+      recurring_interval_count: 1
     });
 
     console.log('   Created products:', product1.id, product2.id);

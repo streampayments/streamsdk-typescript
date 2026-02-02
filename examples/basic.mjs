@@ -60,8 +60,9 @@ async function main() {
       name: "Premium Subscription",
       description: "Monthly premium subscription",
       price: 99.99,
-      currency: "SAR",
-      type: "ONE_OFF"
+      type: "ONE_OFF",
+      is_one_time: true,
+      recurring_interval_count: 1
     });
     console.log(`✅ Created product: ${product.id}`);
 
