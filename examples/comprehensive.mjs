@@ -108,18 +108,14 @@ async function productExamples() {
     name: "Premium Cloud Storage",
     description: "100GB cloud storage with advanced features",
     price: 149.99,
-    currency: "SAR",
     type: "RECURRING",
-    recurring: true,
-    billing_period: "MONTHLY",
-    metadata: {
-      category: "storage",
-      features: "100GB, 2FA, encryption"
-    }
+    is_one_time: false,
+    recurring_interval: "MONTHLY",
+    recurring_interval_count: 1
   });
   console.log(`✅ Created product ID: ${product.id}`);
   console.log(`   Name: ${product.name}`);
-  console.log(`   Price: ${product.price} ${product.currency}`);
+  console.log(`   Price: ${product.price} SAR`);
   console.log(`   Type: ${product.type}`);
 
   // CREATE another product
@@ -128,10 +124,10 @@ async function productExamples() {
     name: "Basic Plan",
     description: "Starter plan with essential features",
     price: 49.99,
-    currency: "SAR",
     type: "RECURRING",
-    recurring: true,
-    billing_period: "MONTHLY"
+    is_one_time: false,
+    recurring_interval: "MONTHLY",
+    recurring_interval_count: 1
   });
   console.log(`✅ Created product ID: ${product2.id}`);
 
@@ -151,7 +147,7 @@ async function productExamples() {
   });
   console.log(`✅ Total products: ${productsList.pagination.total_count}`);
   productsList.data.slice(0, 5).forEach((p, i) => {
-    console.log(`   ${i + 1}. ${p.name} - ${p.price} ${p.currency}`);
+    console.log(`   ${i + 1}. ${p.name} - ${p.price} SAR`);
   });
 
   // UPDATE
@@ -167,7 +163,7 @@ async function productExamples() {
     }
   });
   console.log(`✅ Updated product: ${updatedProduct.name}`);
-  console.log(`   New price: ${updatedProduct.price} ${updatedProduct.currency}`);
+  console.log(`   New price: ${updatedProduct.price} SAR`);
   console.log(`   New description: ${updatedProduct.description}`);
 
   // DELETE (We'll delete at the end)

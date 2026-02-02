@@ -674,6 +674,9 @@ var StreamClient = class {
           }
         }
         if (existingProduct) {
+          if (!existingProduct.id) {
+            throw new Error("Product ID is missing from existing product");
+          }
           productId = existingProduct.id;
         } else {
           const productData = {
@@ -681,13 +684,18 @@ var StreamClient = class {
             price: productPrice,
             type: "ONE_OFF",
             // Default to one-time purchase
-            currency: productInput.currency || input.currency || "SAR"
-            // Default to SAR
+            is_one_time: true,
+            // Required field for one-off products
+            recurring_interval_count: 1
+            // Required field with default value
           };
           if (productInput.description !== void 0) {
             productData.description = productInput.description;
           }
           const product = await this.createProduct(productData);
+          if (!product.id) {
+            throw new Error("Product ID is missing from created product");
+          }
           productId = product.id;
         }
       }
