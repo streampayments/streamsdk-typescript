@@ -26,7 +26,15 @@ export type PaymentLinkListResponse = components["schemas"]["ListResource_Paymen
 // ===========================
 // Coupons
 // ===========================
-export type CouponCreate = components["schemas"]["CouponCreate"];
+/**
+ * The live API requires `currency` when `is_percentage` is false, but the
+ * generated OpenAPI schema doesn't declare the field. Intersect the generated
+ * type with an optional `currency` so callers can pass it explicitly. Once
+ * the upstream OpenAPI spec is updated, this intersection becomes a no-op.
+ */
+export type CouponCreate = components["schemas"]["CouponCreate"] & {
+  currency?: string;
+};
 export type CouponDetailed = components["schemas"]["CouponDetailed"];
 export type CouponUpdate = components["schemas"]["CouponUpdate"];
 export type CouponListResponse = components["schemas"]["ListResource_CouponDetailed_"];

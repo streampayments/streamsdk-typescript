@@ -92,9 +92,7 @@ export class StreamSDKError extends Error {
       const maybeJson = text ? safeJsonParse(text) : undefined;
   
       if (!res.ok) {
-        const msg =
-          (maybeJson && typeof maybeJson === "object" && maybeJson && "detail" in maybeJson && String((maybeJson as any).detail)) ||
-          `HTTP ${res.status} calling ${opts.method} ${opts.path}`;
+        const msg = extractErrorMessage(maybeJson) || `HTTP ${res.status} calling ${opts.method} ${opts.path}`;
         const errorOpts: { status: number; requestId?: string; body?: unknown } = { status: res.status };
         if (requestId !== undefined) {
           errorOpts.requestId = requestId;
@@ -117,4 +115,29 @@ export class StreamSDKError extends Error {
     } catch {
       return undefined;
     }
+  }
+
+  function extractErrorMessage(body: unknown): string | null {
+    if (body == null) return null;
+    if (typeof body === "string") return body;
+    if (typeof body !== "object") return null;
+    const rec = body as Record<string, unknown>;
+    const detail = rec.detail;
+    if (typeof detail === "string") return detail;
+    if (Array.isArray(detail)) {
+      return detail
+        .map((item) => {
+          if (item && typeof item === "object") {
+            const msg = (item as { msg?: unknown }).msg;
+            if (typeof msg === "string") return msg;
+            return JSON.stringify(item);
+          }
+          return typeof item === "string" ? item : JSON.stringify(item);
+        })
+        .join("; ");
+    }
+    if (detail && typeof detail === "object") return JSON.stringify(detail);
+    if (typeof rec.message === "string") return rec.message;
+    if (typeof rec.error === "string") return rec.error;
+    return null;
   }

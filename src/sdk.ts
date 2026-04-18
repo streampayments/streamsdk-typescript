@@ -235,12 +235,21 @@ export class StreamClient {
   /**
    * Create a new coupon
    * POST /api/v2/coupons
+   *
+   * The API requires `currency` when `is_percentage` is false. If the caller
+   * omits it on a fixed-amount coupon, we default to "SAR" — the only
+   * currency supported today — rather than letting the request fail with
+   * "Currency is required when is_percentage is false".
    */
   createCoupon(input: CouponCreate): Promise<CouponDetailed> {
+    const body: CouponCreate =
+      input && input.is_percentage === false && !("currency" in input)
+        ? { ...input, currency: "SAR" }
+        : input;
     return this.http.request<CouponDetailed>({
       method: "POST",
       path: "/api/v2/coupons",
-      body: input
+      body
     });
   }
 
