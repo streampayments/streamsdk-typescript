@@ -61,7 +61,7 @@ npm install @streamsdk/typescript
 **Or install from GitHub:**
 
 ```bash
-npm install github:streampayments/streamsdk-typescript#v1.0.0
+npm install github:streampayments/streamsdk-typescript#v1.1.0
 ```
 
 ### Add to package.json
@@ -69,7 +69,7 @@ npm install github:streampayments/streamsdk-typescript#v1.0.0
 ```json
 {
   "dependencies": {
-    "@streamsdk/typescript": "^1.0.0"
+    "@streamsdk/typescript": "^1.1.0"
   }
 }
 ```
@@ -180,6 +180,19 @@ For Express.js applications, we provide a separate adapter package with declarat
 <details open>
 <summary>Available methods</summary>
 
+#### Me / Organization
+
+* `getMe()` - Get authenticated user and organization info
+* `createOrganizationInvite(input)` - Invite a user to join the organization
+
+#### Branches
+
+* `createBranch(input)` - Create Branch
+* `listBranches()` - List Branches
+* `getBranch(id)` - Get Branch
+* `updateBranch(id, input)` - Update Branch
+* `deleteBranch(id)` - Delete Branch
+
 #### [Consumers](docs/sdks/consumers/README.md)
 
 * [create](docs/sdks/consumers/README.md#create) - Create Consumer
@@ -198,20 +211,26 @@ For Express.js applications, we provide a separate adapter package with declarat
 
 #### [Invoices](docs/sdks/invoices/README.md)
 
+* [create](docs/sdks/invoices/README.md#create) - Create Invoice
 * [get](docs/sdks/invoices/README.md#get) - Get Invoice
 * [list](docs/sdks/invoices/README.md#list) - List Invoices
+* `updateInvoiceInPlace(id, input)` - Update invoice items in-place
 
 #### [PaymentLinks](docs/sdks/paymentlinks/README.md)
 
-* [get](docs/sdks/paymentlinks/README.md#get) - Get Payment Link
 * [create](docs/sdks/paymentlinks/README.md#create) - Create Payment Link
+* [get](docs/sdks/paymentlinks/README.md#get) - Get Payment Link
 * [list](docs/sdks/paymentlinks/README.md#list) - List Payment Links
+* `updatePaymentLinkCoupons(id, input)` - Update coupons on a payment link
+* `updatePaymentLinkStatus(id, input)` - Activate or deactivate a payment link
 
 #### [Payments](docs/sdks/payments/README.md)
 
 * [list](docs/sdks/payments/README.md#list) - List Payments
 * [get](docs/sdks/payments/README.md#get) - Get Payment
 * [refund](docs/sdks/payments/README.md#refund) - Refund Payment
+* `autoChargeOnDemand(id)` - Trigger auto-charge on demand
+* `markPaymentPaid(id, input)` - Mark a payment as paid manually
 
 #### [Products](docs/sdks/products/README.md)
 
@@ -228,6 +247,8 @@ For Express.js applications, we provide a separate adapter package with declarat
 * [list](docs/sdks/subscriptions/README.md#list) - List Subscriptions
 * [create](docs/sdks/subscriptions/README.md#create) - Create Subscription
 * [cancel](docs/sdks/subscriptions/README.md#cancel) - Cancel Subscription
+* `uncancelSubscription(id)` - Un-cancel a subscription
+* `deletePendingSubscriptionChange(id)` - Delete a pending plan change
 * [freeze](docs/sdks/subscriptions/README.md#freeze) - Freeze Subscription
 * [listFreezes](docs/sdks/subscriptions/README.md#listfreezes) - List Subscription Freezes
 * [updateFreeze](docs/sdks/subscriptions/README.md#updatefreeze) - Update Subscription Freeze
