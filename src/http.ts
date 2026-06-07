@@ -50,7 +50,7 @@ export class StreamSDKError extends Error {
     }
   
     async request<TResponse>(opts: {
-      method: "GET" | "POST" | "PUT" | "DELETE";
+      method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
       path: string;
       query?: Record<string, string | number | boolean | null | undefined>;
       body?: unknown;

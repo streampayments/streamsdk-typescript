@@ -21,7 +21,7 @@ declare class HttpClient {
     constructor(opts: HttpClientOptions);
     setAuth(auth: Auth): void;
     request<TResponse>(opts: {
-        method: "GET" | "POST" | "PUT" | "DELETE";
+        method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
         path: string;
         query?: Record<string, string | number | boolean | null | undefined>;
         body?: unknown;
@@ -30,6 +30,56 @@ declare class HttpClient {
 
 interface components {
     schemas: {
+        /**
+         * AddressCreate
+         * @description Address creation model for B2B consumers.
+         */
+        AddressCreate: {
+            /**
+             * Address Line 1
+             * @description Address line 1 (building number, street name)
+             */
+            address_line_1: string;
+            /** @description Address line 2 (district) */
+            address_line_2?: string | null;
+            /**
+             * City
+             * @description City
+             */
+            city: string;
+            /** @description Postal code */
+            postal_code?: string | null;
+            /**
+             * Country
+             * @description Country
+             */
+            country: string;
+        };
+        /**
+         * AddressResponse
+         * @description Address response model.
+         */
+        AddressResponse: {
+            /**
+             * Address Line 1
+             * @description Address line 1
+             */
+            address_line_1?: string;
+            /** @description Address line 2 */
+            address_line_2?: string | null;
+            /**
+             * City
+             * @description City
+             */
+            city?: string;
+            /** @description Postal code */
+            postal_code?: string | null;
+            /**
+             * Country
+             * @description Country
+             */
+            country?: string;
+        };
         /** AutoChargeOnDemandResponse */
         AutoChargeOnDemandResponse: {
             /**
@@ -71,7 +121,7 @@ interface components {
             /** @description External identifier for the consumer */
             external_id?: string | null;
             /** @description Consumer information */
-            consumer?: components["schemas"]["Consumer"];
+            consumer?: components["schemas"]["app__consumer__v2__dtos__Consumer"];
             /** @description IBAN (International Bank Account Number) of the consumer */
             iban?: string | null;
             /**
@@ -96,11 +146,16 @@ interface components {
              * @description Preferred communication methods for the consumer
              */
             communication_methods?: components["schemas"]["ConsumerCommunicationMethod"][];
-            /**
-             * Preferred Language
-             * @description Preferred language of the consumer
-             */
-            preferred_language?: string;
+            /** @description Preferred language of the consumer */
+            preferred_language?: components["schemas"]["Language"];
+            /** @description Consumer type: individual or business */
+            consumer_type?: components["schemas"]["OrganizationConsumerType"];
+            /** @description National address (required for business type) */
+            address?: components["schemas"]["AddressResponse"];
+            /** @description VAT number (optional for business type) */
+            vat_number?: string | null;
+            /** @description Commercial registration number (optional for business type) */
+            commercial_registration?: string | null;
         };
         /** Branch */
         Branch: {
@@ -130,20 +185,26 @@ interface components {
              */
             name?: string;
         };
-        /** Consumer */
-        Consumer: {
+        /** BranchItem */
+        BranchItem: {
             /**
+             * Id
              * Format: uuid4
-             * @description Unique identifier (UUID) of the consumer
              */
-            id?: string | null;
+            id?: string;
+            /** Name */
+            name?: string;
+            user_count?: number | null;
             /**
-             * Format: phone
-             * @description Phone number of the consumer
+             * Created At
+             * Format: date-time
              */
-            phone_number?: string | null;
-            /** @description Preferred language of the consumer */
-            preferred_language?: string | null;
+            created_at?: string;
+        };
+        /** BranchListResponse */
+        BranchListResponse: {
+            /** Data */
+            data?: components["schemas"]["BranchItem"][];
         };
         /**
          * ConsumerCommunicationMethod
@@ -182,9 +243,20 @@ interface components {
             /** @description Comment */
             comment?: string | null;
             /** @description Preferred language */
-            preferred_language?: string | null;
+            preferred_language?: components["schemas"]["Language"];
             /** @description Communication methods */
             communication_methods?: components["schemas"]["ConsumerCommunicationMethod"][] | null;
+            /**
+             * @description Consumer type: individual or business
+             * @default INDIVIDUAL
+             */
+            consumer_type: components["schemas"]["OrganizationConsumerType"];
+            /** @description Address (required for business type) */
+            address?: components["schemas"]["AddressCreate"];
+            /** @description VAT number (optional for business type) */
+            vat_number?: string | null;
+            /** @description Commercial registration number (optional for business type) */
+            commercial_registration?: string | null;
         };
         /** ConsumerResponse */
         ConsumerResponse: {
@@ -212,7 +284,7 @@ interface components {
             /** @description External identifier for the consumer */
             external_id?: string | null;
             /** @description Consumer information */
-            consumer?: components["schemas"]["Consumer"];
+            consumer?: components["schemas"]["app__consumer__v2__dtos__Consumer"];
             /** @description IBAN (International Bank Account Number) of the consumer */
             iban?: string | null;
             /**
@@ -237,11 +309,16 @@ interface components {
              * @description Preferred communication methods for the consumer
              */
             communication_methods?: components["schemas"]["ConsumerCommunicationMethod"][];
-            /**
-             * Preferred Language
-             * @description Preferred language of the consumer
-             */
-            preferred_language?: string;
+            /** @description Preferred language of the consumer */
+            preferred_language?: components["schemas"]["Language"];
+            /** @description Consumer type: individual or business */
+            consumer_type?: components["schemas"]["OrganizationConsumerType"];
+            /** @description National address (required for business type) */
+            address?: components["schemas"]["AddressResponse"];
+            /** @description VAT number (optional for business type) */
+            vat_number?: string | null;
+            /** @description Commercial registration number (optional for business type) */
+            commercial_registration?: string | null;
             /** @description Information about the most recent invoice activity for this consumer */
             last_invoice_activity?: components["schemas"]["LastInvoiceActivity"];
         };
@@ -274,9 +351,17 @@ interface components {
             /** @description Comment */
             comment?: string | null;
             /** @description Preferred language */
-            preferred_language?: string | null;
+            preferred_language?: components["schemas"]["Language"];
             /** @description Communication methods */
             communication_methods?: components["schemas"]["ConsumerCommunicationMethod"][] | null;
+            /** @description Consumer type: individual or business */
+            consumer_type?: components["schemas"]["OrganizationConsumerType"];
+            /** @description Address (required for business type) */
+            address?: components["schemas"]["AddressCreate"];
+            /** @description VAT number (optional for business type) */
+            vat_number?: string | null;
+            /** @description Commercial registration number (optional for business type) */
+            commercial_registration?: string | null;
         };
         /**
          * ContactInformationType
@@ -303,6 +388,8 @@ interface components {
              * @description Discount value of the coupon (either percentage or fixed).
              */
             discount_value: number | string;
+            /** @description Currency code for fixed-amount coupons (required when is_percentage=false). Must be null when is_percentage=true. Must be one of the supported currency codes. */
+            currency?: components["schemas"]["CurrencyCode"];
             /**
              * Is Percentage
              * @description True if the discount is a percentage, False if it is a fixed amount.
@@ -345,6 +432,8 @@ interface components {
              * @description Discount value of the coupon (either percentage or fixed).
              */
             discount_value?: string;
+            /** @description Currency code for fixed-amount coupons (e.g. SAR). Null for percentage coupons. */
+            currency?: components["schemas"]["CurrencyCode"];
             /**
              * Is Percentage
              * @description True if the discount is a percentage, False if it is a fixed amount.
@@ -390,6 +479,8 @@ interface components {
              * @description Discount value of the coupon (either percentage or fixed).
              */
             discount_value?: string;
+            /** @description Currency code for fixed-amount coupons (e.g. SAR). Null for percentage coupons. */
+            currency?: components["schemas"]["CurrencyCode"];
             /**
              * Is Percentage
              * @description True if the discount is a percentage, False if it is a fixed amount.
@@ -423,6 +514,8 @@ interface components {
              * @description Discount value (percentage or fixed amount)
              */
             discount_value?: string;
+            /** @description Currency code for fixed-amount coupons (e.g., SAR, USD). Null for percentage coupons. */
+            currency?: string | null;
             /**
              * Order
              * @description Order in which the coupon was applied
@@ -453,10 +546,20 @@ interface components {
              * @description Updated discount value (either percentage or fixed).
              */
             discount_value?: number | string | null;
+            /** @description Currency code for fixed-amount coupons. Null for percentage coupons. */
+            currency?: components["schemas"]["CurrencyCode"];
             /** @description True if the discount is a percentage, False if it is a fixed amount. */
             is_percentage?: boolean | null;
             /** @description Whether the coupon should be active or inactive. */
             is_active?: boolean | null;
+        };
+        /** CreateBranchRequest */
+        CreateBranchRequest: {
+            /**
+             * Name
+             * @description Branch name. Must be unique within the organization.
+             */
+            name: string;
         };
         /** CreatePaymentLinkDto */
         CreatePaymentLinkDto: {
@@ -467,6 +570,11 @@ interface components {
             name: string;
             /** @description Optional description of the payment link */
             description?: string | null;
+            /**
+             * @description Currency for the payment link (e.g. SAR, USD). All products must have a price in this currency.
+             * @default SAR
+             */
+            currency: components["schemas"]["CurrencyCode"];
             /**
              * Items
              * @description List of products to include in the payment link
@@ -488,10 +596,29 @@ interface components {
             confirmation_message?: string | null;
             /** @description Configure which payment methods are available. If null, organization defaults are used. Note: Installments are always disabled for recurring products (subscriptions). */
             payment_methods?: components["schemas"]["PaymentMethodDto"];
-            /** @description A JSON Schema defining the custom fields. */
-            custom_fields?: {
-                [key: string]: unknown;
-            } | null;
+            /** @description Free trial duration (in days) for subscriptions created from this link. Only valid when the link contains recurring (subscription) products. Must be between 1 and 365. Omit (or null) for no trial. */
+            trial_period_days?: number | null;
+            /**
+             * properties
+             * @description JSON Schema (https://json-schema.org/specification) to define and validate fields collected from payers during payment. Only string type properties allowed.
+             * @example {
+             *       "properties": {
+             *         "child_name": {
+             *           "title": "Child Name",
+             *           "type": "string"
+             *         },
+             *         "parent_email": {
+             *           "title": "Parent Email",
+             *           "type": "string"
+             *         }
+             *       },
+             *       "required": [
+             *         "child_name"
+             *       ],
+             *       "type": "object"
+             *     }
+             */
+            custom_fields?: Record<string, never> | null;
             /**
              * Format: uri
              * @description URL to redirect the payer to after a successful payment
@@ -544,6 +671,14 @@ interface components {
             /** @description Maximum quantity allowed if allow_custom_quantity is True; value is inclusive */
             max_quantity?: number | null;
         };
+        /**
+         * CurrencyCode
+         * @description ISO 4217 currency codes supported by Moyasar.
+         *
+         *     Includes all currencies supported by Moyasar payment gateway.
+         * @enum {string}
+         */
+        CurrencyCode: "SAR" | "USD" | "EUR" | "GBP" | "AED" | "BHD" | "KWD" | "OMR" | "QAR";
         /** FreezeSubscriptionBase */
         FreezeSubscriptionBase: {
             /**
@@ -619,7 +754,18 @@ interface components {
             /** Detail */
             detail?: components["schemas"]["ValidationError"][];
         };
-        /** InvoiceBase */
+        /**
+         * InvoiceBase
+         * @description Base invoice response DTO.
+         *
+         *     Multi-Currency Support:
+         *     - `currency`: The currency code for the invoice (e.g., SAR, USD, EUR)
+         *     - `home_currency_amount`: Total amount converted to home currency (SAR) for reporting
+         *     - `home_currency_amount_actual`: Actual settled amount in home currency after payment
+         *     - `exchange_rate_at_creation`: Exchange rate used at invoice creation time (for audit)
+         *
+         *     For SAR invoices, `home_currency_amount` equals `total_amount` and `exchange_rate_at_creation` is 1.
+         */
         InvoiceBase: {
             /**
              * Created At
@@ -638,6 +784,11 @@ interface components {
              * @description Unique identifier (UUID) of the invoice
              */
             id?: string;
+            /**
+             * Format: uuid4
+             * @description Unique identifier (UUID) of the payment link if invoice was created from one
+             */
+            payment_link_id?: string | null;
             /**
              * User Id
              * Format: uuid4
@@ -677,12 +828,12 @@ interface components {
             description?: string | null;
             /**
              * Total Amount
-             * @description Total invoice amount after discounts
+             * @description Total invoice amount after discounts (in invoice currency)
              */
             total_amount?: string;
             /**
              * Original Amount
-             * @description Original invoice amount before discounts
+             * @description Original invoice amount before discounts (in invoice currency)
              */
             original_amount?: string;
             /**
@@ -696,8 +847,17 @@ interface components {
             total_price_excluding_vat?: string | null;
             /** @description Metadata about how coupons were applied to the invoice */
             coupon_calculation_metadata?: components["schemas"]["CouponCalculationMetadataDto"];
-            /** @description Currency code for the invoice (e.g., SAR, USD) */
-            currency?: string | null;
+            /**
+             * @description Currency code for the invoice (e.g., SAR, USD, EUR)
+             * @default SAR
+             */
+            currency: components["schemas"]["CurrencyCode"];
+            /** @description Total in home currency (SAR) for reporting. Equals total_amount for SAR invoices. */
+            home_currency_amount?: string | null;
+            /** @description Actual settled amount in home currency (SAR) after payment processing. */
+            home_currency_amount_actual?: string | null;
+            /** @description Exchange rate used at invoice creation time (for audit). 1 for SAR invoices. */
+            exchange_rate_at_creation?: string | null;
             /** @description Message to display to the consumer */
             consumer_message?: string | null;
             /** @description Current status of the invoice */
@@ -724,8 +884,26 @@ interface components {
             recurring_interval_count?: number | null;
             /** @description Type of invoice */
             type?: components["schemas"]["InvoiceType"];
+            /**
+             * Total Amount In Smallest Unit
+             * @description Total invoice amount in smallest currency unit (e.g. halala for SAR).
+             */
+            readonly total_amount_in_smallest_unit?: number;
+            /**
+             * Original Amount In Smallest Unit
+             * @description Original invoice amount (before discounts) in smallest currency unit.
+             */
+            readonly original_amount_in_smallest_unit?: number;
         };
-        /** InvoiceCreate */
+        /**
+         * InvoiceCreate
+         * @description DTO for creating a new invoice.
+         *
+         *     Multi-Currency Support:
+         *     - The `currency` field is optional and defaults to 'SAR' for backward compatibility.
+         *     - When a currency is specified, products must have a price in that currency.
+         *     - If no ProductPrice exists for the currency, falls back to product.price (legacy).
+         */
         InvoiceCreate: {
             /**
              * Notify Consumer
@@ -762,6 +940,11 @@ interface components {
              * @default false
              */
             exclude_coupons_if_installments: boolean;
+            /**
+             * @description Currency for the invoice. Defaults to SAR for backward compatibility.
+             * @default SAR
+             */
+            currency: components["schemas"]["CurrencyCode"];
         };
         /** InvoiceDetailed */
         InvoiceDetailed: {
@@ -782,6 +965,11 @@ interface components {
              * @description Unique identifier (UUID) of the invoice
              */
             id?: string;
+            /**
+             * Format: uuid4
+             * @description Unique identifier (UUID) of the payment link if invoice was created from one
+             */
+            payment_link_id?: string | null;
             /**
              * User Id
              * Format: uuid4
@@ -821,12 +1009,12 @@ interface components {
             description?: string | null;
             /**
              * Total Amount
-             * @description Total invoice amount after discounts
+             * @description Total invoice amount after discounts (in invoice currency)
              */
             total_amount?: string;
             /**
              * Original Amount
-             * @description Original invoice amount before discounts
+             * @description Original invoice amount before discounts (in invoice currency)
              */
             original_amount?: string;
             /**
@@ -840,8 +1028,17 @@ interface components {
             total_price_excluding_vat?: string | null;
             /** @description Metadata about how coupons were applied to the invoice */
             coupon_calculation_metadata?: components["schemas"]["CouponCalculationMetadataDto"];
-            /** @description Currency code for the invoice (e.g., SAR, USD) */
-            currency?: string | null;
+            /**
+             * @description Currency code for the invoice (e.g., SAR, USD, EUR)
+             * @default SAR
+             */
+            currency: components["schemas"]["CurrencyCode"];
+            /** @description Total in home currency (SAR) for reporting. Equals total_amount for SAR invoices. */
+            home_currency_amount?: string | null;
+            /** @description Actual settled amount in home currency (SAR) after payment processing. */
+            home_currency_amount_actual?: string | null;
+            /** @description Exchange rate used at invoice creation time (for audit). 1 for SAR invoices. */
+            exchange_rate_at_creation?: string | null;
             /** @description Message to display to the consumer */
             consumer_message?: string | null;
             /** @description Current status of the invoice */
@@ -927,6 +1124,26 @@ interface components {
              * @description URL to access the invoice
              */
             url?: string;
+            /**
+             * Total Amount In Smallest Unit
+             * @description Total invoice amount in smallest currency unit (e.g. halala for SAR).
+             */
+            readonly total_amount_in_smallest_unit?: number;
+            /**
+             * Original Amount In Smallest Unit
+             * @description Original invoice amount (before discounts) in smallest currency unit.
+             */
+            readonly original_amount_in_smallest_unit?: number;
+            /**
+             * Remaining Amount In Smallest Unit
+             * @description Remaining amount in smallest currency unit.
+             */
+            readonly remaining_amount_in_smallest_unit?: number;
+            /**
+             * Paid Amount In Smallest Unit
+             * @description Paid amount in smallest currency unit.
+             */
+            readonly paid_amount_in_smallest_unit?: number;
         };
         /**
          * InvoiceInPlaceUpdate
@@ -944,7 +1161,7 @@ interface components {
              * @description The scheduled payment date for the invoice. After this date, the invoice will be considered overdue. Must be a future date.
              */
             scheduled_on?: string | null;
-            /** @description Description of the invoice. Provides additional context or details about the invoice. Must be between 0 and 500 characters if provided. */
+            /** @description Description of the invoice. Provides additional context or details about the invoice. Must be between 1 and 512 characters if provided. */
             description?: string | null;
         };
         /** InvoiceItemCreateDto */
@@ -963,7 +1180,15 @@ interface components {
             /** @description List of coupon UUIDs to apply for discounts on this specific item */
             coupons?: string[] | null;
         };
-        /** InvoiceItemDto */
+        /**
+         * InvoiceItemDto
+         * @description Invoice item response DTO.
+         *
+         *     Multi-Currency Support:
+         *     - `currency`: The currency code for this item (e.g., SAR, USD)
+         *     - `unit_price`: Snapshotted price at invoice creation (for historical accuracy)
+         *     - `product_price_id`: Reference to the ProductPrice used (for traceability)
+         */
         InvoiceItemDto: {
             /**
              * Created At
@@ -1007,41 +1232,28 @@ interface components {
             discounted_amount?: string;
             /** @description Metadata about how coupons were applied to this item */
             coupon_calculation_metadata?: components["schemas"]["CouponCalculationMetadataDto"];
-        };
-        /**
-         * InvoiceListFilters
-         * @description Filters for listing invoices. A default of None means no filtering on that field.
-         */
-        InvoiceListFilters: {
-            include_payments?: boolean | null;
-            /** Format: uuid */
-            payment_link_id?: string | null;
-            statuses?: components["schemas"]["InvoiceStatusEnum"][] | null;
-            /** @description Invoice includes payments with the following statuses */
-            payment_statuses?: components["schemas"]["PaymentStatusEnum"][] | null;
-            search_term?: string | null;
-            /** Format: date-time */
-            from_date?: string | null;
-            /** Format: date-time */
-            to_date?: string | null;
             /**
-             * Format: date-time
-             * @description Invoice's payment due date from this date onwards
+             * @description Currency code for this item (e.g., SAR, USD)
+             * @default SAR
              */
-            due_date_from?: string | null;
+            currency: components["schemas"]["CurrencyCode"];
+            /** @description Snapshotted unit price at invoice creation (for historical accuracy) */
+            unit_price?: string | null;
             /**
-             * Format: date-time
-             * @description Invoice's payment due date to this date or older
+             * Format: uuid4
+             * @description Reference to the ProductPrice used for this item (for traceability)
              */
-            due_date_to?: string | null;
-            /** From Price */
-            from_price?: number | string | null;
-            /** To Price */
-            to_price?: number | string | null;
-            /** Format: uuid4 */
-            organization_consumer_id?: string | null;
-            /** Format: uuid4 */
-            subscription_id?: string | null;
+            product_price_id?: string | null;
+            /**
+             * Original Amount In Smallest Unit
+             * @description Original item amount in smallest currency unit.
+             */
+            readonly original_amount_in_smallest_unit?: number;
+            /**
+             * Discounted Amount In Smallest Unit
+             * @description Discounted item amount in smallest currency unit.
+             */
+            readonly discounted_amount_in_smallest_unit?: number;
         };
         /** InvoiceListItem */
         InvoiceListItem: {
@@ -1062,6 +1274,11 @@ interface components {
              * @description Unique identifier (UUID) of the invoice
              */
             id?: string;
+            /**
+             * Format: uuid4
+             * @description Unique identifier (UUID) of the payment link if invoice was created from one
+             */
+            payment_link_id?: string | null;
             /**
              * User Id
              * Format: uuid4
@@ -1101,12 +1318,12 @@ interface components {
             description?: string | null;
             /**
              * Total Amount
-             * @description Total invoice amount after discounts
+             * @description Total invoice amount after discounts (in invoice currency)
              */
             total_amount?: string;
             /**
              * Original Amount
-             * @description Original invoice amount before discounts
+             * @description Original invoice amount before discounts (in invoice currency)
              */
             original_amount?: string;
             /**
@@ -1120,8 +1337,17 @@ interface components {
             total_price_excluding_vat?: string | null;
             /** @description Metadata about how coupons were applied to the invoice */
             coupon_calculation_metadata?: components["schemas"]["CouponCalculationMetadataDto"];
-            /** @description Currency code for the invoice (e.g., SAR, USD) */
-            currency?: string | null;
+            /**
+             * @description Currency code for the invoice (e.g., SAR, USD, EUR)
+             * @default SAR
+             */
+            currency: components["schemas"]["CurrencyCode"];
+            /** @description Total in home currency (SAR) for reporting. Equals total_amount for SAR invoices. */
+            home_currency_amount?: string | null;
+            /** @description Actual settled amount in home currency (SAR) after payment processing. */
+            home_currency_amount_actual?: string | null;
+            /** @description Exchange rate used at invoice creation time (for audit). 1 for SAR invoices. */
+            exchange_rate_at_creation?: string | null;
             /** @description Message to display to the consumer */
             consumer_message?: string | null;
             /** @description Current status of the invoice */
@@ -1171,6 +1397,23 @@ interface components {
              * @description The date when the last payment was paid
              */
             last_payment_paid_at?: string | null;
+            /**
+             * Total Amount In Smallest Unit
+             * @description Total invoice amount in smallest currency unit (e.g. halala for SAR).
+             */
+            readonly total_amount_in_smallest_unit?: number;
+            /**
+             * Original Amount In Smallest Unit
+             * @description Original invoice amount (before discounts) in smallest currency unit.
+             */
+            readonly original_amount_in_smallest_unit?: number;
+            /** @description Remaining amount in smallest currency unit. */
+            remaining_amount_in_smallest_unit?: number | null;
+            /**
+             * Paid Amount In Smallest Unit
+             * @description Paid amount in smallest currency unit.
+             */
+            readonly paid_amount_in_smallest_unit?: number;
         };
         /** InvoiceListSubscrptionDto */
         InvoiceListSubscrptionDto: {
@@ -1263,7 +1506,7 @@ interface components {
          *     which describes the current lifecycle state of the invoice.
          * @enum {string}
          */
-        InvoiceType: "ONE_OFF" | "ONE_OFF_FUTURE" | "RECURRING" | "INSTALLMENTS";
+        InvoiceType: "ONE_OFF" | "ONE_OFF_FUTURE" | "RECURRING" | "INSTALLMENTS" | "PRORATION";
         JsonValue: unknown;
         /**
          * Language
@@ -1357,6 +1600,7 @@ interface components {
              * Format: date-time
              */
             created_at?: string;
+            currency_config?: components["schemas"]["OrganizationCurrencyConfigDTO"];
         };
         /**
          * MeResponse
@@ -1407,23 +1651,128 @@ interface components {
              */
             total_amount?: string;
         };
-        /** OrganizationConsumer */
-        OrganizationConsumer: {
+        /**
+         * NextInvoicePreview
+         * @description The first invoice that will be issued under the new plan, fully precomputed.
+         */
+        NextInvoicePreview: {
+            /**
+             * Period Start
+             * Format: date-time
+             * @description Period start of the next invoice
+             */
+            period_start?: string;
+            /**
+             * Period End
+             * Format: date-time
+             * @description Period end of the next invoice
+             */
+            period_end?: string;
+            /**
+             * Issue At
+             * Format: date-time
+             * @description When the next invoice will be issued (notification time)
+             */
+            issue_at?: string;
+            /**
+             * Due At
+             * Format: date-time
+             * @description When the next invoice will be due
+             */
+            due_at?: string;
+            /**
+             * Subtotal
+             * @description Subtotal before discounts
+             */
+            subtotal?: string;
+            /**
+             * Discount Total
+             * @description Sum of all discounts
+             */
+            discount_total?: string;
+            /**
+             * Total Amount
+             * @description Total amount payable
+             */
+            total_amount?: string;
+            /** @description Currency of the next invoice */
+            currency?: components["schemas"]["CurrencyCode"];
+        };
+        /**
+         * OrganizationConsumerType
+         * @enum {string}
+         */
+        OrganizationConsumerType: "INDIVIDUAL" | "BUSINESS";
+        /**
+         * OrganizationCurrencyConfigDTO
+         * @description DTO for organization currency configuration.
+         */
+        OrganizationCurrencyConfigDTO: {
+            /**
+             * @description Settlement/reporting currency. Always SAR for Moyasar settlements.
+             * @default SAR
+             */
+            home_currency: components["schemas"]["CurrencyCode"];
+            /**
+             * @description Default currency for new invoices and products.
+             * @default SAR
+             */
+            default_currency: components["schemas"]["CurrencyCode"];
+            /**
+             * Enabled Currencies
+             * @description List of currencies enabled for billing. Must include at least one.
+             * @default [
+             *       "SAR"
+             *     ]
+             */
+            enabled_currencies: components["schemas"]["CurrencyCode"][];
+        };
+        /** OrganizationInviteCreate */
+        OrganizationInviteCreate: {
+            /**
+             * Email
+             * Format: email
+             * @description Email address of the user to invite. Must not already be registered.
+             */
+            email: string;
+            /** @description Role to assign to the invited user. */
+            role: components["schemas"]["UserRolesEnum"];
+            /**
+             * Branches
+             * @description List of branch IDs where the user will have access.
+             */
+            branches: string[];
+        };
+        /** OrganizationInviteResponse */
+        OrganizationInviteResponse: {
             /**
              * Id
-             * Format: uuid4
-             * @description Unique identifier (UUID) of the organization consumer
+             * Format: uuid
              */
             id?: string;
             /**
-             * Name
-             * @description Name of the consumer
+             * Email
+             * Format: email
              */
-            name?: string;
-            /** @description Alias of the consumer */
-            alias?: string | null;
-            /** @description Email address of the consumer */
-            email?: string | null;
+            email?: string;
+            /**
+             * Organization Id
+             * Format: uuid
+             */
+            organization_id?: string;
+            /**
+             * Expire At
+             * Format: date-time
+             */
+            expire_at?: string;
+            /**
+             * Created By
+             * Format: uuid
+             */
+            created_by?: string;
+            role?: components["schemas"]["UserRolesEnum"];
+            /** Branches */
+            branches?: string[];
         };
         /** Pagination */
         Pagination: {
@@ -1453,11 +1802,8 @@ interface components {
              * @description Payment amount
              */
             amount?: string;
-            /**
-             * Currency
-             * @description Currency code for the payment (e.g., SAR, USD)
-             */
-            currency?: string;
+            /** @description Currency code for the payment (e.g., SAR, USD) */
+            currency?: components["schemas"]["CurrencyCode"];
             /**
              * Scheduled On
              * Format: date-time
@@ -1497,6 +1843,11 @@ interface components {
              * @description Unique identifier (UUID) of the account the payment was made to
              */
             paid_to_account_id?: string | null;
+            /**
+             * Amount In Smallest Unit
+             * @description Payment amount in smallest currency unit (e.g. halala for SAR).
+             */
+            readonly amount_in_smallest_unit?: number;
         };
         /**
          * PaymentFlow
@@ -1546,11 +1897,12 @@ interface components {
             item_level_discounted_amount?: string;
             /** @description Metadata about how coupons were applied to the payment link */
             coupon_calculation_metadata?: components["schemas"]["CouponCalculationMetadataDto"];
-            /**
-             * Currency
-             * @description Currency code for the payment link (e.g., SAR, USD)
-             */
-            currency?: string;
+            /** @description Currency code for the payment link (e.g., SAR, USD) */
+            currency?: components["schemas"]["CurrencyCode"];
+            /** @description Amount in home currency (SAR) at creation; for SAR links or when converted from other currencies. */
+            home_currency_amount?: string | null;
+            /** @description Exchange rate from link currency to home currency (SAR) at creation time */
+            exchange_rate_at_creation?: string | null;
             /** @description Maximum number of times this payment link can be used */
             max_number_of_payments?: number | null;
             /**
@@ -1564,6 +1916,8 @@ interface components {
             recurring_interval?: components["schemas"]["SubscriptionRecurringInterval"];
             /** @description Number of intervals per billing cycle for recurring payments */
             recurring_interval_count?: number | null;
+            /** @description Free trial duration (in days) for subscriptions created from this link. Only meaningful for recurring (subscription) products. When set, each consumer who subscribes via this link gets a free trial of this length, after which the first real billing period begins. Must be between 1 and 365. */
+            trial_period_days?: number | null;
             /** @description Current status of the payment link */
             status?: components["schemas"]["PaymentLinkStatus"];
             /**
@@ -1585,10 +1939,27 @@ interface components {
             organization_consumer_id?: string | null;
             /** @description Message to display when the payment link is deactivated */
             deactivate_message?: string | null;
-            /** @description Custom fields schema for collecting additional information */
-            custom_fields?: {
-                [key: string]: unknown;
-            } | null;
+            /**
+             * properties
+             * @description Custom fields schema for collecting additional information
+             * @example {
+             *       "properties": {
+             *         "child_name": {
+             *           "title": "Child Name",
+             *           "type": "string"
+             *         },
+             *         "parent_email": {
+             *           "title": "Parent Email",
+             *           "type": "string"
+             *         }
+             *       },
+             *       "required": [
+             *         "child_name"
+             *       ],
+             *       "type": "object"
+             *     }
+             */
+            custom_fields?: Record<string, never> | null;
             /** @description URL to redirect the payer to after a successful payment */
             success_redirect_url?: string | null;
             /** @description URL to redirect the payer to after a failed payment */
@@ -1621,6 +1992,21 @@ interface components {
              * @description Total amount collected from payments
              */
             amount_collected?: string;
+            /**
+             * Amount In Smallest Unit
+             * @description Payment link amount in smallest currency unit (e.g. halala for SAR).
+             */
+            readonly amount_in_smallest_unit?: number;
+            /**
+             * Original Amount In Smallest Unit
+             * @description Original payment link amount (before discounts) in smallest currency unit.
+             */
+            readonly original_amount_in_smallest_unit?: number;
+            /**
+             * Amount Collected In Smallest Unit
+             * @description Total amount collected in smallest currency unit.
+             */
+            readonly amount_collected_in_smallest_unit?: number;
         };
         /** PaymentLinkItemDto */
         PaymentLinkItemDto: {
@@ -1676,36 +2062,23 @@ interface components {
             min_quantity?: number | null;
             /** @description Maximum quantity allowed if allow_custom_quantity is True */
             max_quantity?: number | null;
-        };
-        /**
-         * PaymentLinkListFilters
-         * @description Filters for listing payment links. A default of None means no filtering on that field.
-         */
-        PaymentLinkListFilters: {
-            /** @description Filter by subscription status */
-            statuses?: components["schemas"]["PaymentLinkStatus"][] | null;
+            /** @description Currency code for this item (e.g., SAR, USD) */
+            currency?: components["schemas"]["CurrencyCode"];
             /**
-             * Format: date-time
-             * @description datetime is created_at
+             * Format: uuid4
+             * @description Reference to the ProductPrice used for this item, if any
              */
-            from_date?: string | null;
+            product_price_id?: string | null;
             /**
-             * Format: date-time
-             * @description datetime is created_at
+             * Original Amount In Smallest Unit
+             * @description Original item amount in smallest currency unit.
              */
-            to_date?: string | null;
+            readonly original_amount_in_smallest_unit?: number;
             /**
-             * From Price
-             * @description limit list by min payment link total amount inclusive
+             * Discounted Amount In Smallest Unit
+             * @description Discounted item amount in smallest currency unit.
              */
-            from_price?: number | string | null;
-            /**
-             * To Price
-             * @description limit list by max payment link total amount inclusive
-             */
-            to_price?: number | string | null;
-            /** @description Product ids that need to be in the list of payment links */
-            product_ids?: string[] | null;
+            readonly discounted_amount_in_smallest_unit?: number;
         };
         /**
          * PaymentLinkStatus
@@ -1796,6 +2169,11 @@ interface components {
              */
             amount?: string;
             /**
+             * @description Currency code for the payment (e.g., SAR, USD)
+             * @default SAR
+             */
+            currency: components["schemas"]["CurrencyCode"];
+            /**
              * Scheduled On
              * @description Scheduled date and time for the payment
              */
@@ -1820,6 +2198,13 @@ interface components {
             refund_reason?: components["schemas"]["PaymentRefundReason"];
             /** @description Note explaining the refund reason if applicable */
             refund_note?: string | null;
+            /** @description Latest payment gateway message for this payment */
+            latest_pgw_message?: string | null;
+            /**
+             * Amount In Smallest Unit
+             * @description Payment amount in smallest currency unit (e.g. halala for SAR).
+             */
+            readonly amount_in_smallest_unit?: number;
         };
         /**
          * PaymentStatusEnum
@@ -1831,6 +2216,129 @@ interface components {
          * @enum {string}
          */
         PaymentTypeEnum: "INITIAL" | "INSTALLMENT" | "SPLIT_PREPAID";
+        /**
+         * PendingPlanChange
+         * @description Server-computed snapshot of a deferred plan change for client display.
+         */
+        PendingPlanChange: {
+            /**
+             * Id
+             * Format: uuid4
+             * @description Pending change identifier
+             */
+            id?: string;
+            /**
+             * Effective At
+             * Format: date-time
+             * @description When this change will take effect (subscription period end)
+             */
+            effective_at?: string;
+            /**
+             * Invoice Was Reissued
+             * @description True if the next-cycle invoice had to be cancelled and recreated to reflect this change
+             */
+            invoice_was_reissued?: boolean;
+            /**
+             * Target Items
+             * @description Items the subscription will have after the change is applied
+             */
+            target_items?: components["schemas"]["PendingPlanChangeItemPreview"][];
+            /**
+             * Target Subscription Coupon Ids
+             * @description Subscription-level coupons that will be active after the change
+             */
+            target_subscription_coupon_ids?: string[];
+            /** @description Billing interval after the change */
+            target_recurring_interval?: components["schemas"]["SubscriptionRecurringInterval"];
+            /**
+             * Target Recurring Interval Count
+             * @description Billing interval multiplier after the change
+             */
+            target_recurring_interval_count?: number;
+            /**
+             * Target Amount
+             * @description Total amount per cycle under the new plan
+             */
+            target_amount?: string;
+            /** @description Currency of all monetary fields here */
+            currency?: components["schemas"]["CurrencyCode"];
+            /**
+             * Current Amount
+             * @description Subscription's current per-cycle amount
+             */
+            current_amount?: string;
+            /**
+             * Delta Amount
+             * @description target_amount - current_amount
+             */
+            delta_amount?: string;
+            /** @description target_amount - current_amount, normalised to a monthly rate. Useful for displaying interval flips in like-for-like terms. */
+            delta_amount_per_month?: string | null;
+            /**
+             * Changes
+             * @description Human-renderable, server-computed list of changes
+             */
+            changes?: components["schemas"]["PendingPlanChangeDiffEntry"][];
+            /** @description Fully precomputed next invoice that will be billed under the new plan */
+            next_invoice_preview?: components["schemas"]["NextInvoicePreview"];
+        };
+        /**
+         * PendingPlanChangeDiffEntry
+         * @description A single human-renderable diff row, computed server-side.
+         */
+        PendingPlanChangeDiffEntry: {
+            /** @description Classification of this diff entry */
+            kind?: components["schemas"]["PendingPlanChangeDiffKind"];
+            /**
+             * Label
+             * @description Pre-formatted, locale-neutral label suitable for display
+             */
+            label?: string;
+            /**
+             * Format: uuid4
+             * @description Affected product, if applicable
+             */
+            product_id?: string | null;
+            /** @description Pre-change value, if applicable */
+            from_value?: string | null;
+            /** @description Post-change value, if applicable */
+            to_value?: string | null;
+        };
+        /**
+         * PendingPlanChangeDiffKind
+         * @description Server-classified diff entry kinds for a pending plan change.
+         * @enum {string}
+         */
+        PendingPlanChangeDiffKind: "PRODUCT_ADDED" | "PRODUCT_REMOVED" | "PRODUCT_REPLACED" | "QUANTITY_DECREASED" | "QUANTITY_INCREASED" | "COUPON_ADDED" | "COUPON_REMOVED" | "INTERVAL_CHANGED";
+        /** PendingPlanChangeItemPreview */
+        PendingPlanChangeItemPreview: {
+            /**
+             * Product Id
+             * Format: uuid4
+             * @description Product UUID
+             */
+            product_id?: string;
+            /**
+             * Product Name
+             * @description Product display name
+             */
+            product_name?: string;
+            /**
+             * Quantity
+             * @description Quantity that will be billed under the new plan
+             */
+            quantity?: number;
+            /**
+             * Original Amount
+             * @description Per-item original amount in subscription currency
+             */
+            original_amount?: string;
+            /**
+             * Discounted Amount
+             * @description Per-item amount after item-level discounts
+             */
+            discounted_amount?: string;
+        };
         /** ProductCreate */
         ProductCreate: {
             /**
@@ -1842,9 +2350,11 @@ interface components {
             description?: string | null;
             /**
              * Price
-             * @description Price of the product.
+             * @description [DEPRECATED] Price of the product. Use 'prices' array for multi-currency support.
              */
-            price: number | string;
+            price?: number | string | null;
+            /** @description Prices for the product in different currencies. At least one price is required. */
+            prices?: components["schemas"]["ProductPriceInlineCreate"][] | null;
             /**
              * Is One Time
              * @description Will this product be used only one time in one invoice?
@@ -1853,7 +2363,7 @@ interface components {
             is_one_time: boolean;
             /** @description the type of product: one off or recurring */
             type: components["schemas"]["ProductType"];
-            /** @description Represents the billing cycle interval if product is recurring. Required for cyclic products */
+            /** @description Represents the billing cycle interval if product is recurring. Required for cyclic products. For ONE_OFF, value is ignored. */
             recurring_interval?: components["schemas"]["RecurringInterval"];
             /**
              * Recurring Interval Count
@@ -1861,12 +2371,21 @@ interface components {
              * @default 1
              */
             recurring_interval_count: number;
-            /** @description Is the price exempt from VAT? */
+            /** @description [DEPRECATED] Is the price exempt from VAT? Use VAT settings in prices[] instead. */
             is_price_exempt_from_vat?: boolean | null;
-            /** @description Is the price inclusive of VAT? */
+            /** @description [DEPRECATED] Is the price inclusive of VAT? Use VAT settings in prices[] instead. */
             is_price_inclusive_of_vat?: boolean | null;
         };
-        /** ProductDto */
+        /**
+         * ProductDto
+         * @description Product response DTO.
+         *
+         *     This DTO includes both legacy single-price fields and new multi-currency `prices` array
+         *     for backward compatibility with existing API consumers.
+         *
+         *     Legacy fields (`price`, `currency`, `vat_amount`, etc.) represent the default price
+         *     and are kept for backward compatibility. New integrations should use the `prices` array.
+         */
         ProductDto: {
             /**
              * Created At
@@ -1903,16 +2422,41 @@ interface components {
             recurring_interval_count?: number;
             /**
              * Price
-             * @description Total price including VAT.
+             * @description Total price including VAT (default currency).
              */
             price?: string;
             /**
              * Currency
-             * @description Price currency of the product.
+             * @description Default price currency of the product.
              * @default SAR
              * @enum {string}
              */
             currency: "AED" | "AFN" | "ALL" | "AMD" | "ANG" | "AOA" | "ARS" | "AUD" | "AWG" | "AZN" | "BAM" | "BBD" | "BDT" | "BGN" | "BHD" | "BIF" | "BMD" | "BND" | "BOB" | "BOV" | "BRL" | "BSD" | "BTN" | "BWP" | "BYN" | "BZD" | "CAD" | "CDF" | "CHE" | "CHF" | "CHW" | "CLF" | "CLP" | "CNY" | "COP" | "COU" | "CRC" | "CUC" | "CUP" | "CVE" | "CZK" | "DJF" | "DKK" | "DOP" | "DZD" | "EGP" | "ERN" | "ETB" | "EUR" | "FJD" | "FKP" | "GBP" | "GEL" | "GHS" | "GIP" | "GMD" | "GNF" | "GTQ" | "GYD" | "HKD" | "HNL" | "HRK" | "HTG" | "HUF" | "IDR" | "ILS" | "INR" | "IQD" | "IRR" | "ISK" | "JMD" | "JOD" | "JPY" | "KES" | "KGS" | "KHR" | "KMF" | "KPW" | "KRW" | "KWD" | "KYD" | "KZT" | "LAK" | "LBP" | "LKR" | "LRD" | "LSL" | "LYD" | "MAD" | "MDL" | "MGA" | "MKD" | "MMK" | "MNT" | "MOP" | "MRU" | "MUR" | "MVR" | "MWK" | "MXN" | "MXV" | "MYR" | "MZN" | "NAD" | "NGN" | "NIO" | "NOK" | "NPR" | "NZD" | "OMR" | "PAB" | "PEN" | "PGK" | "PHP" | "PKR" | "PLN" | "PYG" | "QAR" | "RON" | "RSD" | "RUB" | "RWF" | "SAR" | "SBD" | "SCR" | "SDG" | "SEK" | "SGD" | "SHP" | "SLE" | "SLL" | "SOS" | "SRD" | "SSP" | "STN" | "SVC" | "SYP" | "SZL" | "THB" | "TJS" | "TMT" | "TND" | "TOP" | "TRY" | "TTD" | "TWD" | "TZS" | "UAH" | "UGX" | "USD" | "USN" | "UYI" | "UYU" | "UYW" | "UZS" | "VED" | "VES" | "VND" | "VUV" | "WST" | "XAF" | "XCD" | "XOF" | "XPF" | "XSU" | "XUA" | "YER" | "ZAR" | "ZMW" | "ZWL";
+            /**
+             * Is Price Exempt From Vat
+             * @description Is the default price exempt from VAT?
+             */
+            is_price_exempt_from_vat?: boolean;
+            /**
+             * Is Price Inclusive Of Vat
+             * @description Is the default price inclusive of VAT?
+             */
+            is_price_inclusive_of_vat?: boolean;
+            /**
+             * Price Excluding Vat
+             * @description Default price excluding VAT.
+             */
+            price_excluding_vat?: string;
+            /**
+             * Vat Amount
+             * @description VAT amount for default price.
+             */
+            vat_amount?: string;
+            /**
+             * Prices
+             * @description All active prices for this product across different currencies.
+             */
+            prices?: components["schemas"]["ProductPriceInlineDto"][];
             /**
              * Is Active
              * @description Can this product be used in invoices or subscriptions?
@@ -1924,26 +2468,6 @@ interface components {
              */
             is_one_time?: boolean;
             /**
-             * Is Price Exempt From Vat
-             * @description Is the price exempt from VAT?
-             */
-            is_price_exempt_from_vat?: boolean;
-            /**
-             * Is Price Inclusive Of Vat
-             * @description Is the price inclusive of VAT?
-             */
-            is_price_inclusive_of_vat?: boolean;
-            /**
-             * Price Excluding Vat
-             * @description Price excluding VAT.
-             */
-            price_excluding_vat?: string;
-            /**
-             * Vat Amount
-             * @description VAT amount.
-             */
-            vat_amount?: string;
-            /**
              * Is Used In Finalized Invoice
              * @description Is the product used in a finalized invoice?
              * @default false
@@ -1951,16 +2475,53 @@ interface components {
             is_used_in_finalized_invoice: boolean;
         };
         /**
-         * ProductListFilters
-         * @description Filters for listing products. A default of None means no filtering on that field.
+         * ProductPriceInlineCreate
+         * @description Inline price creation for product create/update endpoints.
          */
-        ProductListFilters: {
-            /** @description Serach by product name or description. */
-            search_term?: string | null;
-            /** @description Filter by active or inactive product. Removing this flag will return all products. */
-            active?: boolean | null;
-            /** @description Filter by product type. */
-            type?: components["schemas"]["ProductType"];
+        ProductPriceInlineCreate: {
+            /** @description ISO 4217 currency code */
+            currency: components["schemas"]["CurrencyCode"];
+            /**
+             * Amount
+             * @description Price amount (must be >= 1)
+             */
+            amount: number | string;
+            /**
+             * Is Price Inclusive Of Vat
+             * @description If True, amount includes VAT
+             * @default true
+             */
+            is_price_inclusive_of_vat: boolean;
+            /**
+             * Is Price Exempt From Vat
+             * @description If True, no VAT applies to this price
+             * @default false
+             */
+            is_price_exempt_from_vat: boolean;
+        };
+        /**
+         * ProductPriceInlineDto
+         * @description Inline price DTO for product responses.
+         */
+        ProductPriceInlineDto: {
+            /**
+             * Id
+             * Format: uuid4
+             */
+            id?: string;
+            currency?: components["schemas"]["CurrencyCode"];
+            /** Amount */
+            amount?: string;
+            /** Is Active */
+            is_active?: boolean;
+            /** Is Price Inclusive Of Vat */
+            is_price_inclusive_of_vat?: boolean;
+            /** Is Price Exempt From Vat */
+            is_price_exempt_from_vat?: boolean;
+            /** Price Excluding Vat */
+            price_excluding_vat?: string;
+            /** Vat Amount */
+            vat_amount?: string;
         };
         /**
          * ProductType
@@ -1975,9 +2536,11 @@ interface components {
             description?: string | null;
             /**
              * Price
-             * @description Price of the product.
+             * @description [DEPRECATED] Price of the product. Use 'prices' array for multi-currency support.
              */
             price?: number | string | null;
+            /** @description Prices for the product in different currencies. */
+            prices?: components["schemas"]["ProductPriceInlineCreate"][] | null;
             /** @description Whether the product is active. If `true`, the product won't be available for purchase anymore. Existing customers will still have access to the product details in the invoice, and subscriptions will continue normally. */
             is_active?: boolean | null;
             /** @description the type of product: one off or recurring */
@@ -1986,9 +2549,9 @@ interface components {
             recurring_interval?: components["schemas"]["RecurringInterval"];
             /** @description The billing cycle multiple if the product is recurring */
             recurring_interval_count?: number | null;
-            /** @description Is the price exempt from VAT? */
+            /** @description [DEPRECATED] Is the price exempt from VAT? Use VAT settings in prices[] instead. */
             is_price_exempt_from_vat?: boolean | null;
-            /** @description Is the price inclusive of VAT? */
+            /** @description [DEPRECATED] Is the price inclusive of VAT? Use VAT settings in prices[] instead. */
             is_price_inclusive_of_vat?: boolean | null;
         };
         /**
@@ -2012,7 +2575,7 @@ interface components {
          * StreamErrorCodes
          * @enum {string}
          */
-        StreamErrorCodes: "STREAM_ERROR" | "STREAM_UNKNOWN_ERROR" | "PHONE_ALREADY_REGISTERED" | "MFA_VERIFICATION_SESSION_IN_PROGRESS" | "MFA_ATTEMPTS_EXHAUSTED" | "MFA_INVALID" | "MFA_SESSION_EXPIRED" | "MFA_CHANNEL_COOLDOWN" | "RECAPTCHA_INVALID" | "SAUDI_ID_ALREADY_REGISTERED" | "USER_INFO_NOT_VERIFIED" | "COMPANY_NOT_FOUND" | "ORGANIZATION_ALREADY_CREATED" | "USER_NOT_REGISTERED" | "INVALID_PARAMETERS" | "INVITATION_EXPIRED" | "USER_ALREADY_REGISTERED" | "PAYMENT_FLOW_NOT_ALLOWED" | "INVOICE_PAYMENT_COUNT_NOT_MATCHED" | "INVOICE_FINALISED" | "INVOICE_INVALID_STATUS" | "INVOICE_TOTAL_MISMATCH_PAYMENT_AMOUNT_SUM" | "INVOICE_CONSENT_CONSUMED" | "INVOICE_CONSENT_EXPIRED" | "PAYMENT_IN_PROGRESS" | "PAYMENT_FINALIZED" | "PAYMEND_UNPAID" | "PAYMENT_REFUNDED_ALREADY" | "PAYMENT_REFUNDED_FAILED" | "INVALID_STATUS" | "ACCOUNT_ONE_DEFAULT_REQUIRED" | "DUPLICATE_CONSUMER" | "DUPLICATE_PAYMENT" | "DUPLICATE_CARD_TOKEN" | "CONSUMER_HAS_ONGOING_INVOICES" | "CONSUMER_HAS_ONGOING_SUBSCRIPTIONS" | "MOYASAR_BAD_REQUEST" | "NOTIFICATION_TEMPLATE_DOES_NOT_EXIST" | "FEATURE_DISABLED" | "INSUFFICIENT_FUNDS" | "PAYMENT_GATEWAY_DECLINED" | "MANUAL_INVOICE_CARD_ID" | "ONE_OFF_INVALID_PAYMENT_FLOW" | "ONE_OFF_CARD_ID" | "AUTO_INVOICE_MISSING_CARD_ID" | "MOYASAR_INVALID_CARD_TOKEN" | "MOYASAR_UNAUTHORIZED" | "MOYASAR_FORBIDDEN" | "MOYASAR_NOT_FOUND" | "MOYASAR_METHOD_NOT_ALLOWED" | "MOYASAR_TOO_MANY_REQUESTS" | "MOYASAR_INTERNAL_SERVER_ERROR" | "MOYASAR_SERVICE_UNAVAILABLE" | "MOYASAR_PAYMENT_INFO_MISMATCH" | "MOYASAR_TIMEOUT" | "PDF_LINK_EXISTS" | "BRANCH_NOT_FOUND" | "BRANCH_ACCESS_DENIED" | "PERMISSION_FORBIDDEN" | "PRODUCT_USED_IN_FINALIZED_INVOICE" | "RESOURCE_ALREADY_EXISTS" | "COUPON_USED_IN_FINALIZED_INVOICE";
+        StreamErrorCodes: "STREAM_ERROR" | "STREAM_UNKNOWN_ERROR" | "PHONE_ALREADY_REGISTERED" | "MFA_VERIFICATION_SESSION_IN_PROGRESS" | "MFA_ATTEMPTS_EXHAUSTED" | "MFA_INVALID" | "MFA_SESSION_EXPIRED" | "MFA_CHANNEL_COOLDOWN" | "RECAPTCHA_INVALID" | "SAUDI_ID_ALREADY_REGISTERED" | "USER_INFO_NOT_VERIFIED" | "COMPANY_NOT_FOUND" | "ORGANIZATION_ALREADY_CREATED" | "USER_NOT_REGISTERED" | "INVALID_PARAMETERS" | "INVITATION_EXPIRED" | "USER_ALREADY_REGISTERED" | "PAYMENT_FLOW_NOT_ALLOWED" | "INVOICE_PAYMENT_COUNT_NOT_MATCHED" | "INVOICE_FINALISED" | "INVOICE_INVALID_STATUS" | "INVOICE_TOTAL_MISMATCH_PAYMENT_AMOUNT_SUM" | "INVOICE_CONSENT_CONSUMED" | "INVOICE_CONSENT_EXPIRED" | "PAYMENT_IN_PROGRESS" | "PAYMENT_FINALIZED" | "PAYMEND_UNPAID" | "PAYMENT_REFUNDED_ALREADY" | "PAYMENT_REFUNDED_FAILED" | "INVALID_STATUS" | "ACCOUNT_ONE_DEFAULT_REQUIRED" | "DUPLICATE_CONSUMER" | "DUPLICATE_PAYMENT" | "DUPLICATE_CARD_TOKEN" | "CONSUMER_HAS_ONGOING_INVOICES" | "CONSUMER_HAS_ONGOING_SUBSCRIPTIONS" | "CONSUMER_HAS_ACTIVE_PAYMENT_LINKS" | "MOYASAR_BAD_REQUEST" | "NOTIFICATION_TEMPLATE_DOES_NOT_EXIST" | "FEATURE_DISABLED" | "INSUFFICIENT_FUNDS" | "PAYMENT_GATEWAY_DECLINED" | "MANUAL_INVOICE_CARD_ID" | "ONE_OFF_INVALID_PAYMENT_FLOW" | "ONE_OFF_CARD_ID" | "AUTO_INVOICE_MISSING_CARD_ID" | "MOYASAR_INVALID_CARD_TOKEN" | "MOYASAR_UNAUTHORIZED" | "MOYASAR_FORBIDDEN" | "MOYASAR_NOT_FOUND" | "MOYASAR_METHOD_NOT_ALLOWED" | "MOYASAR_TOO_MANY_REQUESTS" | "MOYASAR_INTERNAL_SERVER_ERROR" | "MOYASAR_SERVICE_UNAVAILABLE" | "MOYASAR_PAYMENT_INFO_MISMATCH" | "MOYASAR_TIMEOUT" | "PDF_LINK_EXISTS" | "BRANCH_NOT_FOUND" | "BRANCH_ACCESS_DENIED" | "PERMISSION_FORBIDDEN" | "PRODUCT_USED_IN_FINALIZED_INVOICE" | "RESOURCE_ALREADY_EXISTS" | "COUPON_USED_IN_FINALIZED_INVOICE";
         /** SubscriptionCancel */
         SubscriptionCancel: {
             /**
@@ -2048,7 +2611,7 @@ interface components {
             /**
              * Period Start
              * Format: date-time
-             * @description Start date and time of the first subscription billing cycle
+             * @description Start date of the first billing cycle. For trial subscriptions, this must be a future date — the trial runs from now until this date.
              */
             period_start: string;
             /** @description Number of billing cycles before the subscription automatically cancels. If not specified, the subscription continues indefinitely until manually canceled. */
@@ -2061,6 +2624,17 @@ interface components {
              * @default false
              */
             exclude_coupons_if_installments: boolean;
+            /**
+             * @description Currency code (e.g., SAR, USD). Must match coupon currency for fixed-amount coupons.
+             * @default SAR
+             */
+            currency: components["schemas"]["CurrencyCode"];
+            /**
+             * Trial
+             * @description Whether this is a free trial subscription. If true, the trial starts now and billing begins at period_start.
+             * @default false
+             */
+            trial: boolean;
         };
         /** SubscriptionDetailed */
         SubscriptionDetailed: {
@@ -2105,11 +2679,12 @@ interface components {
              * @description Number of days remaining in the current billing period
              */
             remaining_days?: number;
-            /**
-             * Currency
-             * @description Currency code for the subscription (e.g., SAR, USD)
-             */
-            currency?: string;
+            /** @description Currency code for the subscription (e.g., SAR, USD) */
+            currency?: components["schemas"]["CurrencyCode"];
+            /** @description Amount in home currency (SAR) at creation */
+            home_currency_amount?: string | null;
+            /** @description Exchange rate used at subscription creation */
+            exchange_rate_at_creation?: string | null;
             /** @description Billing cycle interval */
             recurring_interval?: components["schemas"]["SubscriptionRecurringInterval"];
             /**
@@ -2170,8 +2745,15 @@ interface components {
              * @description Unique identifier (UUID) of the most recent invoice for this subscription
              */
             latest_invoice_id?: string | null;
+            /** @description Number of days for the free trial period */
+            trial_period_days?: number | null;
+            /**
+             * Format: date-time
+             * @description Date and time when the trial period ends
+             */
+            trial_end?: string | null;
             /** @description Consumer information for this subscription */
-            organization_consumer?: components["schemas"]["OrganizationConsumer"];
+            organization_consumer?: components["schemas"]["app__subscription__v2__dtos__OrganizationConsumer"];
             /** @description List of items included in the subscription */
             items?: components["schemas"]["SubscriptionItemDto"][] | null;
             /** @description Most recent invoice generated for this subscription */
@@ -2180,6 +2762,18 @@ interface components {
             latest_freeze?: components["schemas"]["FreezeSubscriptionBase"];
             /** @description Payment methods override for this subscription */
             override_payment_methods?: components["schemas"]["SubscriptionPaymentMethodDto"];
+            /** @description A scheduled deferred change that will be applied at current_period_end, if any */
+            pending_change?: components["schemas"]["PendingPlanChange"];
+            /**
+             * Amount In Smallest Unit
+             * @description Subscription amount in smallest currency unit (e.g. halala for SAR).
+             */
+            readonly amount_in_smallest_unit?: number;
+            /**
+             * Original Amount In Smallest Unit
+             * @description Original subscription amount (before discounts) in smallest currency unit.
+             */
+            readonly original_amount_in_smallest_unit?: number;
         };
         /** SubscriptionItemCreateDto */
         SubscriptionItemCreateDto: {
@@ -2248,65 +2842,6 @@ interface components {
             /** @description Product details for this subscription item */
             product?: components["schemas"]["ProductDto"];
         };
-        /**
-         * SubscriptionListFilters
-         * @description Filters for listing subscriptions. A default of None means no filtering on that field.
-         */
-        SubscriptionListFilters: {
-            /** @description Filter by subscription status */
-            statuses?: components["schemas"]["SubscriptionStatus"][] | null;
-            /** @description Filter subscriptions based on if their latest invoice is paid or partially paid */
-            latest_invoice_is_paid?: boolean | null;
-            /**
-             * Format: date-time
-             * @description datetime is created_at
-             */
-            from_date?: string | null;
-            /**
-             * Format: date-time
-             * @description datetime is created_at
-             */
-            to_date?: string | null;
-            /**
-             * Format: date-time
-             * @description Filter subscriptions with current_period_start from this date onwards
-             */
-            current_period_start_from_date?: string | null;
-            /**
-             * Format: date-time
-             * @description Filter subscriptions with current_period_start up to this date
-             */
-            current_period_start_to_date?: string | null;
-            /**
-             * Format: date-time
-             * @description Filter subscriptions with current_period_end from this date onwards
-             */
-            current_period_end_from_date?: string | null;
-            /**
-             * Format: date-time
-             * @description Filter subscriptions with current_period_end up to this date
-             */
-            current_period_end_to_date?: string | null;
-            /**
-             * From Price
-             * @description limit list by min subscription amount inclusive
-             */
-            from_price?: number | string | null;
-            /**
-             * To Price
-             * @description limit list by max subscription amount inclusive
-             */
-            to_price?: number | string | null;
-            /**
-             * Format: uuid4
-             * @description filter subscriptions that belongs to organization consumer
-             */
-            organization_consumer_id?: string | null;
-            /** @description Serach by product name or description. */
-            search_term?: string | null;
-            /** @description Product ids that need to be in the list of subscriptions */
-            product_ids?: string[] | null;
-        };
         /** SubscriptionPaymentMethodDto */
         SubscriptionPaymentMethodDto: {
             /** @description override visa from global settings */
@@ -2333,7 +2868,7 @@ interface components {
          * SubscriptionStatus
          * @enum {string}
          */
-        SubscriptionStatus: "INACTIVE" | "ACTIVE" | "EXPIRED" | "CANCELED" | "FROZEN";
+        SubscriptionStatus: "INACTIVE" | "ACTIVE" | "EXPIRED" | "CANCELED" | "FROZEN" | "TRIALING" | "TRIAL_PENDING";
         /** SubscriptionUpdate */
         SubscriptionUpdate: {
             /** @description Description of the subscription. */
@@ -2348,10 +2883,51 @@ interface components {
              * @description coupons to apply to the subscription for discounts.If you want to keep existing coupons, include them in the list.
              */
             coupons: string[];
-            /** @description specify how many cycles the subscription will last for until it moves to canceled state automatically. Sending 'null' will cancel it. */
+            /** @description Number of billing cycles the subscription should run before it auto-cancels. If set to the current cycle, cancellation is scheduled at period end. If set to null, subscription will continue indefinitely until manually canceled. */
             until_cycle_number?: number | null;
             /** @description overriden payment methods for generated invoices for the payer - sending 'null' for any value means we should follow organization global settings for that method */
             override_payment_methods?: components["schemas"]["SubscriptionPaymentMethodDto"];
+            /** @description Optional new billing interval. If omitted, the current interval is preserved. Use this to flip monthly <-> yearly without re-checkout. Interval changes always take effect at the next cycle (deferred). */
+            recurring_interval?: components["schemas"]["SubscriptionRecurringInterval"];
+            /** @description Optional new interval multiplier. Defaults to the current value if omitted. Same deferral behavior as ``recurring_interval``. */
+            recurring_interval_count?: number | null;
+            /** @description Optional override for the same field on the subscription. */
+            exclude_coupons_if_installments?: boolean | null;
+        };
+        /** UpdateBranchRequest */
+        UpdateBranchRequest: {
+            /**
+             * Name
+             * @description New name for the branch. Must be unique within the organization.
+             */
+            name: string;
+        };
+        /** UpdatePaymentLinkCouponItemDto */
+        UpdatePaymentLinkCouponItemDto: {
+            /**
+             * Payment Link Item Id
+             * Format: uuid4
+             * @description Id of an existing payment link item
+             */
+            payment_link_item_id: string;
+            /**
+             * Coupons
+             * @description Item-level coupons for this item (replaces existing). Omit or [] clears item-level coupons on this item.
+             */
+            coupons?: string[];
+        };
+        /** UpdatePaymentLinkCouponsDto */
+        UpdatePaymentLinkCouponsDto: {
+            /**
+             * Coupons
+             * @description Link-level coupons (replaces existing). Omit or [] clears link-level coupons.
+             */
+            coupons?: string[];
+            /**
+             * Items
+             * @description Item-level coupons per item listed; omitted items assume no coupons.
+             */
+            items?: components["schemas"]["UpdatePaymentLinkCouponItemDto"][];
         };
         /** UpdatePaymentLinkStatusDto */
         UpdatePaymentLinkStatusDto: {
@@ -2360,6 +2936,11 @@ interface components {
             /** @description Optional message to display when the payment link is deactivated */
             deactivate_message?: string | null;
         };
+        /**
+         * UserRolesEnum
+         * @enum {string}
+         */
+        UserRolesEnum: "organization_admin" | "branch_admin" | "branch_user";
         /** ValidationError */
         ValidationError: {
             /** Location */
@@ -2368,6 +2949,10 @@ interface components {
             msg?: string;
             /** Error Type */
             type?: string;
+            /** Input */
+            input?: unknown;
+            /** Context */
+            ctx?: Record<string, never>;
         };
         /** Consumer */
         app__common__dtos__shared__Consumer: {
@@ -2397,9 +2982,62 @@ interface components {
             /** Format: phone */
             phone_number?: string | null;
             preferred_language?: components["schemas"]["Language"];
+            /** @default INDIVIDUAL */
+            consumer_type: components["schemas"]["OrganizationConsumerType"];
+            address?: components["schemas"]["AddressResponse"];
+            vat_number?: string | null;
+            commercial_registration?: string | null;
             consumer?: components["schemas"]["app__common__dtos__shared__Consumer"];
             is_deleted?: boolean | null;
             communication_methods?: components["schemas"]["ConsumerCommunicationMethod"][] | null;
+        };
+        /** Consumer */
+        app__consumer__v2__dtos__Consumer: {
+            /**
+             * Format: uuid4
+             * @description Unique identifier (UUID) of the consumer
+             */
+            id?: string | null;
+            /**
+             * Format: phone
+             * @description Phone number of the consumer
+             */
+            phone_number?: string | null;
+            /** @description Preferred language of the consumer */
+            preferred_language?: components["schemas"]["Language"];
+        };
+        /** OrganizationConsumer */
+        app__subscription__v2__dtos__OrganizationConsumer: {
+            /**
+             * Id
+             * Format: uuid4
+             * @description Unique identifier (UUID) of the organization consumer
+             */
+            id?: string;
+            /**
+             * Name
+             * @description Name of the consumer
+             */
+            name?: string;
+            /** @description Alias of the consumer */
+            alias?: string | null;
+            /** @description Email address of the consumer */
+            email?: string | null;
+            /** @description Phone number of the consumer */
+            phone_number?: string | null;
+            /** @description Preferred language of the consumer */
+            preferred_language?: components["schemas"]["Language"];
+            /**
+             * @description Consumer type (individual or business)
+             * @default INDIVIDUAL
+             */
+            consumer_type: components["schemas"]["OrganizationConsumerType"];
+            /** @description Business address for business consumers */
+            address?: components["schemas"]["AddressResponse"];
+            /** @description VAT number for business consumers */
+            vat_number?: string | null;
+            /** @description Commercial registration for business consumers */
+            commercial_registration?: string | null;
         };
     };
     responses: never;
@@ -2415,6 +3053,8 @@ type ConsumerUpdate = components["schemas"]["ConsumerUpdate"];
 type ConsumerListResponse = components["schemas"]["ListResource_ConsumerResponse_"];
 type ProductCreate = components["schemas"]["ProductCreate"];
 type ProductDto = components["schemas"]["ProductDto"];
+type ProductPriceInlineCreate = components["schemas"]["ProductPriceInlineCreate"];
+type ProductPriceInlineDto = components["schemas"]["ProductPriceInlineDto"];
 type ProductUpdate = components["schemas"]["ProductUpdate"];
 type ProductListResponse = components["schemas"]["ListResource_ProductDto_"];
 type CreatePaymentLinkDto = components["schemas"]["CreatePaymentLinkDto"];
@@ -2424,9 +3064,24 @@ type CouponCreate = components["schemas"]["CouponCreate"];
 type CouponDetailed = components["schemas"]["CouponDetailed"];
 type CouponUpdate = components["schemas"]["CouponUpdate"];
 type CouponListResponse = components["schemas"]["ListResource_CouponDetailed_"];
+type MeResponse = components["schemas"]["MeResponse"];
+type OrganizationInviteCreate = components["schemas"]["OrganizationInviteCreate"];
+type OrganizationInviteResponse = components["schemas"]["OrganizationInviteResponse"];
+type BranchItem = components["schemas"]["BranchItem"];
+type BranchListResponse = components["schemas"]["BranchListResponse"];
+type CreateBranchRequest = components["schemas"]["CreateBranchRequest"];
+type UpdateBranchRequest = components["schemas"]["UpdateBranchRequest"];
+type InvoiceCreate = components["schemas"]["InvoiceCreate"];
 type InvoiceDetailed = components["schemas"]["InvoiceDetailed"];
+type InvoiceInPlaceUpdate = components["schemas"]["InvoiceInPlaceUpdate"];
 type InvoiceListItem = components["schemas"]["InvoiceListItem"];
 type InvoiceListResponse = components["schemas"]["ListResource_InvoiceListItem_"];
+type UpdatePaymentLinkCouponItemDto = components["schemas"]["UpdatePaymentLinkCouponItemDto"];
+type UpdatePaymentLinkCouponsDto = components["schemas"]["UpdatePaymentLinkCouponsDto"];
+type UpdatePaymentLinkStatusDto = components["schemas"]["UpdatePaymentLinkStatusDto"];
+type AutoChargeOnDemandResponse = components["schemas"]["AutoChargeOnDemandResponse"];
+type PaymentMarkPaidRequest = components["schemas"]["PaymentMarkPaidRequest"];
+type PaymentMarkPaidResponse = components["schemas"]["PaymentMarkPaidResponse"];
 type PaymentResponse = components["schemas"]["PaymentResponse"];
 type PaymentListResponse = components["schemas"]["ListResource_PaymentResponse_"];
 type PaymentRefundRequest = components["schemas"]["PaymentRefundRequest"];
@@ -2550,6 +3205,41 @@ declare class StreamClient {
      */
     private buildGetRequest;
     /**
+     * Get authenticated user and organization info
+     * GET /api/v2/me
+     */
+    getMe(): Promise<MeResponse>;
+    /**
+     * Invite a user to join the organization by email
+     * POST /api/v2/organization/invite
+     */
+    createOrganizationInvite(input: OrganizationInviteCreate): Promise<OrganizationInviteResponse>;
+    /**
+     * List all branches
+     * GET /api/v2/branch
+     */
+    listBranches(params?: PaginationParams): Promise<BranchListResponse>;
+    /**
+     * Create a new branch
+     * POST /api/v2/branch
+     */
+    createBranch(input: CreateBranchRequest): Promise<BranchItem>;
+    /**
+     * Get a specific branch by ID
+     * GET /api/v2/branch/{branch_id}
+     */
+    getBranch(branchId: string): Promise<BranchItem>;
+    /**
+     * Update a branch
+     * PUT /api/v2/branch/{branch_id}
+     */
+    updateBranch(branchId: string, input: UpdateBranchRequest): Promise<BranchItem>;
+    /**
+     * Delete a branch
+     * DELETE /api/v2/branch/{branch_id}
+     */
+    deleteBranch(branchId: string): Promise<void>;
+    /**
      * Create a new consumer
      * POST /api/v2/consumers
      */
@@ -2629,6 +3319,11 @@ declare class StreamClient {
      */
     deleteCoupon(couponId: string): Promise<void>;
     /**
+     * Create a new invoice
+     * POST /api/v2/invoices
+     */
+    createInvoice(input: InvoiceCreate): Promise<InvoiceDetailed>;
+    /**
      * List all invoices with pagination
      * GET /api/v2/invoices
      */
@@ -2638,6 +3333,11 @@ declare class StreamClient {
      * GET /api/v2/invoices/{invoice_id}
      */
     getInvoice(invoiceId: string): Promise<InvoiceDetailed>;
+    /**
+     * Update invoice items in-place (without regenerating)
+     * PATCH /api/v2/invoices/{invoice_id}/inplace
+     */
+    updateInvoiceInPlace(invoiceId: string, input: InvoiceInPlaceUpdate): Promise<InvoiceDetailed>;
     /**
      * List all payments with optional invoice filter
      * GET /api/v2/payments
@@ -2650,6 +3350,16 @@ declare class StreamClient {
      * GET /api/v2/payments/{payment_id}
      */
     getPayment(paymentId: string): Promise<PaymentResponse>;
+    /**
+     * Trigger auto-charge on demand for a payment
+     * POST /api/v2/payments/auto-charge-on-demand/{payment_id}
+     */
+    autoChargeOnDemand(paymentId: string): Promise<AutoChargeOnDemandResponse>;
+    /**
+     * Mark a payment as paid manually
+     * POST /api/v2/payments/{payment_id}/mark-paid
+     */
+    markPaymentPaid(paymentId: string, input: PaymentMarkPaidRequest): Promise<PaymentMarkPaidResponse>;
     /**
      * Refund a payment
      * POST /api/v2/payments/{payment_id}/refund
@@ -2701,6 +3411,16 @@ declare class StreamClient {
      */
     deleteSubscriptionFreeze(subscriptionId: string, freezeId: string): Promise<void>;
     /**
+     * Delete a pending subscription plan change
+     * DELETE /api/v2/subscriptions/{subscription_id}/pending-change
+     */
+    deletePendingSubscriptionChange(subscriptionId: string): Promise<void>;
+    /**
+     * Un-cancel a subscription
+     * PUT /api/v2/subscriptions/{subscription_id}/uncancel
+     */
+    uncancelSubscription(subscriptionId: string): Promise<void>;
+    /**
      * Create a payment link (simplified interface)
      * POST /api/v2/payment_links
      */
@@ -2721,8 +3441,17 @@ declare class StreamClient {
      */
     getPaymentLink(paymentLinkId: string): Promise<PaymentLinkDetailed>;
     /**
-     * SDK helper: returns a best-effort "pay URL" if the API returns one.
-     * (Field name can vary; we keep it defensive.)
+     * Update coupons on a payment link
+     * PATCH /api/v2/payment_links/{payment_link_id}/coupons
+     */
+    updatePaymentLinkCoupons(paymentLinkId: string, input: UpdatePaymentLinkCouponsDto): Promise<PaymentLinkDetailed>;
+    /**
+     * Update status of a payment link (e.g. activate/deactivate)
+     * PATCH /api/v2/payment_links/{payment_link_id}/status
+     */
+    updatePaymentLinkStatus(paymentLinkId: string, input: UpdatePaymentLinkStatusDto): Promise<PaymentLinkDetailed>;
+    /**
+     * Returns the public checkout URL for a payment link.
      */
     getPaymentUrl(link: PaymentLinkDetailed): string | null;
     /**
@@ -2794,4 +3523,4 @@ declare class StreamClient {
     createSimplePaymentLink(input: SimplePaymentLinkInput): Promise<SimplePaymentLinkResponse>;
 }
 
-export { type ConsumerCreate, type ConsumerListResponse, type ConsumerResponse, type ConsumerUpdate, type CouponCreate, type CouponDetailed, type CouponListResponse, type CouponUpdate, type CreateLinkInput, type CreatePaymentLinkDto, type FreezeListResponse, type FreezeSubscriptionBase, type FreezeSubscriptionCreateRequest, type FreezeSubscriptionUpdateRequest, type InvoiceDetailed, type InvoiceListItem, type InvoiceListResponse, type Pagination, type PaginationParams, type PaymentLinkDetailed, type PaymentLinkListResponse, type PaymentListResponse, type PaymentRefundRequest, type PaymentResponse, type ProductCreate, type ProductDto, type ProductListResponse, type ProductUpdate, type SimplePaymentLinkInput, type SimplePaymentLinkResponse, type SubscriptionCancel, type SubscriptionCreate, type SubscriptionDetailed, type SubscriptionListResponse, type SubscriptionUpdate, StreamSDK as default };
+export { type AutoChargeOnDemandResponse, type BranchItem, type BranchListResponse, type ConsumerCreate, type ConsumerListResponse, type ConsumerResponse, type ConsumerUpdate, type CouponCreate, type CouponDetailed, type CouponListResponse, type CouponUpdate, type CreateBranchRequest, type CreateLinkInput, type CreatePaymentLinkDto, type FreezeListResponse, type FreezeSubscriptionBase, type FreezeSubscriptionCreateRequest, type FreezeSubscriptionUpdateRequest, type InvoiceCreate, type InvoiceDetailed, type InvoiceInPlaceUpdate, type InvoiceListItem, type InvoiceListResponse, type MeResponse, type OrganizationInviteCreate, type OrganizationInviteResponse, type Pagination, type PaginationParams, type PaymentLinkDetailed, type PaymentLinkListResponse, type PaymentListResponse, type PaymentMarkPaidRequest, type PaymentMarkPaidResponse, type PaymentRefundRequest, type PaymentResponse, type ProductCreate, type ProductDto, type ProductListResponse, type ProductPriceInlineCreate, type ProductPriceInlineDto, type ProductUpdate, type SimplePaymentLinkInput, type SimplePaymentLinkResponse, type SubscriptionCancel, type SubscriptionCreate, type SubscriptionDetailed, type SubscriptionListResponse, type SubscriptionUpdate, type UpdateBranchRequest, type UpdatePaymentLinkCouponItemDto, type UpdatePaymentLinkCouponsDto, type UpdatePaymentLinkStatusDto, StreamSDK as default };

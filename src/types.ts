@@ -13,6 +13,8 @@ export type ConsumerListResponse = components["schemas"]["ListResource_ConsumerR
 // ===========================
 export type ProductCreate = components["schemas"]["ProductCreate"];
 export type ProductDto = components["schemas"]["ProductDto"];
+export type ProductPriceInlineCreate = components["schemas"]["ProductPriceInlineCreate"];
+export type ProductPriceInlineDto = components["schemas"]["ProductPriceInlineDto"];
 export type ProductUpdate = components["schemas"]["ProductUpdate"];
 export type ProductListResponse = components["schemas"]["ListResource_ProductDto_"];
 
@@ -32,15 +34,42 @@ export type CouponUpdate = components["schemas"]["CouponUpdate"];
 export type CouponListResponse = components["schemas"]["ListResource_CouponDetailed_"];
 
 // ===========================
+// Me / Organization
+// ===========================
+export type MeResponse = components["schemas"]["MeResponse"];
+export type OrganizationInviteCreate = components["schemas"]["OrganizationInviteCreate"];
+export type OrganizationInviteResponse = components["schemas"]["OrganizationInviteResponse"];
+
+// ===========================
+// Branches
+// ===========================
+export type BranchItem = components["schemas"]["BranchItem"];
+export type BranchListResponse = components["schemas"]["BranchListResponse"];
+export type CreateBranchRequest = components["schemas"]["CreateBranchRequest"];
+export type UpdateBranchRequest = components["schemas"]["UpdateBranchRequest"];
+
+// ===========================
 // Invoices
 // ===========================
+export type InvoiceCreate = components["schemas"]["InvoiceCreate"];
 export type InvoiceDetailed = components["schemas"]["InvoiceDetailed"];
+export type InvoiceInPlaceUpdate = components["schemas"]["InvoiceInPlaceUpdate"];
 export type InvoiceListItem = components["schemas"]["InvoiceListItem"];
 export type InvoiceListResponse = components["schemas"]["ListResource_InvoiceListItem_"];
 
 // ===========================
+// Payment Links
+// ===========================
+export type UpdatePaymentLinkCouponItemDto = components["schemas"]["UpdatePaymentLinkCouponItemDto"];
+export type UpdatePaymentLinkCouponsDto = components["schemas"]["UpdatePaymentLinkCouponsDto"];
+export type UpdatePaymentLinkStatusDto = components["schemas"]["UpdatePaymentLinkStatusDto"];
+
+// ===========================
 // Payments
 // ===========================
+export type AutoChargeOnDemandResponse = components["schemas"]["AutoChargeOnDemandResponse"];
+export type PaymentMarkPaidRequest = components["schemas"]["PaymentMarkPaidRequest"];
+export type PaymentMarkPaidResponse = components["schemas"]["PaymentMarkPaidResponse"];
 export type PaymentResponse = components["schemas"]["PaymentResponse"];
 export type PaymentListResponse = components["schemas"]["ListResource_PaymentResponse_"];
 export type PaymentRefundRequest = components["schemas"]["PaymentRefundRequest"];

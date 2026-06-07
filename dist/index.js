@@ -93,7 +93,7 @@ var StreamSDK = class {
     const httpOptions = {
       baseUrl: opts.baseUrl ?? DEFAULT_BASE_URL,
       auth,
-      userAgent: "@streamsdk/typescript/1.0.0"
+      userAgent: "@streamsdk/typescript/1.1.0"
     };
     if (opts.fetchFn !== void 0) {
       httpOptions.fetchFn = opts.fetchFn;
@@ -118,6 +118,82 @@ var StreamClient = class {
       opts.query = query;
     }
     return opts;
+  }
+  // ===========================
+  // ME / ORGANIZATION
+  // ===========================
+  /**
+   * Get authenticated user and organization info
+   * GET /api/v2/me
+   */
+  getMe() {
+    return this.http.request({
+      method: "GET",
+      path: "/api/v2/me"
+    });
+  }
+  /**
+   * Invite a user to join the organization by email
+   * POST /api/v2/organization/invite
+   */
+  createOrganizationInvite(input) {
+    return this.http.request({
+      method: "POST",
+      path: "/api/v2/organization/invite",
+      body: input
+    });
+  }
+  // ===========================
+  // BRANCHES
+  // ===========================
+  /**
+   * List all branches
+   * GET /api/v2/branch
+   */
+  listBranches(params) {
+    return this.http.request(this.buildGetRequest("/api/v2/branch", params));
+  }
+  /**
+   * Create a new branch
+   * POST /api/v2/branch
+   */
+  createBranch(input) {
+    return this.http.request({
+      method: "POST",
+      path: "/api/v2/branch",
+      body: input
+    });
+  }
+  /**
+   * Get a specific branch by ID
+   * GET /api/v2/branch/{branch_id}
+   */
+  getBranch(branchId) {
+    return this.http.request({
+      method: "GET",
+      path: `/api/v2/branch/${branchId}`
+    });
+  }
+  /**
+   * Update a branch
+   * PUT /api/v2/branch/{branch_id}
+   */
+  updateBranch(branchId, input) {
+    return this.http.request({
+      method: "PUT",
+      path: `/api/v2/branch/${branchId}`,
+      body: input
+    });
+  }
+  /**
+   * Delete a branch
+   * DELETE /api/v2/branch/{branch_id}
+   */
+  deleteBranch(branchId) {
+    return this.http.request({
+      method: "DELETE",
+      path: `/api/v2/branch/${branchId}`
+    });
   }
   // ===========================
   // CONSUMERS
@@ -292,6 +368,17 @@ var StreamClient = class {
   // INVOICES
   // ===========================
   /**
+   * Create a new invoice
+   * POST /api/v2/invoices
+   */
+  createInvoice(input) {
+    return this.http.request({
+      method: "POST",
+      path: "/api/v2/invoices",
+      body: input
+    });
+  }
+  /**
    * List all invoices with pagination
    * GET /api/v2/invoices
    */
@@ -306,6 +393,17 @@ var StreamClient = class {
     return this.http.request({
       method: "GET",
       path: `/api/v2/invoices/${invoiceId}`
+    });
+  }
+  /**
+   * Update invoice items in-place (without regenerating)
+   * PATCH /api/v2/invoices/{invoice_id}/inplace
+   */
+  updateInvoiceInPlace(invoiceId, input) {
+    return this.http.request({
+      method: "PATCH",
+      path: `/api/v2/invoices/${invoiceId}/inplace`,
+      body: input
     });
   }
   // ===========================
@@ -326,6 +424,27 @@ var StreamClient = class {
     return this.http.request({
       method: "GET",
       path: `/api/v2/payments/${paymentId}`
+    });
+  }
+  /**
+   * Trigger auto-charge on demand for a payment
+   * POST /api/v2/payments/auto-charge-on-demand/{payment_id}
+   */
+  autoChargeOnDemand(paymentId) {
+    return this.http.request({
+      method: "POST",
+      path: `/api/v2/payments/auto-charge-on-demand/${paymentId}`
+    });
+  }
+  /**
+   * Mark a payment as paid manually
+   * POST /api/v2/payments/{payment_id}/mark-paid
+   */
+  markPaymentPaid(paymentId, input) {
+    return this.http.request({
+      method: "POST",
+      path: `/api/v2/payments/${paymentId}/mark-paid`,
+      body: input
     });
   }
   /**
@@ -434,6 +553,26 @@ var StreamClient = class {
       path: `/api/v2/subscriptions/${subscriptionId}/freeze/${freezeId}`
     });
   }
+  /**
+   * Delete a pending subscription plan change
+   * DELETE /api/v2/subscriptions/{subscription_id}/pending-change
+   */
+  deletePendingSubscriptionChange(subscriptionId) {
+    return this.http.request({
+      method: "DELETE",
+      path: `/api/v2/subscriptions/${subscriptionId}/pending-change`
+    });
+  }
+  /**
+   * Un-cancel a subscription
+   * PUT /api/v2/subscriptions/{subscription_id}/uncancel
+   */
+  uncancelSubscription(subscriptionId) {
+    return this.http.request({
+      method: "PUT",
+      path: `/api/v2/subscriptions/${subscriptionId}/uncancel`
+    });
+  }
   // ===========================
   // PAYMENT LINKS
   // ===========================
@@ -497,12 +636,32 @@ var StreamClient = class {
     });
   }
   /**
-   * SDK helper: returns a best-effort "pay URL" if the API returns one.
-   * (Field name can vary; we keep it defensive.)
+   * Update coupons on a payment link
+   * PATCH /api/v2/payment_links/{payment_link_id}/coupons
+   */
+  updatePaymentLinkCoupons(paymentLinkId, input) {
+    return this.http.request({
+      method: "PATCH",
+      path: `/api/v2/payment_links/${paymentLinkId}/coupons`,
+      body: input
+    });
+  }
+  /**
+   * Update status of a payment link (e.g. activate/deactivate)
+   * PATCH /api/v2/payment_links/{payment_link_id}/status
+   */
+  updatePaymentLinkStatus(paymentLinkId, input) {
+    return this.http.request({
+      method: "PATCH",
+      path: `/api/v2/payment_links/${paymentLinkId}/status`,
+      body: input
+    });
+  }
+  /**
+   * Returns the public checkout URL for a payment link.
    */
   getPaymentUrl(link) {
-    const anyLink = link;
-    return anyLink?.payment_url ?? anyLink?.paymentUrl ?? anyLink?.url ?? anyLink?.link ?? anyLink?.redirect_url ?? anyLink?.checkout_url ?? null;
+    return link?.url ?? null;
   }
   // ===========================
   // SIMPLIFIED PAYMENT LINK CREATION
@@ -655,13 +814,10 @@ var StreamClient = class {
         } else {
           const productData = {
             name: productName,
-            price: productPrice,
+            prices: [{ currency: productInput.currency ?? "SAR", amount: productPrice }],
             type: "ONE_OFF",
-            // Default to one-time purchase
             is_one_time: true,
-            // Required field for one-off products
             recurring_interval_count: 1
-            // Required field with default value
           };
           if (productInput.description !== void 0) {
             productData.description = productInput.description;
