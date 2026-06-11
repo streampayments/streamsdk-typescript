@@ -92,9 +92,15 @@ export class StreamSDKError extends Error {
       const maybeJson = text ? safeJsonParse(text) : undefined;
   
       if (!res.ok) {
-        const msg =
-          (maybeJson && typeof maybeJson === "object" && maybeJson && "detail" in maybeJson && String((maybeJson as any).detail)) ||
-          `HTTP ${res.status} calling ${opts.method} ${opts.path}`;
+        let msg = `HTTP ${res.status} calling ${opts.method} ${opts.path}`;
+        if (maybeJson && typeof maybeJson === "object" && "detail" in maybeJson) {
+          const detail = (maybeJson as any).detail;
+          if (typeof detail === "string") {
+            msg = detail;
+          } else {
+            msg = JSON.stringify(detail);
+          }
+        }
         const errorOpts: { status: number; requestId?: string; body?: unknown } = { status: res.status };
         if (requestId !== undefined) {
           errorOpts.requestId = requestId;
